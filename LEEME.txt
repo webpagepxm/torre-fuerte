@@ -1,43 +1,12 @@
-TORRE FUERTE — SITIO WEB FINAL
-==============================
+TORRE FUERTE — REDISEÑO MULTIMARCA V4
 
-Esta carpeta es un sitio estático compatible con GitHub Pages.
+1. Abre index.html con Chrome.
+2. Este paquete contiene los assets nuevos en assets/. Para GitHub sube index.html, assets/ y torre-fuerte.vcf (todo lo de la carpeta, no el ZIP).
+3. En GitHub: repositorio torre-fuerte > Add file > Upload files > arrastra archivos > Commit changes.
+4. Espera Actions verde y comprueba formulario y botones.
 
-CONTENIDO
-- index.html: estructura y contenido
-- styles.css: diseño para computadora y celular
-- script.js: menú para teléfonos y año automático
-- assets/: logo, portada y fotografía ambiental de taller
-- torre-fuerte.vcf: contacto descargable
-
-ENLACES
-- WhatsApp: https://wa.me/529545445822
-- Ubicación: https://maps.app.goo.gl/jk7q4YBHturbASLq6?g_st=iwb
-- Ficha de Google / opiniones: https://share.google/BNSdS2MYYwZAegxCZ
-
-IMPORTANTE SOBRE RESEÑAS
-El enlace proporcionado abre la ficha compartida de Google. NO se ha
-verificado que despliegue directamente el formulario de reseña. Por eso
-la página guía a la persona a tocar «Reseñas → Escribir una reseña».
-Para un botón que abra el formulario de manera directa, pide al dueño del
-perfil Google Business Profile el enlace «Solicitar reseñas» y sustitúyelo
-en todos los lugares donde aparezca el enlace de share.google.
-
-IMPORTANTE SOBRE LAS IMÁGENES Y LOS SERVICIOS
-Las fotos de moto en playa y del mecánico son imágenes ambientales
-GENERADAS para ilustrar el diseño. NO muestran al taller real ni trabajos
-que este haya realizado. Se recomienda reemplazarlas con fotos reales.
-La lista de servicios también se debe confirmar con el dueño del taller.
-Horario mostrado: lunes a sábado de 9:00 a 18:00.
-
-PUBLICACIÓN / ACTUALIZACIÓN EN GITHUB
-1. Descomprime el ZIP.
-2. Entra a github.com/jethromoraless/torre-fuerte
-3. En la pestaña Code elige Add file → Upload files.
-4. Arrastra TODOS los archivos y la carpeta assets de este proyecto.
-5. Confirma los reemplazos / Commit changes.
-6. Mantén GitHub Pages conectado a la rama main / (root).
-7. La página conservará https://jethromoraless.github.io/torre-fuerte/
-
-Para evitar archivos viejos que ya no se usan, puedes borrarlos después
-(si tienen nombres costa-moto.svg, taller-detalle.svg o vista-previa.html).
+FUNCIONES: Solicitud de cita, registro y consulta por WhatsApp; no agenda real ni envía datos a Sheets automáticamente.
+RESEÑAS: Se muestra botón al perfil Google. No se incorporan testimonios textuales porque no se pudieron verificar. Para agregarlos solicita enlace o capturas reales.
+MARCAS: Logos tipográficos de referencia: sin autorización/distribución ni garantía de compatibilidad.
+FOTOS: De ambientación generadas digitalmente, no son fotos del taller.
+Sitio inspirado en la organización visual de MotoDoctor; no copia sus activos ni textos.
