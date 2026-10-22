@@ -1,0 +1,12 @@
+TORRE FUERTE — Primera versión de web (21 octubre 2026)
+
+1. Abre index.html en un navegador para ver el sitio.
+2. Enlaces activos: WhatsApp 954 544 5822, ubicación Google Maps, archivo de contacto .vcf.
+3. Pendiente: confirmar servicios listados, obtener fotografías reales, verificar ficha de Google y enlace oficial de reseñas.
+4. Horario confirmado por el solicitante: lunes a sábado, 09:00–18:00.
+5. La página utiliza el logotipo proporcionado. No usa imágenes ficticias del taller.
+6. Para publicar gratis: crea una cuenta de GitHub controlada por el negocio, sube el contenido de esta carpeta a un repositorio público, ve a Settings > Pages > Deploy from a branch > main / (root) > Save. El sitio se servirá en https://USUARIO.github.io/REPOSITORIO/ .
+7. Antes de publicar, el mecánico debe aprobar el contenido. Si se cambia la URL después de imprimir el QR, el QR dejará de apuntar a la web anterior.
+8. El formulario de reseñas no está activo: se necesita el enlace oficial desde el Perfil de Empresa de Google.
+9. El sitio usa fuentes Google Fonts (requiere internet); sin conexión utiliza Arial.
+10. Para añadir fotos reales posteriormente, guardarlas en assets y editar index.html / styles.css.
