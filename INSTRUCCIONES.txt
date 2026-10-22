@@ -1,0 +1,35 @@
+TORRE FUERTE · WEB CON CITAS Y CLIENTES
+======================================
+
+ARCHIVOS PARA PUBLICAR EN GITHUB
+- index.html (INCLUYE el CSS y JavaScript para evitar problemas de carga en GitHub Pages)
+- assets/ (imágenes y logo)
+- torre-fuerte.vcf (contacto descargable)
+
+NUEVAS FUNCIONES REALES
+1. Agendar visita: nombre, moto, servicio, fecha preferida, horario y descripción. Al pulsar Enviar se abre WhatsApp con los datos precargados.
+2. Ser cliente: prepara un mensaje para solicitar registro en el taller e indica si el cliente solicita recibir promociones.
+3. Mi moto / beneficios: mensaje para preguntar por historial, mantenimiento, cotizaciones o beneficios.
+
+IMPORTANTE: PARA NO PROMETER FUNCIONES QUE AUN NO EXISTEN
+* No hay agenda sincronizada ni disponibilidad real. LA CITA SE CONFIRMA MANUALMENTE por el taller.
+* Un formulario no registra automáticamente al cliente ni sus reparaciones en una base de datos.
+* NO se ha activado un programa de descuentos/puntos. El taller debe establecer y aprobar las reglas.
+* No se envía ningún WhatsApp sin que el cliente pulse enviar en WhatsApp.
+* La web NO almacena datos personales (GitHub Pages es solo hosting estático). No subir expedientes ni teléfonos privados al repositorio público.
+* Los historiales se comunican PRIVADAMENTE tras verificar al cliente, nunca por una página pública.
+* Para registro y fidelidad reales, siguiente fase: cuenta del taller, formulario privado + Google Sheets con controles de acceso, aviso de privacidad, reglas y consentimiento de comunicaciones comerciales. El dueño debe aprobarlo.
+* Las fotos son imágenes ilustrativas generadas, no fotos del taller real. Los servicios se deben confirmar con el taller.
+* Google Reviews: https://share.google/BNSdS2MYYwZAegxCZ abre ficha general proporcionada, NO enlace directo verificado a escribir reseña.
+
+PUBLICAR PASO A PASO
+1. Descarga y descomprime el ZIP.
+2. En GitHub entra a https://github.com/jethromoraless/torre-fuerte
+3. Code > Add file > Upload files.
+4. Sube index.html, assets/ y torre-fuerte.vcf a la raíz. Reemplaza los existentes con el mismo nombre.
+5. Commit changes.
+6. Espera palomita verde en Actions (Pages build and deployment).
+7. Visita https://jethromoraless.github.io/torre-fuerte/?v=4 y recarga sin caché si fuera necesario.
+8. Prueba con DATOS FICTICIOS los 3 formularios; verifica el texto que se abre en WhatsApp pero NO envíes mensajes de prueba sin avisar al mecánico.
+
+Los archivos viejos styles.css y script.js pueden quedarse en el repositorio: el nuevo index.html NO depende de ellos. No hace falta borrarlos.
