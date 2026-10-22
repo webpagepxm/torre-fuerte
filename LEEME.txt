@@ -1,14 +1,8 @@
-TORRE FUERTE - VISTA PREVIA COMPLETA PARA CHROME
+TORRE FUERTE - WEB COMPLETA CORREGIDA PARA MOVIL
 
-1. Descomprime el archivo ZIP.
-2. Entra en la carpeta Torre_Fuerte_Version_Completa_Chrome.
-3. Haz doble clic en index.html para abrir la web en Chrome (o arrastra el archivo a Chrome).
+1. Descomprime el ZIP.
+2. Abre index.html en Chrome (sin separar la carpeta assets).
+3. Ajustes realizados: boton superior compacto AGENDAR en movil, sin invadir logo; retiradas flechas que aparecian como emoji azul en botones.
+4. Fotos, secciones, formularios y enlaces permanecen iguales.
 
-La página conserva el diseño V5: portada con motociclista de negro, formularios de citas, clientes y consultas, y tarjetas de opiniones de muestra. Únicamente se reemplazó la foto de la sección «El cuidado de tu moto empieza con una buena revisión» por la moto azul.
-
-Las reseñas con nombres son ejemplos ficticios de maqueta; no presentarlas al público como opiniones auténticas. Las citas se confirman por WhatsApp; la web no guarda datos en Google Sheets.
-
-Para publicar una actualización de una web existente, sólo hace falta subir assets/mecanica-servicio.webp al repositorio, sin reemplazar los demás archivos.
-
-
-Actualización: se integró una versión HD de la imagen de la sección de revisión (mecanica-servicio.webp).
+Para actualizar Github: reemplaza solo index.html. No hace falta subir imagenes.
