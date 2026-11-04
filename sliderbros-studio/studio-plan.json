@@ -1,0 +1,312 @@
+{
+  "schema": "sliderbros-director-v1",
+  "revision": 2,
+  "updatedAt": "2026-11-03",
+  "campaignTitle": "Navidad 2026",
+  "campaignStatus": "En planeación · sin fechas ni contrataciones confirmadas",
+  "campaignEyebrow": "DIRECCIÓN EDITORIAL · NOVIEMBRE 2026 — 2027",
+  "campaignHeadline": "TEMPORADAS CON ACTITUD. HAMBURGUESAS CON PERSONALIDAD.",
+  "campaignNote": "Fotografía de temporada, lifestyle y campañas que se recuerden. Navidad y creadores de Veracruz son el foco inmediato; Anne, casting y fechas siguen por confirmar.",
+  "objective": "Reconocimiento de marca mediante campañas memorables, fotografía editorial y contenido con personalidad.",
+  "voice": "Humor irreverente, ácido, absurdo y de memes. Intensidad flexible según pieza y contexto. No infantilizar a Pelusa y Borges.",
+  "audience": "Público amplio y diverso.",
+  "characters": "Pelusa y Borges: cómplices traviesos, divertidos y caóticos. Apariciones estratégicas, no protagonistas de todas las publicaciones.",
+  "lanes": [
+    {
+      "id": "temporada",
+      "label": "01 / ESTACIONAL",
+      "title": "Editorial por temporadas",
+      "description": "Navidad, primavera, verano y otoño con fotografía propia y dirección de arte consistente. Inspiración: campañas estacionales de moda, adaptadas a hamburguesas, no imitadas literalmente.",
+      "tags": [
+        "Fotografía",
+        "Styling",
+        "Temporadas"
+      ]
+    },
+    {
+      "id": "lifestyle",
+      "label": "02 / LIFESTYLE",
+      "title": "La hamburguesa sale al mundo",
+      "description": "Series fotográficas en pádel, playa y otros contextos reales. No todo debe parecer anuncio de restaurante: producto, actitud y escenas memorables.",
+      "tags": [
+        "Pádel",
+        "Playa",
+        "Vida cotidiana"
+      ]
+    },
+    {
+      "id": "creadores",
+      "label": "03 / CONTENIDO SOCIAL",
+      "title": "Reels y cultura local",
+      "description": "Talento frente a cámara, situaciones con humor y colaboración con creadores de Veracruz. El casting será diverso en cuerpos, edades adultas y personalidades.",
+      "tags": [
+        "Reels",
+        "UGC",
+        "Influencers"
+      ]
+    }
+  ],
+  "initiatives": [
+    {
+      "id": "anne-editorial",
+      "title": "Shooting editorial de Navidad con Anne",
+      "category": "Fotografía",
+      "period": "Noviembre–diciembre 2026 · fecha por acordar",
+      "owner": "Anne · disponibilidad y contratación por confirmar",
+      "status": "pendiente",
+      "description": "Preparar concepto editorial navideño con hamburguesas protagonistas, vestuario y escenas originales. Incluir talento diverso y humor construido desde la dirección de arte.",
+      "next": "Definir brief visual, moodboard, necesidades de producción y contactar a Anne",
+      "tags": [
+        "Navidad",
+        "Anne",
+        "Campaña estacional"
+      ],
+      "slot": "2026-11"
+    },
+    {
+      "id": "casting",
+      "title": "Casting inclusivo para fotografía y reels",
+      "category": "Producción",
+      "period": "Por definir",
+      "owner": "Por asignar",
+      "status": "pendiente",
+      "description": "Combinar perfiles atractivos, expresivos y diversos. Seleccionar a las personas por química, autenticidad y capacidad de actuar; evitar chistes a costa de su físico.",
+      "next": "Definir perfiles, consentimiento de imagen, remuneración y criterios de selección",
+      "tags": [
+        "Modelos",
+        "Reels",
+        "Derechos de imagen"
+      ],
+      "slot": "2026-11"
+    },
+    {
+      "id": "lifestyle-padel",
+      "title": "Editorial lifestyle: pádel",
+      "category": "Fotografía",
+      "period": "Sin fecha",
+      "owner": "Anne / equipo · por acordar",
+      "status": "idea",
+      "description": "Escenas alrededor del pádel con las hamburguesas integradas naturalmente, humor situacional y una ejecución visual cuidada.",
+      "next": "Definir locación disponible, idea creativa, producto y logística",
+      "tags": [
+        "Pádel",
+        "Lifestyle"
+      ],
+      "slot": "sin-fecha"
+    },
+    {
+      "id": "lifestyle-playa",
+      "title": "Editorial lifestyle: playa",
+      "category": "Fotografía",
+      "period": "Sin fecha",
+      "owner": "Anne / equipo · por acordar",
+      "status": "idea",
+      "description": "Una serie visual de playa que capture la energía de la marca sin dejar de hacer protagonista al producto.",
+      "next": "Elegir concepto, clima/temporada y locación",
+      "tags": [
+        "Playa",
+        "Lifestyle"
+      ],
+      "slot": "sin-fecha"
+    },
+    {
+      "id": "reels-talent",
+      "title": "Reels con talento frente a cámara",
+      "category": "Video",
+      "period": "Primera tanda por definir",
+      "owner": "Por asignar",
+      "status": "pendiente",
+      "description": "Piezas cortas con diálogos y humor ácido/absurdo; Pelusa y Borges aparecen solo cuando aportan a la idea.",
+      "next": "Elegir dos conceptos producibles y hacer casting de mayores de edad",
+      "tags": [
+        "Reels",
+        "Guiones",
+        "Casting"
+      ],
+      "slot": "sin-fecha"
+    },
+    {
+      "id": "veracruz-influencers",
+      "title": "Campaña de creadores e influencers de Veracruz",
+      "category": "Colaboraciones",
+      "period": "Última semana de noviembre 2026 · objetivo, no agenda confirmada",
+      "owner": "Por asignar",
+      "status": "pendiente",
+      "description": "Identificar creadores locales afines a la marca e invitarlos al restaurante. Medir contenido publicado, visitas atribuibles y resultados cuando sea posible.",
+      "next": "Construir shortlist, definir propuesta, presupuesto y condiciones de colaboración",
+      "tags": [
+        "Veracruz",
+        "Outreach",
+        "Visitas al local"
+      ],
+      "slot": "2026-11"
+    }
+  ],
+  "pending": [
+    {
+      "id": "p01",
+      "title": "Armar brief del shooting navideño para Anne",
+      "detail": "Objetivo, concepto, estilo de fotografía, referencias, hamburguesas protagonistas y lista de tomas.",
+      "owner": "Dirección creativa",
+      "priority": "Alta",
+      "period": "Noviembre 2026",
+      "status": "pendiente",
+      "slot": "2026-11"
+    },
+    {
+      "id": "p02",
+      "title": "Confirmar disponibilidad y presupuesto de Anne",
+      "detail": "No asumir contratación ni fechas hasta hablarlo directamente.",
+      "owner": "Por asignar",
+      "priority": "Alta",
+      "period": "Antes de agendar",
+      "status": "pendiente",
+      "slot": "2026-11"
+    },
+    {
+      "id": "p03",
+      "title": "Definir casting y permisos de imagen",
+      "detail": "Talento adulto, diversidad real, química frente a cámara, pagos y consentimiento.",
+      "owner": "Producción",
+      "priority": "Alta",
+      "period": "Antes del shooting",
+      "status": "pendiente",
+      "slot": "2026-11"
+    },
+    {
+      "id": "p04",
+      "title": "Preparar shortlist de influencers de Veracruz",
+      "detail": "Afinidad real con la audiencia, engagement, visitas y propuesta de intercambio o fee.",
+      "owner": "Marketing",
+      "priority": "Alta",
+      "period": "Antes de la última semana de noviembre",
+      "status": "pendiente",
+      "slot": "2026-11"
+    },
+    {
+      "id": "p05",
+      "title": "Escribir primeras dos ideas de reels producibles",
+      "detail": "Guion, duración, personas, utilería y llamada a la acción.",
+      "owner": "Dirección creativa",
+      "priority": "Media",
+      "period": "Por definir",
+      "status": "pendiente",
+      "slot": "sin-fecha"
+    },
+    {
+      "id": "p06",
+      "title": "Diseñar editoriales de pádel y playa",
+      "detail": "Por ahora son conceptos, sin fecha de rodaje confirmada.",
+      "owner": "Dirección creativa",
+      "priority": "Media",
+      "period": "Por definir",
+      "status": "idea",
+      "slot": "sin-fecha"
+    },
+    {
+      "id": "p07",
+      "title": "Definir calendario de promociones comerciales",
+      "detail": "Buen Fin, Hot Sale, venta nocturna y rebajas solo si hay ofertas reales autorizadas.",
+      "owner": "Operaciones + marketing",
+      "priority": "Media",
+      "period": "Calendario anual",
+      "status": "idea",
+      "slot": "sin-fecha"
+    }
+  ],
+  "seasons": [
+    {
+      "id": "nav26",
+      "start": "2026-11",
+      "period": "Nov–dic 2026",
+      "title": "Invierno · Navidad 2026",
+      "description": "Preproducción en noviembre, fotografía editorial navideña y cierre de año. Humor absurdo y hamburguesas protagonistas.",
+      "status": "pendiente"
+    },
+    {
+      "id": "winter27",
+      "start": "2027-01",
+      "period": "Ene–feb 2027",
+      "title": "Invierno · nueva colección",
+      "description": "Explorar una editorial de invierno sin repetir la campaña navideña.",
+      "status": "idea"
+    },
+    {
+      "id": "spring27",
+      "start": "2027-03",
+      "period": "Mar–may 2027",
+      "title": "Primavera",
+      "description": "Fotos primaverales con vestuario, locación y producto al centro.",
+      "status": "idea"
+    },
+    {
+      "id": "summer27",
+      "start": "2027-06",
+      "period": "Jun–ago 2027",
+      "title": "Verano",
+      "description": "Explorar playa, amigos, exteriores y energía de verano.",
+      "status": "idea"
+    },
+    {
+      "id": "autumn27",
+      "start": "2027-09",
+      "period": "Sep–nov 2027",
+      "title": "Otoño",
+      "description": "Concepto estacional y fotografía editorial por definir.",
+      "status": "idea"
+    },
+    {
+      "id": "xmas27",
+      "start": "2027-12",
+      "period": "Dic 2027",
+      "title": "Invierno · Navidad 2027",
+      "description": "Nueva colección navideña basada en lo que funcione en 2026.",
+      "status": "idea"
+    }
+  ],
+  "commercial": [
+    {
+      "id": "bf26",
+      "start": "2026-11",
+      "name": "Buen Fin 2026",
+      "context": "Valorar promoción únicamente si operaciones la aprueba.",
+      "status": "idea"
+    },
+    {
+      "id": "hs27",
+      "start": "2027-05",
+      "name": "Hot Sale 2027",
+      "context": "Preparar campaña comercial solo si existe oferta autorizada.",
+      "status": "idea"
+    },
+    {
+      "id": "bf27",
+      "start": "2027-11",
+      "name": "Buen Fin 2027",
+      "context": "Revisión de promociones, márgenes y campaña de temporada.",
+      "status": "idea"
+    },
+    {
+      "id": "night",
+      "start": "sin-fecha",
+      "name": "Venta nocturna",
+      "context": "Formato posible; sin fecha ni descuento aprobados.",
+      "status": "idea"
+    },
+    {
+      "id": "rebajas",
+      "start": "sin-fecha",
+      "name": "Rebajas y promociones",
+      "context": "Acciones puntuales cuando haya ofertas reales.",
+      "status": "idea"
+    }
+  ],
+  "decisions": [
+    "Las hamburguesas y el restaurante son protagonistas.",
+    "Pelusa y Borges: apariciones estratégicas como cómplices del caos.",
+    "Humor irreverente, ácido, absurdo y de memes; intensidad variable.",
+    "Audiencia amplia y diversa; creatividad memorable antes que anuncios genéricos.",
+    "El contenido combina editoriales estacionales, lifestyle, reels y creadores locales."
+  ],
+  "nextConversationPrompt": "Continuemos la dirección creativa de Slider Bros. Ya decidimos una estructura editorial por temporadas, shootings con Anne (por confirmar), casting diverso, lifestyle en pádel y playa, reels con talento y campaña de creadores de Veracruz a finales de noviembre. Ahora hazme solo una pregunta para aterrizar el primer shooting navideño, preservando todas estas decisiones. No inventes fechas ni presupuestos."
+}
