@@ -10,6 +10,7 @@ const configured = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(cfg.supabaseUr
 const db = configured ? createClient(cfg.supabaseUrl, cfg.supabasePublishableKey) : null;
 let records = [], grid = null, calendar = null, selected = null, serviceLines = [];
 let currentUser = null;
+let hadSavedLines = false;
 const states = {pendiente:"Pendiente",confirmada:"Confirmada",en_reparacion:"En reparación",lista:"Lista",entregada:"Entregada",cancelada:"Cancelada"};
 const currency = value => new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(Number(value)||0);
 const formatDate = input => {
@@ -20,6 +21,12 @@ const value = (obj,field) => String(obj[field]??"");
 function message(content,bad=false){
   $("statusMessage").textContent=content;
   $("statusMessage").className=content?"alert"+(bad?" err":""):"";
+}
+function showOrderFeedback(target,content,bad=false){
+  const node=$(target);
+  node.textContent=content;
+  node.className="inline-feedback"+(bad?" is-error":"");
+  node.hidden=!content;
 }
 function textRow(parent,title,content){
   const p=document.createElement("p"),strong=document.createElement("strong");
@@ -350,11 +357,15 @@ async function openOrder(id){
   $("orderStatus").value=selected.status;
   $("internalNotes").value=selected.internal_notes||"";
   $("items").replaceChildren();
+  showOrderFeedback("itemsMessage","");
+  showOrderFeedback("orderMessage","");
+  hadSavedLines=false;
   hideOrderGuide();
   $("orderDialog").showModal();
   const {data,error}=await db.from("tf_service_lines").select("*").eq("request_id",id).order("created_at");
   if(error){message("No se pudo leer el desglose de servicio.",true);return;}
   serviceLines=(data||[]).map(line=>({id:line.id,kind:line.kind,description:line.description,quantity:Number(line.quantity),unit_price:Number(line.unit_price)}));
+  hadSavedLines=serviceLines.length>0;
   renderLines();
   if(!localStorage.getItem(ORDER_TOUR_SEEN_KEY)) setTimeout(()=>startOrderGuide(true),350);
 }
@@ -362,8 +373,10 @@ $("saveOrder").addEventListener("click",async()=>{
   if(!selected)return;
   const {data,error}=await db.from("tf_requests").update({status:$("orderStatus").value,internal_notes:$("internalNotes").value})
     .eq("id",selected.id).select("*").single();
-  if(error){message("No se pudo actualizar la orden.",true);return;}
-  selected=data;await loadRecords();message("Cambios guardados en "+selected.folio+".");
+  if(error){showOrderFeedback("orderMessage","No se pudo actualizar la orden. Revisa la conexión.",true);return;}
+  selected=data;await loadRecords();
+  showOrderFeedback("orderMessage","✓ Estado y notas guardados.");
+  message("Cambios guardados en "+selected.folio+".");
 });
 function lineElement(line,i){
   const div=document.createElement("div");div.className="itemrow";
@@ -396,15 +409,28 @@ function updateTotal(){
   $("total").textContent=currency(total);
 }
 $("addItem").addEventListener("click",()=>{
-  serviceLines.push({kind:"mano_obra",description:"",quantity:1,unit_price:0});renderLines();
+  serviceLines.push({kind:"mano_obra",description:"",quantity:1,unit_price:0});
+  showOrderFeedback("itemsMessage","");
+  renderLines();
 });
 $("saveItems").addEventListener("click",saveLines);
 async function saveLines(){
-  if(!selected)return false;
+  if(!selected){
+    showOrderFeedback("itemsMessage","Primero abre una comanda.",true);
+    return false;
+  }
   const btn=$("saveItems");
+  showOrderFeedback("itemsMessage","");
+  if(serviceLines.length===0&&!hadSavedLines){
+    showOrderFeedback("itemsMessage","Todavía no hay trabajos ni refacciones. Pulsa «+ Agregar concepto», escribe la descripción y el precio y después guarda.",true);
+    return false;
+  }
   const valid=serviceLines.every(line=>line.description.trim().length>=2&&line.description.length<=200&&
     Number.isFinite(line.quantity)&&line.quantity>0&&Number.isFinite(line.unit_price)&&line.unit_price>=0);
-  if(!valid){message("Completa las descripciones, cantidades y precios del desglose.",true);return false;}
+  if(!valid){
+    showOrderFeedback("itemsMessage","Completa la descripción (mínimo 2 letras), cantidad mayor que cero y precio de cada concepto.",true);
+    return false;
+  }
   btn.disabled=true;
   try{
     const {data:existing,error:queryError}=await db.from("tf_service_lines").select("id").eq("request_id",selected.id);
@@ -423,8 +449,16 @@ async function saveLines(){
       if(result.error)throw result.error;
       line.id=result.data.id;
     }
+    hadSavedLines=serviceLines.length>0;
+    showOrderFeedback("itemsMessage",serviceLines.length
+      ?"✓ Desglose guardado correctamente. Total: "+currency(serviceLines.reduce((sum,line)=>sum+Number(line.quantity)*Number(line.unit_price),0))+"."
+      :"✓ Desglose eliminado correctamente.");
     message("Desglose guardado.");return true;
-  }catch{message("No se guardó todo el desglose. Revisa la conexión antes de generar la nota.",true);return false;}
+  }catch{
+    showOrderFeedback("itemsMessage","No se guardó el desglose. Revisa la conexión e inténtalo de nuevo.",true);
+    message("No se guardó todo el desglose. Revisa la conexión antes de generar la nota.",true);
+    return false;
+  }
   finally{btn.disabled=false;}
 }
 function generateTicket(){
