@@ -50,6 +50,13 @@
   .nav-wrap .nav-btn{min-width:65px;height:37px;padding:0 8px;font-size:10px}
   .nav-wrap .menu-toggle{flex-basis:28px;width:28px}
 }
+
+.tf-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden;pointer-events:none}
+.tf-confirmation{border:1px solid #a7d5b8;background:#f0fbf4;border-radius:14px;padding:18px 20px;display:grid;gap:8px;margin:14px 0}
+.tf-confirmation>strong{font-size:12px;color:#276a45;letter-spacing:.015em}
+.tf-confirmation-folio{font-size:clamp(33px,6vw,48px);font-weight:900;letter-spacing:-.06em;line-height:1.1;color:#152d21;user-select:all}
+.tf-confirmation p{margin:0;color:#345545;font-size:13px}
+.tf-confirmation-whatsapp{display:inline-block;width:fit-content;color:#175e36;font-weight:850;font-size:13px;text-decoration:underline!important}
 </style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "MotorcycleRepair", "name": "Torre Fuerte", "telephone": "+52 954 544 5822", "description": "Taller de motocicletas en Puerto Escondido, Oaxaca.", "url": "https://webpagepxm.github.io/torre-fuerte/", "address": {"@type": "PostalAddress", "addressLocality": "Puerto Escondido", "addressRegion": "Oaxaca", "addressCountry": "MX"}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "09:00", "closes": "18:00"}]}</script></head>
 <body><a class="skip-link" href="#principal">Saltar al contenido</a>
 <div class="info-bar"><div class="info-bar-inner"><span>Puerto Escondido, Oaxaca <b>·</b> Lunes a sábado, 9:00 a 18:00</span><span>Atención directa: <a href="tel:+529545445822">954 544 5822</a></span></div></div>
@@ -79,6 +86,7 @@
 <div aria-labelledby="tab-cita" class="booking-panel" data-panel="cita" id="panel-cita" role="tabpanel">
 <div class="panel-intro"><p class="eyebrow">AGENDA TU VISITA</p><h3>Cuéntanos de tu moto.</h3><p>Selecciona una fecha de preferencia. El taller confirmará la disponibilidad por WhatsApp.</p></div>
 <form class="booking-form" id="form-cita">
+<div class="tf-hp" aria-hidden="true"><label>Sitio web <input type="text" name="website" tabindex="-1" autocomplete="off"/></label></div>
 <div class="form-grid">
 <label class="field">Tu nombre <span>*</span><input autocomplete="name" maxlength="65" name="nombre" placeholder="¿Cómo te llamas?" required=""/></label>
 <label class="field">Teléfono de contacto <span>*</span><input type="tel" autocomplete="tel" inputmode="tel" maxlength="20" name="telefono" placeholder="Ej. 954 123 4567" required=""/></label>
@@ -92,10 +100,10 @@
 <label class="field field-full">¿Qué le pasa a tu moto? <span class="optional">opcional</span><textarea maxlength="350" name="detalle" placeholder="Cuéntanos brevemente qué ocurre..." rows="3"></textarea></label>
 </div>
 <label class="check-line"><input name="confirmacion" required="" type="checkbox"/><span>Entiendo que <strong>esta no es una cita confirmada</strong>; el taller confirmará fecha y horario por WhatsApp.</span></label>
-<label class="check-line"><input name="almacenamiento" required="" type="checkbox"/><span>Acepto proporcionar mis datos para tramitar esta solicitud y, cuando esté habilitado, que el taller los conserve para dar seguimiento. Consulta el <a href="aviso-privacidad.html" target="_blank" rel="noopener" style="text-decoration:underline">aviso de privacidad</a>.</span></label>
+<label class="check-line"><input name="almacenamiento" required="" type="checkbox"/><span>Acepto que el taller guarde mi información de contacto y de la motocicleta para gestionar esta solicitud y dar seguimiento. Consulta el <a href="aviso-privacidad.html" target="_blank" rel="noopener" style="text-decoration:underline">aviso de privacidad</a>.</span></label>
 <button class="button button-gold form-submit" type="submit"><span>Enviar solicitud de cita</span></button>
 <div id="cita-resultado" role="status" aria-live="polite" class="form-note"></div>
-<p class="form-note">Si el registro digital está habilitado, recibirás un folio. También podrás contactar al taller por WhatsApp.</p>
+<p class="form-note">Al enviar tu solicitud recibirás un folio que identificará la cita, la comanda de la moto y la nota de servicio. La cita todavía no estará confirmada.</p>
 </form>
 </div>
 <div aria-labelledby="tab-alta" class="booking-panel" data-panel="alta" hidden="" id="panel-alta" role="tabpanel">
@@ -188,6 +196,7 @@
   if(dateInput){dateInput.min=localDate(new Date());}
   const booking=document.getElementById('form-cita');
   let requestAttemptId = null;
+  let requestAttemptSnapshot = "";
   booking?.addEventListener('submit',async event=>{
     event.preventDefault();
     if(!booking.reportValidity()) return;
@@ -230,7 +239,16 @@
       result.append(notice,a);return;
     }
     const submit=booking.querySelector('button[type="submit"]');submit.disabled=true;
-    if(!requestAttemptId)requestAttemptId=crypto.randomUUID();
+    const snapshot=JSON.stringify([
+      formValue(booking,'nombre'),phone,formValue(booking,'moto'),
+      formValue(booking,'servicio'),date,formValue(booking,'horario'),
+      formValue(booking,'anio'),formValue(booking,'detalle')
+    ]);
+    // Mantener la misma clave al reintentar exactamente la misma solicitud,
+    // cambiarla si el usuario modifica datos después de un intento fallido.
+    if(!requestAttemptId||requestAttemptSnapshot!==snapshot){
+      requestAttemptId=crypto.randomUUID();requestAttemptSnapshot=snapshot;
+    }
     try{
       const response=await fetch(settings.supabaseUrl.replace(/\/$/,'')+'/functions/v1/tf-create-request',{
         method:'POST',headers:{'Content-Type':'application/json',apikey:settings.supabasePublishableKey},
@@ -239,23 +257,32 @@
           moto:formValue(booking,'moto'),anio:formValue(booking,'anio'),
           servicio:formValue(booking,'servicio'),fecha:date,horario:formValue(booking,'horario'),
           detalle:formValue(booking,'detalle'),idempotency_key:requestAttemptId,
+          website:formValue(booking,'website'),
           consent:booking.elements.namedItem('almacenamiento').checked
         })
       });
       const payload=await response.json();
       if(!response.ok||!payload.ok||!payload.folio)throw Error(payload.error||'No se pudo guardar.');
-      const success=document.createElement('p');
-      success.textContent='Solicitud registrada con folio '+payload.folio+'. El taller debe confirmar la cita.';
+      const success=document.createElement('div');success.className='tf-confirmation';
+      const eyebrow=document.createElement('strong');eyebrow.textContent='Solicitud recibida · Folio de seguimiento';
+      const folio=document.createElement('span');folio.className='tf-confirmation-folio';folio.textContent=payload.folio;
+      const description=document.createElement('p');
+      description.textContent='Guarda este folio. El taller lo usará para tu cita, la comanda de la moto y la nota del servicio. Tu cita todavía está pendiente de confirmar.';
       const link=document.createElement('a');link.href=wa([...lines,'Folio: '+payload.folio].join('\n'));
-      link.target='_blank';link.rel='noopener';link.textContent='Enviar mi folio por WhatsApp';
-      link.style.textDecoration='underline';link.style.fontWeight='700';
-      result.append(success,link);
-      requestAttemptId=null;
+      link.target='_blank';link.rel='noopener';link.textContent='Enviar este folio al taller por WhatsApp';
+      link.className='tf-confirmation-whatsapp';
+      success.append(eyebrow,folio,description,link);
+      result.append(success);
+      requestAttemptId=null;requestAttemptSnapshot="";
       booking.reset();
     }catch(error){
       const err=document.createElement('p');err.textContent='No se pudo guardar la solicitud: '+(error?.message||'intenta de nuevo')+
         '. Vuelve a intentarlo; no se ha confirmado ningún folio.';
-      result.append(err);
+      const link=document.createElement('a');
+      link.href=wa([...lines,'No se generó folio desde la web. Solicito confirmación por WhatsApp.'].join('\n'));
+      link.target='_blank';link.rel='noopener';link.textContent='Contactar al taller por WhatsApp sin folio';
+      link.style.textDecoration='underline';link.style.fontWeight='700';
+      result.append(err,link);
     }finally{submit.disabled=false;}
   });
   dateInput?.addEventListener('input',()=>dateInput.setCustomValidity(''));
