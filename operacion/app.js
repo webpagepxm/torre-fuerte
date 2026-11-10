@@ -62,13 +62,52 @@ $("loginForm").addEventListener("submit",async event=>{
   finally{submit.disabled=false;}
 });
 $("signout").addEventListener("click",async()=>{if(db)await db.auth.signOut();leave();});
+function renderActivity(){
+  // Proporción por estado entre órdenes activas, no objetivos ni progreso ficticio.
+  const pending=records.filter(r=>r.status==="pendiente").length;
+  const confirmed=records.filter(r=>r.status==="confirmada").length;
+  const working=records.filter(r=>r.status==="en_reparacion").length;
+  const ready=records.filter(r=>r.status==="lista").length;
+  const active=pending+confirmed+working+ready;
+  $("activityTotal").textContent=String(active);
+  $("kpiPending").textContent=String(pending);
+  $("kpiWorking").textContent=String(working);
+  $("kpiReady").textContent=String(ready);
+  $("kpiConfirmed").textContent=String(confirmed);
+  const svg=$("activityRings");
+  svg.querySelectorAll(".activity-arc").forEach(el=>el.remove());
+  const svgNS="http://www.w3.org/2000/svg";
+  const rings=[
+    {count:pending,r:77,color:"#ee5960"},
+    {count:working,r:57,color:"#f4b54a"},
+    {count:ready,r:37,color:"#37b88c"}
+  ];
+  const before=svg.querySelector("text");
+  for(const ring of rings){
+    const circumference=2*Math.PI*ring.r;
+    const ratio=active>0?ring.count/active:0;
+    const arc=document.createElementNS(svgNS,"circle");
+    arc.setAttribute("class","activity-arc");
+    arc.setAttribute("cx","105");arc.setAttribute("cy","105");
+    arc.setAttribute("r",String(ring.r));
+    arc.setAttribute("fill","none");arc.setAttribute("stroke",ring.color);
+    arc.setAttribute("stroke-width","14");arc.setAttribute("stroke-linecap","round");
+    arc.setAttribute("stroke-dasharray",String(circumference*ratio)+" "+String(circumference));
+    arc.setAttribute("transform","rotate(-90 105 105)");
+    if(ring.count===0)arc.setAttribute("opacity","0");
+    svg.insertBefore(arc,before);
+  }
+  svg.setAttribute("aria-label",active===0
+    ?"No hay órdenes activas."
+    :active+" órdenes activas: "+pending+" pendientes, "+confirmed+" confirmadas, "+
+      working+" en reparación y "+ready+" listas para entregar.");
+}
+
 async function loadRecords(){
   const {data,error}=await db.from("tf_requests").select("*").order("created_at",{ascending:false}).limit(1000);
   if(error){message("No se pudieron consultar las órdenes. Verifica la conexión y los permisos.",true);return;}
   records=data||[];
-  $("kpiPending").textContent=records.filter(x=>x.status==="pendiente").length;
-  $("kpiWorking").textContent=records.filter(x=>x.status==="en_reparacion").length;
-  $("kpiReady").textContent=records.filter(x=>x.status==="lista").length;
+  renderActivity();
   renderGrid();renderCalendar();
   message(records.length+" órdenes y solicitudes cargadas.");
 }
