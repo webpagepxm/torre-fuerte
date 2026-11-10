@@ -32,7 +32,6 @@ function todayLocal(){
 }
 async function loginStaff(username,password){
   if(!db||!configured)throw Error("No se ha configurado la base de datos.");
-  if(password.length<12||/^\d+$/.test(password))throw Error("La contraseña debe tener al menos 12 caracteres y no ser solo números. Cámbiala en Supabase → Authentication → Users.");
   const baseUrl=cfg.supabaseUrl.endsWith("/")?cfg.supabaseUrl.slice(0,-1):cfg.supabaseUrl;
   const response=await fetch(baseUrl+"/functions/v1/tf-staff-login",{
     method:"POST",
@@ -42,7 +41,7 @@ async function loginStaff(username,password){
   });
   const payload=await response.json().catch(()=>({}));
   if(!response.ok||!payload.access_token||!payload.refresh_token){
-    throw Error(response.status===422?"Tu contraseña actual es demasiado corta. Cámbiala en Supabase → Authentication → Users.":response.status===401?"Usuario o contraseña incorrectos.":response.status===429?"Demasiados intentos. Intenta de nuevo en 15 minutos.":"No se pudo iniciar sesión. Verifica la conexión.");
+    throw Error(response.status===401?"Usuario o contraseña incorrectos.":response.status===429?"Demasiados intentos. Intenta de nuevo en 15 minutos.":"No se pudo iniciar sesión. Verifica la conexión.");
   }
   const {error}=await db.auth.setSession({
     access_token:payload.access_token,
