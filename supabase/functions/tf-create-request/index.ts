@@ -11,7 +11,7 @@ function response(body: unknown, status: number, origin: string) {
   if (ALLOWED_ORIGINS.has(origin)) headers.set("Access-Control-Allow-Origin", origin);
   headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
   headers.set("Access-Control-Allow-Headers", "content-type, authorization, apikey");
-  return new Response(JSON.stringify(body), { status, headers });
+  return new Response(status === 204 ? null : JSON.stringify(body), { status, headers });
 }
 function clean(value: unknown, max: number): string {
   if (typeof value !== "string") return "";
