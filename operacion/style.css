@@ -61,3 +61,8 @@ dialog{border:1px solid var(--line);border-radius:14px;padding:0;max-width:700px
 .driver-popover-description{font-size:13px!important;line-height:1.5}
 @media(max-width:600px){.topbar{align-items:flex-start}.toplinks{gap:7px;max-width:205px}.toplinks .help-link{font-size:11px;padding:5px 7px}.toplinks .linkbtn{font-size:11px}.password-form{padding:15px}.order-tour-actions{gap:6px}}
 @media print{.order-tour,.guide-trigger,.order-help{display:none!important}}
+
+/* Respuestas visibles dentro del modal, no detrás del fondo oscurecido. */
+.inline-feedback{margin:10px 0 13px;padding:10px 13px;border-radius:9px;background:#eef4f1;color:#17543c;font-size:13px;font-weight:650;line-height:1.45;border:1px solid #cae6d8}
+.inline-feedback.is-error{background:#fff3f2;color:#952728;border-color:#f2cbca}
+.inline-feedback[hidden]{display:none!important}
