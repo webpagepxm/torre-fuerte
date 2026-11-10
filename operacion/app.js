@@ -41,7 +41,7 @@ async function loginStaff(username,password){
   });
   const payload=await response.json().catch(()=>({}));
   if(!response.ok||!payload.access_token||!payload.refresh_token){
-    throw Error(response.status===401?"Usuario o contraseña incorrectos.":"No se pudo iniciar sesión. Verifica la conexión.");
+    throw Error(response.status===401?"Usuario o contraseña incorrectos.":response.status===429?"Demasiados intentos. Intenta de nuevo en 15 minutos.":"No se pudo iniciar sesión. Verifica la conexión.");
   }
   const {error}=await db.auth.setSession({
     access_token:payload.access_token,
@@ -87,7 +87,7 @@ $("loginForm").addEventListener("submit",async event=>{
     if(username!==STAFF_USERNAME)throw Error("Usuario no válido.");
     await loginStaff(username,$("password").value);
     if(!(await enter()))$("loginMessage").textContent||="No autorizado para este taller.";
-  }catch{$("loginMessage").textContent="No se pudo iniciar sesión. Revisa tus datos y conexión.";}
+  }catch(error){$("loginMessage").textContent=error?.message||"No se pudo iniciar sesión. Revisa tus datos y conexión.";}
   finally{submit.disabled=false;}
 });
 $("signout").addEventListener("click",async()=>{if(db)await db.auth.signOut();leave();});
