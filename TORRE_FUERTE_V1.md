@@ -29,6 +29,13 @@
 9. **Pendiente:** finalizar aviso de privacidad y protección contra bots antes de permitir la recepción pública de solicitudes.
 10. **Pendiente:** publicar en GitHub Pages después de pruebas. El PR sigue en borrador.
 
+## Datos de contacto del taller para el aviso de privacidad (10/11/2026)
+- **Nombre comercial provisional:** Torre Fuerte de Puerto Escondido.
+- **Domicilio informado:** Calle 29 de Octubre, La Guayabillera, C. P. 70934, La Barra de Colotepec, Oaxaca, México.
+- **WhatsApp de contacto visible en la página:** 954 544 5822 (aún debe confirmarse como canal formal de privacidad).
+- **Falta:** confirmar nombre legal de la persona física o razón social responsable del tratamiento. El nombre comercial provisional no se presenta como identidad legal.
+- **Aviso:** `aviso-privacidad.html` ahora tiene texto completo para revisión, señalizado expresamente como borrador. **No activar almacenamiento de solicitudes desde la página pública hasta aprobarlo.**
+
 ## Folio automático desde la página pública (solicitud de cita)
 - **Un solo folio:** `tf_requests.folio` lo asigna Postgres en el momento de insertar la solicitud, incluso antes de confirmar la cita.
 - **Mismo folio para tres momentos:** solicitud web, comanda para pegar en la moto y nota de servicio PDF para el cliente. **La nota no crea otro folio.**
