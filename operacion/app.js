@@ -298,12 +298,12 @@ const orderTourSteps = [
   {id:"orderInfo",title:"Datos de la orden",text:"Aquí aparecen el folio, nombre del cliente, motocicleta, servicio y cita solicitada. Compruébalos antes de continuar."},
   {id:"orderStatus",title:"Estado de la moto",text:"Selecciona si está pendiente, en reparación, lista o entregada. El cambio no se guarda hasta pulsar el botón siguiente."},
   {id:"internalNotes",title:"Anota los avances",text:"Escribe aquí lo que encontraste al revisar la moto o las indicaciones para el trabajo."},
-  {id:"saveOrder",title:"Guardar cambios",text:"Pulsa este botón cuando hayas cambiado el estado o las notas internas de la orden."},
-  {id:"addItem",title:"Agregar un trabajo o pieza",text:"Crea un renglón para escribir cada trabajo, refacción, cantidad y precio. El total se calcula automáticamente."},
-  {id:"saveItems",title:"Guardar el desglose",text:"Guarda los conceptos de mano de obra y refacciones. Hazlo antes de descargar el PDF."},
-  {id:"printOrder",title:"Imprimir comanda",text:"Abre la impresión del ticket blanco con el folio y datos de la solicitud. Elige la impresora disponible en tu teléfono."},
-  {id:"pdfDownload",title:"Descargar nota PDF",text:"Genera la nota de servicio para conservarla o enviársela al cliente más tarde. No es una factura fiscal."},
-  {id:"pdfShare",title:"Compartir con el cliente",text:"En teléfonos compatibles puedes compartir el PDF directamente a WhatsApp. Si no, descárgalo y adjúntalo en el chat."}
+  {id:"saveOrder",title:"Guardar cambios",text:"Pulsa aquí cuando hayas cambiado el estado o las notas internas de la moto."},
+  {id:"printOrder",title:"COMANDA · Para la moto",text:"Es el ticket interno que pegas o sujetas a la moto para identificar el trabajo. No lleva precios."},
+  {id:"addItem",title:"NOTA · Agregar trabajos",text:"La nota es para el cliente. Aquí escribes cada trabajo o refacción, cantidad y precio."},
+  {id:"saveItems",title:"Guardar precios de la nota",text:"Guarda los conceptos y el total que verá el cliente. Esto NO imprime la comanda."},
+  {id:"pdfDownload",title:"Descargar NOTA para el cliente",text:"Genera el PDF con los conceptos y el total. No es una factura fiscal."},
+  {id:"pdfShare",title:"Compartir NOTA con el cliente",text:"En teléfonos compatibles puedes compartir el PDF a WhatsApp u otra app. Si no, descárgalo y adjúntalo."}
 ];
 let orderGuideIndex = 0;
 function hideOrderGuide(){
@@ -359,6 +359,7 @@ async function openOrder(id){
   $("items").replaceChildren();
   showOrderFeedback("itemsMessage","");
   showOrderFeedback("orderMessage","");
+  showOrderFeedback("pdfMessage","");
   hadSavedLines=false;
   hideOrderGuide();
   $("orderDialog").showModal();
@@ -469,7 +470,7 @@ function generateTicket(){
     if(cl)el.className=cl;div.append(el);
   };
   add("h1","TORRE FUERTE");add("p","TALLER DE MOTOCICLETAS · PUERTO ESCONDIDO","center");
-  add("hr","");add("p","COMANDA DE SOLICITUD","center");
+  add("hr","");add("p","COMANDA PARA LA MOTO","center");add("p","USO INTERNO · SIN PRECIOS","center");
   add("p","FOLIO: "+selected.folio);
   add("p","Registrada: "+new Date(selected.created_at).toLocaleString("es-MX",{timeZone:"America/Mexico_City"}));
   add("hr","");
@@ -480,7 +481,9 @@ function generateTicket(){
   add("p","HORARIO SOLICITADO: "+selected.requested_slot);
   if(selected.details)add("p","OBSERVACIONES: "+selected.details);
   add("hr","");add("p","ESTADO: "+(states[selected.status]||selected.status));
-  add("p","La fecha no queda confirmada hasta que el taller la acepte.","center");
+  add("p","PARA SUJETAR A LA MOTO DURANTE EL SERVICIO","center");
+  add("p","No es nota de cobro ni factura.","center");
+  if(selected.status==="pendiente")add("p","Cita pendiente de confirmar.","center");
 }
 $("printOrder").addEventListener("click",()=>{
   if(!selected)return;generateTicket();
@@ -523,23 +526,35 @@ async function buildPdfBlob(){
   });
 }
 $("pdfDownload").addEventListener("click",async()=>{
+  showOrderFeedback("pdfMessage","");
   try{
     const blob=await buildPdfBlob();
     const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=selected.folio+"-nota-servicio.pdf";
-    a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);message("Nota PDF generada.");
-  }catch(err){message(err.message||"No se pudo crear el PDF.",true);}
+    a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
+    showOrderFeedback("pdfMessage","✓ Nota para el cliente descargada con precios y total.");
+    message("Nota PDF generada.");
+  }catch(err){
+    showOrderFeedback("pdfMessage","No se pudo crear la nota PDF. "+(err?.message||"Revisa los conceptos y vuelve a intentar."),true);
+    message(err?.message||"No se pudo crear el PDF.",true);
+  }
 });
 $("pdfShare").addEventListener("click",async()=>{
+  showOrderFeedback("pdfMessage","");
   try{
     const blob=await buildPdfBlob();const file=new File([blob],selected.folio+"-nota-servicio.pdf",{type:"application/pdf"});
     if(navigator.canShare?.({files:[file]})&&navigator.share){
       await navigator.share({files:[file],title:"Torre Fuerte · "+selected.folio,text:"Nota de servicio "+selected.folio});
+      showOrderFeedback("pdfMessage","✓ Nota compartida mediante el menú del teléfono.");
     }else{
       const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=file.name;
       a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
+      showOrderFeedback("pdfMessage","Nota descargada. Adjúntala al chat del cliente en WhatsApp.");
       message("PDF descargado. Ahora adjúntalo manualmente en WhatsApp.");
     }
   }catch(err){
-    if(err?.name!=="AbortError")message("No fue posible compartir el PDF; prueba Descargar PDF.",true);
+    if(err?.name!=="AbortError"){
+      showOrderFeedback("pdfMessage","No fue posible compartir la nota. Prueba «Descargar nota PDF para el cliente».",true);
+      message("No fue posible compartir el PDF; prueba Descargar PDF.",true);
+    }
   }
 });
