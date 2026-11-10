@@ -46,7 +46,29 @@
       <div class="headbuttons"><button id="refresh">Actualizar</button><button id="newOrder" class="primary">+ Nueva orden</button></div>
     </div>
     <div id="statusMessage" role="status"></div>
-    <div class="kpis"><div><strong id="kpiPending">0</strong><small>Por confirmar</small></div><div><strong id="kpiWorking">0</strong><small>En reparación</small></div><div><strong id="kpiReady">0</strong><small>Listas para entregar</small></div></div>
+    <section class="activity-summary" aria-labelledby="activityTitle">
+  <div class="activity-copy">
+    <p class="eyebrow">VISTA RÁPIDA</p>
+    <h2 id="activityTitle">Pulso del taller</h2>
+    <p>En un vistazo, cómo van tus órdenes activas.</p>
+    <p class="activity-note">Cada anillo muestra la proporción de órdenes activas en ese estado, no un objetivo inventado.</p>
+  </div>
+  <div class="activity-graph">
+    <svg id="activityRings" class="activity-rings" viewBox="0 0 210 210" role="img" aria-label="No hay órdenes activas todavía">
+      <circle cx="105" cy="105" r="77" fill="none" stroke="#e8ebed" stroke-width="14"/>
+      <circle cx="105" cy="105" r="57" fill="none" stroke="#e8ebed" stroke-width="14"/>
+      <circle cx="105" cy="105" r="37" fill="none" stroke="#e8ebed" stroke-width="14"/>
+      <text x="105" y="102" text-anchor="middle" class="ring-total" id="activityTotal">0</text>
+      <text x="105" y="119" text-anchor="middle" class="ring-center-caption">activas</text>
+    </svg>
+    <div class="activity-legend" aria-label="Detalle de estados">
+      <div class="legend-item"><span class="legend-dot pending"></span><span>Pendientes</span><strong id="kpiPending">0</strong></div>
+      <div class="legend-item"><span class="legend-dot working"></span><span>En reparación</span><strong id="kpiWorking">0</strong></div>
+      <div class="legend-item"><span class="legend-dot ready"></span><span>Listas</span><strong id="kpiReady">0</strong></div>
+      <div class="legend-extra">Confirmadas, sin iniciar: <strong id="kpiConfirmed">0</strong></div>
+    </div>
+  </div>
+</section>
     <div class="tabs" role="tablist" aria-label="Secciones del portal">
       <button class="active" data-tab="orders" role="tab" aria-selected="true">Comandas</button>
       <button data-tab="calendar" role="tab" aria-selected="false">Calendario</button>
