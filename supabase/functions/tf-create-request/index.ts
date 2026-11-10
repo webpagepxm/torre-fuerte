@@ -30,7 +30,7 @@ function validDate(dateString: string): boolean {
 
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin") || "";
-  if (origin && !ALLOWED_ORIGINS.has(origin)) return response({ error: "Origen no autorizado." }, 403, origin);
+  if (!ALLOWED_ORIGINS.has(origin)) return response({ error: "Origen no autorizado." }, 403, origin);
   if (req.method === "OPTIONS") return response({}, 204, origin);
   if (req.method !== "POST") return response({ error: "Método no permitido." }, 405, origin);
   if (!(req.headers.get("content-type") || "").includes("application/json")) return response({ error: "Formato no permitido." }, 415, origin);
@@ -69,6 +69,22 @@ Deno.serve(async (req) => {
       .select("id,folio").eq("idempotency_key", idempotency_key).maybeSingle();
     if (priorError) return response({ error: "No se pudo comprobar la solicitud." }, 503, origin);
     if (prior) return response({ ok: true, id: prior.id, folio: prior.folio, duplicate: true }, 200, origin);
+
+    // Límite por origen técnico: hash diario (sin almacenar IP), más límite por teléfono.
+    // Origin/CORS no sustituyen la protección contra bots ni garantizan identidad.
+    const ipHeader = req.headers.get("cf-connecting-ip") ||
+      req.headers.get("x-real-ip") || (req.headers.get("x-forwarded-for") || "").split(",")[0].trim();
+    const ip = /^[0-9a-f:.]{3,45}$/i.test(ipHeader || "") ? ipHeader : "unknown";
+    const day = new Date().toISOString().slice(0, 10);
+    const seed = new TextEncoder().encode("booking|" + day + "|" + ip + "|" + key);
+    const digest = await crypto.subtle.digest("SHA-256", seed);
+    const bucket = "ip_" + Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
+    const { data: allowed, error: limitError } = await db.rpc("tf_booking_allow", {
+      p_bucket: bucket,
+      p_limit: ip === "unknown" ? 12 : 8
+    });
+    if (limitError) return response({ error: "No se pudo procesar la solicitud." }, 503, origin);
+    if (!allowed) return response({ error: "Demasiadas solicitudes recientes. Contacta al taller por WhatsApp." }, 429, origin);
 
     const limitSince = new Date(Date.now() - 15 * 60 * 1000).toISOString();
     const { data: recent, error: recentError } = await db.from("tf_requests")
