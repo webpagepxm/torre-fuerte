@@ -14,3 +14,26 @@ dialog{border:1px solid var(--line);border-radius:14px;padding:0;max-width:700px
 @media(max-width:850px){.gate{grid-template-columns:1fr;gap:18px;padding:20px 0}.signin{max-width:560px}.workspacehead{align-items:flex-start;flex-direction:column}.gatecopy h1{max-width:690px}}
 @media(max-width:600px){.shell{padding:24px 12px 60px}.topbar{padding:12px}.toplinks{gap:8px}.toplinks a{font-size:11px}.brand strong{font-size:17px}.brand img{width:34px;height:34px}.signin{padding:23px}.gatecopy h1{font-size:45px}.kpis{gap:7px}.kpis>div{padding:13px 10px}.kpis strong{font-size:25px}.kpis small{font-size:10px}.panel{padding:13px}.panelheading{align-items:start;flex-direction:column}.filters>*{flex:1 1 100%!important}.formgrid{grid-template-columns:1fr;padding:15px}.formgrid .full{grid-column:auto}.dialogcontent{padding:15px}.itemrow{grid-template-columns:1fr 1fr}.itemrow label:nth-child(2){grid-column:1/-1;grid-row:1}.itemrow button{align-self:end}.fc .fc-toolbar{display:grid;gap:10px}.fc .fc-toolbar-title{font-size:18px}}
 @media print{@page{margin:3mm}html,body{background:white!important}.topbar,.shell,dialog{display:none!important}#printReceipt{display:block!important;width:76mm;max-width:76mm;margin:auto;padding:2mm;font:12px/1.45 monospace;color:#000}#printReceipt h1{font:bold 19px/1.1 monospace;margin:0;text-align:center}#printReceipt .center{text-align:center}#printReceipt hr{border:0;border-top:1px dashed #333;margin:9px 0}#printReceipt .row{display:flex;justify-content:space-between;gap:7px}#printReceipt p{margin:5px 0;overflow-wrap:anywhere;white-space:pre-wrap}#printReceipt strong{font-weight:800}}
+
+
+/* Anillos de estado: estilo Actividad, basados únicamente en órdenes reales */
+[hidden]{display:none!important}
+.activity-summary{border:1px solid var(--line);background:#fff;border-radius:16px;padding:24px 28px;margin:19px 0 23px;display:grid;grid-template-columns:minmax(210px,.95fr) minmax(380px,1.3fr);align-items:center;gap:22px}
+.activity-copy .eyebrow{margin:0 0 8px}.activity-copy h2{font-size:clamp(27px,3vw,37px);line-height:1.08;letter-spacing:-.05em;margin:0 0 10px}
+.activity-copy p:not(.eyebrow){font-size:14px;color:var(--muted);margin:0}
+.activity-copy .activity-note{margin-top:12px!important;font-size:11px!important;max-width:310px}
+.activity-graph{display:flex;gap:22px;justify-content:flex-end;align-items:center;min-width:0}
+.activity-rings{width:195px;max-width:48%;height:auto;flex:none;overflow:visible}
+.activity-rings circle{transition:stroke-dasharray .45s ease;transform-origin:105px 105px}
+.activity-rings .ring-total{fill:#20252a;font-size:33px;letter-spacing:-1px;font-weight:850}
+.activity-rings .ring-center-caption{fill:#6b747c;font-size:10px;font-weight:650}
+.activity-legend{min-width:178px;display:grid;gap:13px;flex:1;max-width:250px}
+.legend-item{display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:9px;font-size:13px}
+.legend-item strong{font-size:19px;font-variant-numeric:tabular-nums}
+.legend-dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+.legend-dot.pending{background:#ee5960}.legend-dot.working{background:#f4b54a}.legend-dot.ready{background:#37b88c}
+.legend-extra{font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:11px}
+.legend-extra strong{font-variant-numeric:tabular-nums;color:var(--ink)}
+@media(max-width:930px){.activity-summary{grid-template-columns:1fr}.activity-graph{justify-content:flex-start}}
+@media(max-width:600px){.activity-summary{padding:20px 15px;gap:10px;margin:15px 0 18px}.activity-graph{gap:13px}.activity-rings{width:162px;max-width:48%}.activity-legend{min-width:0;gap:10px}.legend-item{font-size:11px;gap:6px}.legend-item strong{font-size:17px}.legend-extra{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.activity-rings circle{transition:none}}
