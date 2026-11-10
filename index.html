@@ -81,6 +81,7 @@
 <form class="booking-form" id="form-cita">
 <div class="form-grid">
 <label class="field">Tu nombre <span>*</span><input autocomplete="name" maxlength="65" name="nombre" placeholder="¿Cómo te llamas?" required=""/></label>
+<label class="field">Teléfono de contacto <span>*</span><input type="tel" autocomplete="tel" inputmode="tel" maxlength="20" name="telefono" placeholder="Ej. 954 123 4567" required=""/></label>
 <label class="field">Marca y modelo de tu moto <span>*</span><input maxlength="70" name="moto" placeholder="Ej. Italika FT150" required=""/></label>
 <label class="field">¿Qué servicio necesitas? <span>*</span>
 <select name="servicio" required=""><option disabled="" selected="" value="">Selecciona una opción</option><option>Revisión general</option><option>Cambio de aceite</option><option>Frenos</option><option>Suspensión</option><option>Falla eléctrica</option><option>Diagnóstico</option><option>Otro / no estoy seguro</option></select>
@@ -90,9 +91,11 @@
 <label class="field">Año de la moto <span class="optional">opcional</span><input inputmode="numeric" maxlength="4" name="anio" pattern="[0-9]{4}" placeholder="Ej. 2022" title="Escribe un año de 4 dígitos"/></label>
 <label class="field field-full">¿Qué le pasa a tu moto? <span class="optional">opcional</span><textarea maxlength="350" name="detalle" placeholder="Cuéntanos brevemente qué ocurre..." rows="3"></textarea></label>
 </div>
-<label class="check-line"><input name="confirmacion" required="" type="checkbox"/><span>Entiendo que <strong>esta no es una cita confirmada</strong>. Se abrirá WhatsApp y tendré que enviar el mensaje al taller para que confirme.</span></label>
-<button class="button button-gold form-submit" type="submit"><span>Enviar solicitud por WhatsApp</span></button>
-<p class="form-note">La página no guarda tus datos. Se incluirán en el texto de WhatsApp que tú decidas enviar.</p>
+<label class="check-line"><input name="confirmacion" required="" type="checkbox"/><span>Entiendo que <strong>esta no es una cita confirmada</strong>; el taller confirmará fecha y horario por WhatsApp.</span></label>
+<label class="check-line"><input name="almacenamiento" required="" type="checkbox"/><span>Acepto proporcionar mis datos para tramitar esta solicitud y, cuando esté habilitado, que el taller los conserve para dar seguimiento. Consulta el <a href="aviso-privacidad.html" target="_blank" rel="noopener" style="text-decoration:underline">aviso de privacidad</a>.</span></label>
+<button class="button button-gold form-submit" type="submit"><span>Enviar solicitud de cita</span></button>
+<div id="cita-resultado" role="status" aria-live="polite" class="form-note"></div>
+<p class="form-note">Si el registro digital está habilitado, recibirás un folio. También podrás contactar al taller por WhatsApp.</p>
 </form>
 </div>
 <div aria-labelledby="tab-alta" class="booking-panel" data-panel="alta" hidden="" id="panel-alta" role="tabpanel">
@@ -184,7 +187,8 @@
   };
   if(dateInput){dateInput.min=localDate(new Date());}
   const booking=document.getElementById('form-cita');
-  booking?.addEventListener('submit',event=>{
+  let requestAttemptId = null;
+  booking?.addEventListener('submit',async event=>{
     event.preventDefault();
     if(!booking.reportValidity()) return;
     const date=formValue(booking,'fecha');
@@ -198,10 +202,14 @@
       dateInput.reportValidity();return;
     }
     dateInput.setCustomValidity('');
+    const phone=formValue(booking,'telefono').replace(/\D/g,'');
+    const result=document.getElementById('cita-resultado');
+    if(phone.length<10||phone.length>15){result.textContent='Introduce un teléfono válido de 10 a 15 dígitos.';return;}
     const lines=[
       '¡Hola, Torre Fuerte! Quisiera solicitar una cita desde su página web.',
       '',
       'Nombre: '+formValue(booking,'nombre'),
+      'Teléfono: '+formValue(booking,'telefono'),
       'Mi moto: '+formValue(booking,'moto'),
       'Servicio solicitado: '+formValue(booking,'servicio'),
       'Fecha de preferencia: '+date,
@@ -210,7 +218,45 @@
     if(formValue(booking,'anio')) lines.push('Año de la moto: '+formValue(booking,'anio'));
     if(formValue(booking,'detalle')) lines.push('Descripción: '+formValue(booking,'detalle'));
     lines.push('','¿Me pueden confirmar disponibilidad? Entiendo que todavía no es una cita confirmada.');
-    send(lines.join('\n'));
+    const settings=window.TF_CONFIG||{};
+    const configured=/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(settings.supabaseUrl||'') &&
+      typeof settings.supabasePublishableKey==='string' && settings.supabasePublishableKey.length>25;
+    result.replaceChildren();
+    if(!configured){
+      const notice=document.createElement('p');
+      notice.textContent='El registro con folio aún no está activado. Envía tu solicitud al taller por WhatsApp.';
+      const a=document.createElement('a');a.href=wa(lines.join('\n'));a.target='_blank';a.rel='noopener';
+      a.textContent='Abrir WhatsApp para enviar mi solicitud';a.style.textDecoration='underline';
+      result.append(notice,a);return;
+    }
+    const submit=booking.querySelector('button[type="submit"]');submit.disabled=true;
+    if(!requestAttemptId)requestAttemptId=crypto.randomUUID();
+    try{
+      const response=await fetch(settings.supabaseUrl.replace(/\/$/,'')+'/functions/v1/tf-create-request',{
+        method:'POST',headers:{'Content-Type':'application/json',apikey:settings.supabasePublishableKey},
+        body:JSON.stringify({
+          nombre:formValue(booking,'nombre'),telefono:formValue(booking,'telefono'),
+          moto:formValue(booking,'moto'),anio:formValue(booking,'anio'),
+          servicio:formValue(booking,'servicio'),fecha:date,horario:formValue(booking,'horario'),
+          detalle:formValue(booking,'detalle'),idempotency_key:requestAttemptId,
+          consent:booking.elements.namedItem('almacenamiento').checked
+        })
+      });
+      const payload=await response.json();
+      if(!response.ok||!payload.ok||!payload.folio)throw Error(payload.error||'No se pudo guardar.');
+      const success=document.createElement('p');
+      success.textContent='Solicitud registrada con folio '+payload.folio+'. El taller debe confirmar la cita.';
+      const link=document.createElement('a');link.href=wa([...lines,'Folio: '+payload.folio].join('\n'));
+      link.target='_blank';link.rel='noopener';link.textContent='Enviar mi folio por WhatsApp';
+      link.style.textDecoration='underline';link.style.fontWeight='700';
+      result.append(success,link);
+      requestAttemptId=null;
+      booking.reset();
+    }catch(error){
+      const err=document.createElement('p');err.textContent='No se pudo guardar la solicitud: '+(error?.message||'intenta de nuevo')+
+        '. Vuelve a intentarlo; no se ha confirmado ningún folio.';
+      result.append(err);
+    }finally{submit.disabled=false;}
   });
   dateInput?.addEventListener('input',()=>dateInput.setCustomValidity(''));
   document.getElementById('form-alta')?.addEventListener('submit',event=>{
@@ -246,4 +292,4 @@
 (function(){
  document.querySelectorAll('[data-book]').forEach(a=>a.addEventListener('click',()=>{const tab=document.getElementById('tab-cita');if(tab)tab.click();}));
 })();
-</script></body></html>
+</script><script src="tf-config.js"></script></body></html>
