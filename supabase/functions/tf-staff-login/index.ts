@@ -50,6 +50,11 @@ Deno.serve(async (req: Request) => {
   try {
     // El usuario y el correo se resuelven únicamente en el servidor.
     const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
+    // Control de intentos atómico en Postgres: máximo 15 por usuario cada 15 minutos.
+    // También protege frente a clientes que ignoran las reglas CORS del navegador.
+    const { data: allowed, error: throttleError } = await admin.rpc("tf_login_throttle", {p_username: username});
+    if (throttleError) return respond({ error: "Servicio no disponible" }, 503);
+    if (!allowed) return respond({ error: "Demasiados intentos. Intenta de nuevo en 15 minutos." }, 429);
     const { data: staff, error: staffError } = await admin.from("tf_staff")
       .select("user_id").eq("username", username).maybeSingle();
     if (staffError) return respond({ error: "Servicio no disponible" }, 503);
