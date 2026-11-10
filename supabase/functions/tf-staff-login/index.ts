@@ -38,7 +38,7 @@ Deno.serve(async (req: Request) => {
   const username = typeof payload?.username === "string"
     ? payload.username.trim().toLowerCase() : "";
   const password = payload?.password;
-  if (!/^[a-z][a-z0-9_]{3,31}$/.test(username) || typeof password !== "string" || password.length < 1 || password.length > 256) {
+  if (!/^[a-z][a-z0-9_]{3,31}$/.test(username) || typeof password !== "string" || password.length < 12 || password.length > 256 || /^\d+$/.test(password)) {
     return respond({ error: "Usuario o contraseña incorrectos" }, 401);
   }
 
