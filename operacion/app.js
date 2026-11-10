@@ -1,10 +1,8 @@
 // TORRE FUERTE · Operación V1 · Supabase Auth + RLS
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.0";
 const $ = id => document.getElementById(id);
-// Identidad interna para Supabase Auth. El mecánico nunca debe introducir un correo.
-// Esta dirección es un alias técnico, NO una cuenta de correo ni una clave secreta.
+// La dirección de correo de Auth nunca forma parte del código público.
 const STAFF_USERNAME = "mecanicolider";
-const STAFF_AUTH_EMAIL = "mecanicolider@torre-fuerte.example";
 const TOUR_SEEN_KEY = "tf-portal-recorrido-v1";
 const cfg = window.TF_CONFIG || {};
 const configured = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(cfg.supabaseUrl || "") &&
@@ -31,6 +29,25 @@ function todayLocal(){
   const parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Mexico_City",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
   const data=Object.fromEntries(parts.map(part=>[part.type,part.value]));
   return data.year+"-"+data.month+"-"+data.day;
+}
+async function loginStaff(username,password){
+  if(!db||!configured)throw Error("No se ha configurado la base de datos.");
+  const baseUrl=cfg.supabaseUrl.endsWith("/")?cfg.supabaseUrl.slice(0,-1):cfg.supabaseUrl;
+  const response=await fetch(baseUrl+"/functions/v1/tf-staff-login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","apikey":cfg.supabasePublishableKey},
+    cache:"no-store",
+    body:JSON.stringify({username,password})
+  });
+  const payload=await response.json().catch(()=>({}));
+  if(!response.ok||!payload.access_token||!payload.refresh_token){
+    throw Error(response.status===401?"Usuario o contraseña incorrectos.":"No se pudo iniciar sesión. Verifica la conexión.");
+  }
+  const {error}=await db.auth.setSession({
+    access_token:payload.access_token,
+    refresh_token:payload.refresh_token
+  });
+  if(error)throw error;
 }
 async function hasAccess(){
   if(!db)return false;
@@ -68,8 +85,7 @@ $("loginForm").addEventListener("submit",async event=>{
   try{
     const username=$("username").value.trim().toLocaleLowerCase("es-MX");
     if(username!==STAFF_USERNAME)throw Error("Usuario no válido.");
-    const {error}=await db.auth.signInWithPassword({email:STAFF_AUTH_EMAIL,password:$("password").value});
-    if(error)throw error;
+    await loginStaff(username,$("password").value);
     if(!(await enter()))$("loginMessage").textContent||="No autorizado para este taller.";
   }catch{$("loginMessage").textContent="No se pudo iniciar sesión. Revisa tus datos y conexión.";}
   finally{submit.disabled=false;}
@@ -123,8 +139,7 @@ $("changePasswordForm").addEventListener("submit",async event=>{
   const button=event.currentTarget.querySelector('button[type="submit"]');button.disabled=true;
   try{
     // Revalidar la clave vigente antes de intentar cambiarla.
-    const {error:verifyError}=await db.auth.signInWithPassword({email:STAFF_AUTH_EMAIL,password:current});
-    if(verifyError)throw Error("La contraseña actual es incorrecta.");
+    try{await loginStaff(STAFF_USERNAME,current);}catch{throw Error("La contraseña actual es incorrecta.");}
     const {error}=await db.auth.updateUser({password:next});
     if(error)throw Error("Supabase no permitió cambiar la contraseña. Inténtalo de nuevo.");
     await db.auth.signOut();
