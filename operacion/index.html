@@ -29,7 +29,7 @@
       <p class="eyebrow">ACCESO EXCLUSIVO DEL TALLER</p>
       <h1>El control del taller, sin complicaciones.</h1>
       <p>Un solo lugar para revisar citas, imprimir comandas y generar notas de servicio. Pensado para usarse desde el celular.</p>
-      <div class="features"><div><span>01</span><strong>Citas organizadas</strong></div><div><span>02</span><strong>Tickets imprimibles</strong></div><div><span>03</span><strong>Notas PDF</strong></div></div>
+      <div class="features"><div><span>01</span><strong>Citas organizadas</strong></div><div><span>02</span><strong>Comanda para la moto</strong></div><div><span>03</span><strong>Nota para el cliente</strong></div></div>
     </div>
     <div class="signin">
       <h2>Entrar a mi taller</h2><p>Solo personal autorizado. Los datos de clientes no son públicos.</p>
@@ -105,8 +105,6 @@
   <div id="orderInfo" class="orderinfo"></div>
   <div class="formgrid"><label>Estado<select id="orderStatus"><option value="pendiente">Pendiente</option><option value="confirmada">Confirmada</option><option value="en_reparacion">En reparación</option><option value="lista">Lista para entregar</option><option value="entregada">Entregada</option><option value="cancelada">Cancelada</option></select></label><label class="full">Notas internas<textarea id="internalNotes" maxlength="2000" placeholder="Diagnóstico, avances, observaciones..."></textarea></label></div>
   <button id="saveOrder">Guardar estado y notas</button><p id="orderMessage" class="inline-feedback" role="status" aria-live="polite" hidden></p>
-  <div class="sectionline"></div>
-  <h3>Nota de servicio</h3><p class="hint">Desglosa mano de obra y refacciones; el total se calcula solo.</p>
   <button type="button" id="orderTutorialButton" class="guide-trigger">▶ Recorrido por cada botón</button>
   <div id="orderTourPanel" class="order-tour" hidden role="region" aria-live="polite">
     <strong id="orderTourTitle">Guía de la orden</strong>
@@ -118,13 +116,44 @@
       <button type="button" id="orderTourClose">Cerrar guía</button>
     </div>
   </div>
-  <details id="orderHelp" class="order-help"><summary>¿Cómo se usa esta orden? · Guía rápida</summary><ol><li>Revisa al cliente y los datos de su moto.</li><li>Elige el estado y pulsa <strong>Guardar estado y notas</strong>.</li><li>En <strong>Agregar concepto</strong>, registra mano de obra o refacciones.</li><li>Pulsa <strong>Guardar desglose</strong> para guardar los importes.</li><li><strong>Imprimir comanda</strong> abre el diálogo de impresión de tu equipo.</li><li><strong>Descargar PDF</strong> genera la nota; <strong>Compartir PDF</strong> intenta abrir las apps compatibles de tu teléfono.</li></ol></details>
-  <div id="items"></div><div class="itemfooter"><button id="addItem">+ Agregar concepto</button><strong id="total">$0.00</strong></div><button id="saveItems">Guardar desglose</button><p id="itemsMessage" class="inline-feedback" role="status" aria-live="polite" hidden></p>
- </div>
- <div class="dialogactions">
-  <button id="printOrder">Imprimir comanda</button>
-  <button id="pdfDownload">Descargar PDF</button>
-  <button id="pdfShare" class="primary">Compartir PDF</button>
+  <details id="orderHelp" class="order-help"><summary>¿Cómo funciona esta orden? · Guía rápida</summary>
+    <ol><li>Revisa los datos y cambia el estado de la moto.</li><li>Para identificar la moto, pulsa <strong>Imprimir comanda para la moto</strong>. No incluye precios.</li><li>Para cobrar al cliente, añade cada trabajo o refacción y pulsa <strong>Guardar desglose de precios</strong>.</li><li>Descarga o comparte la <strong>nota PDF para el cliente</strong>, que sí incluye el total.</li></ol>
+  </details>
+  <div class="documents-intro"><strong>Dos documentos, dos usos diferentes</strong><span>Elige según lo que necesites hacer con esta moto.</span></div>
+  <section class="document-panel document-panel--moto" aria-labelledby="docMotoHeading">
+    <div class="document-panel__header">
+      <span class="document-panel__icon" aria-hidden="true">🏍️</span>
+      <div>
+        <span class="document-panel__eyebrow">PARA PEGAR EN LA MOTO · USO INTERNO</span>
+        <h3 id="docMotoHeading">1. Comanda de trabajo</h3>
+        <p>Identifica la moto y el servicio solicitado. <strong>Sin precios.</strong></p>
+      </div>
+    </div>
+    <button type="button" id="printOrder" class="document-panel__primary document-panel__primary--moto">Imprimir comanda para la moto</button>
+    <p class="document-panel__tip">Se imprime en formato de ticket para acompañar la moto durante la reparación.</p>
+  </section>
+  <section class="document-panel document-panel--client" aria-labelledby="docClientHeading">
+    <div class="document-panel__header">
+      <span class="document-panel__icon" aria-hidden="true">📄</span>
+      <div>
+        <span class="document-panel__eyebrow">PARA ENTREGAR AL CLIENTE · CON PRECIOS</span>
+        <h3 id="docClientHeading">2. Nota de servicio</h3>
+        <p>Registra mano de obra, refacciones y el total a cobrar.</p>
+      </div>
+    </div>
+    <div class="document-panel__body">
+      <div id="items"></div>
+      <div class="itemfooter"><button type="button" id="addItem">+ Agregar trabajo o refacción</button><strong id="total">$0.00</strong></div>
+      <button type="button" id="saveItems">Guardar desglose de precios</button>
+      <p id="itemsMessage" class="inline-feedback" role="status" aria-live="polite" hidden></p>
+      <div class="document-panel__actions">
+        <button type="button" id="pdfDownload" class="document-panel__primary document-panel__primary--client">Descargar nota PDF para el cliente</button>
+        <button type="button" id="pdfShare">Compartir nota PDF</button>
+      </div>
+      <p id="pdfMessage" class="inline-feedback" role="status" aria-live="polite" hidden></p>
+      <p class="document-panel__tip">La nota incluye los precios y se puede enviar por WhatsApp. No es una factura fiscal.</p>
+    </div>
+  </section>
  </div>
 </dialog>
 <dialog id="passwordDialog">
