@@ -104,3 +104,53 @@ dialog{border:1px solid var(--line);border-radius:14px;padding:0;max-width:700px
  .document-panel__primary{font-size:13px}
 }
 @media print{.documents-intro,.document-panel{display:none!important}}
+
+
+/* Dirección de interfaz operativa: prioridad a lectura, acciones y feedback. */
+@media screen {
+ :root{--line:#d6dcde;--muted:#53616b}
+ body{background:#f1f3f2}
+ .topbar{border-bottom:3px solid #d92f30}
+ .shell{max-width:1180px}
+ .gatecopy h1,.workspacehead h1{font-weight:850;letter-spacing:-.048em}
+ .workspacehead{border-bottom:1px solid #d3dadd;padding-bottom:22px}
+ .workspacehead .hint{font-size:14px}
+ .activity-summary{box-shadow:none;border-radius:7px;border-left:4px solid #d92f30}
+ .activity-copy .activity-note{font-size:12px!important}
+ .panel{border-radius:6px;box-shadow:none}
+ .panelheading h2{font-size:26px}
+ .panelheading p{font-size:13px}
+ .tabs{gap:18px;padding:0;border-bottom:1px solid #cfd6d9}
+ .tabs button{padding:13px 8px 12px;border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;font-size:14px;color:#53616b}
+ .tabs button.active{background:transparent;color:#b52329;border-bottom-color:#d92f30}
+ .tabs button:focus-visible{outline:3px solid #d92f30;outline-offset:2px}
+ label{font-size:13px;gap:8px}
+ input,select,textarea{min-height:48px;border-radius:5px}
+ button{min-height:44px;border-radius:5px}
+ .primary{background:#c5262c;border-color:#c5262c}
+ .primary:hover{background:#a91e26;border-color:#a91e26}
+ .filters{border-bottom:1px solid #e0e5e6;padding-bottom:20px}
+ .dialoghead{border-bottom:3px solid #d92f30}
+ .dialoghead button{min-height:44px;min-width:44px}
+ .orderinfo{border-left:3px solid #d92f30;border-radius:4px;background:#f1f3f2}
+ .inline-feedback{font-size:14px}
+ #saveOrder,#saveItems{min-height:47px}
+ .itemfooter strong{font-size:27px}
+ .guide-trigger{border-radius:5px}
+ .tabulator .tabulator-row .tabulator-cell{font-size:13px;line-height:1.5}
+ :where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid #d92f30;outline-offset:3px}
+}
+@media screen and (max-width:600px){
+ .shell{padding:24px 15px 55px}
+ .gatecopy h1{font-size:clamp(39px,11vw,47px)}
+ .workspacehead{padding-bottom:16px}
+ .workspacehead h1{font-size:39px}
+ .panel{padding:17px 13px}
+ .activity-summary{padding:18px 14px}
+ .tabs button{flex:1 1 0;text-align:center;white-space:normal}
+ .dialogactions{padding:15px;gap:8px}
+ .dialogactions button{flex:1 1 auto;white-space:normal}
+ .itemrow{gap:10px}
+ .itemrow input,.itemrow select{min-width:0}
+ .itemfooter{flex-wrap:wrap}
+}
