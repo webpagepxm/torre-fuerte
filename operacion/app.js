@@ -1,0 +1,331 @@
+// TORRE FUERTE · Operación V1 · Supabase Auth + RLS
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.0";
+const $ = id => document.getElementById(id);
+const cfg = window.TF_CONFIG || {};
+const configured = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(cfg.supabaseUrl || "") &&
+  typeof cfg.supabasePublishableKey === "string" && cfg.supabasePublishableKey.length > 25;
+const db = configured ? createClient(cfg.supabaseUrl, cfg.supabasePublishableKey) : null;
+let records = [], grid = null, calendar = null, selected = null, serviceLines = [];
+let currentUser = null;
+const states = {pendiente:"Pendiente",confirmada:"Confirmada",en_reparacion:"En reparación",lista:"Lista",entregada:"Entregada",cancelada:"Cancelada"};
+const currency = value => new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(Number(value)||0);
+const formatDate = input => {
+  const p=String(input||"").slice(0,10).split("-");
+  return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:(input||"—");
+};
+const value = (obj,field) => String(obj[field]??"");
+function message(content,bad=false){
+  $("statusMessage").textContent=content;
+  $("statusMessage").className=content?"alert"+(bad?" err":""):"";
+}
+function textRow(parent,title,content){
+  const p=document.createElement("p"),strong=document.createElement("strong");
+  strong.textContent=title+": ";p.append(strong,document.createTextNode(String(content??"—")));parent.append(p);
+}
+function todayLocal(){
+  const parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Mexico_City",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
+  const data=Object.fromEntries(parts.map(part=>[part.type,part.value]));
+  return data.year+"-"+data.month+"-"+data.day;
+}
+async function hasAccess(){
+  if(!db)return false;
+  const {data,error}=await db.auth.getUser();
+  if(error||!data.user)return false;
+  const {data:role,error:roleError}=await db.from("tf_staff").select("user_id").eq("user_id",data.user.id).maybeSingle();
+  if(roleError||!role){
+    $("loginMessage").textContent="Esta cuenta no tiene acceso al taller.";
+    await db.auth.signOut();return false;
+  }
+  currentUser=data.user;return true;
+}
+async function enter(){
+  if(!(await hasAccess()))return false;
+  $("gate").hidden=true;$("workspace").hidden=false;$("signout").hidden=false;
+  await loadRecords();
+  return true;
+}
+function leave(){
+  currentUser=null;records=[];selected=null;$("gate").hidden=false;
+  $("workspace").hidden=true;$("signout").hidden=true;
+}
+if(!db){$("setupNotice").hidden=false;$("loginForm").querySelector("button").disabled=true;}
+else {try{await enter();}catch{$("loginMessage").textContent="No se pudo conectar. Intenta iniciar sesión.";}}
+$("loginForm").addEventListener("submit",async event=>{
+  event.preventDefault();if(!db)return;
+  const submit=$("loginForm").querySelector("button");submit.disabled=true;
+  $("loginMessage").textContent="";
+  try{
+    const {error}=await db.auth.signInWithPassword({email:$("email").value,password:$("password").value});
+    if(error)throw error;
+    if(!(await enter()))$("loginMessage").textContent||="No autorizado para este taller.";
+  }catch{$("loginMessage").textContent="No se pudo iniciar sesión. Revisa tus datos y conexión.";}
+  finally{submit.disabled=false;}
+});
+$("signout").addEventListener("click",async()=>{if(db)await db.auth.signOut();leave();});
+async function loadRecords(){
+  const {data,error}=await db.from("tf_requests").select("*").order("created_at",{ascending:false}).limit(1000);
+  if(error){message("No se pudieron consultar las órdenes. Verifica la conexión y los permisos.",true);return;}
+  records=data||[];
+  $("kpiPending").textContent=records.filter(x=>x.status==="pendiente").length;
+  $("kpiWorking").textContent=records.filter(x=>x.status==="en_reparacion").length;
+  $("kpiReady").textContent=records.filter(x=>x.status==="lista").length;
+  renderGrid();renderCalendar();
+  message(records.length+" órdenes y solicitudes cargadas.");
+}
+function filterRow(row){
+  const term=$("search").value.trim().toLocaleLowerCase("es");
+  const matches=!term||["folio","client_name","client_phone","motorcycle","service"].some(k=>value(row,k).toLocaleLowerCase("es").includes(term));
+  return matches&&(!$("filterStatus").value||row.status===$("filterStatus").value)&&
+    (!$("filterDate").value||row.requested_date===$("filterDate").value);
+}
+function renderGrid(){
+  if(!window.Tabulator){message("No pudo cargarse Tabulator. Verifica internet.",true);return;}
+  if(!grid){
+    grid=new Tabulator("#ordersTable",{
+      data:records,layout:"fitColumns",responsiveLayout:"collapse",pagination:true,paginationSize:10,
+      placeholder:"No hay solicitudes todavía.",columns:[
+        {title:"Folio",field:"folio",minWidth:110,width:120},
+        {title:"Cliente",field:"client_name",minWidth:155},
+        {title:"Motocicleta",field:"motorcycle",minWidth:130},
+        {title:"Fecha",field:"requested_date",width:125,formatter:cell=>formatDate(cell.getValue())},
+        {title:"Estado",field:"status",width:135,formatter:cell=>states[cell.getValue()]||cell.getValue()},
+        {title:"",width:86,headerSort:false,formatter:()=>{
+          const b=document.createElement("button");b.textContent="Abrir";b.type="button";return b;
+        },cellClick:(_,cell)=>openOrder(cell.getRow().getData().id)}
+      ]
+    });
+  }else grid.replaceData(records);
+  grid.setFilter(filterRow);
+}
+function renderCalendar(){
+  if(!window.FullCalendar){message("No pudo cargarse FullCalendar. Verifica internet.",true);return;}
+  const events=records.filter(r=>r.status!=="cancelada").map(r=>({
+    id:r.id,title:r.client_name+" · "+r.service+" · "+r.requested_slot,
+    start:r.requested_date,allDay:true,
+    backgroundColor:r.status==="confirmada"?"#27846a":r.status==="pendiente"?"#c79a41":"#626b73",
+    borderColor:"transparent"
+  }));
+  if(!calendar){
+    calendar=new FullCalendar.Calendar($("calendar"),{
+      initialView:"dayGridMonth",locale:"es",firstDay:1,height:"auto",
+      headerToolbar:{left:"prev,next today",center:"title",right:"dayGridMonth,listWeek"},
+      eventClick:e=>openOrder(e.event.id),events
+    });
+    calendar.render();
+  } else {calendar.removeAllEvents();calendar.addEventSource(events);}
+}
+document.querySelectorAll("[data-tab]").forEach(button=>button.addEventListener("click",()=>{
+  document.querySelectorAll("[data-tab]").forEach(b=>{
+    b.classList.toggle("active",b===button);b.setAttribute("aria-selected",String(b===button));
+  });
+  $("ordersSection").hidden=button.dataset.tab!=="orders";
+  $("calendarSection").hidden=button.dataset.tab!=="calendar";
+  if(button.dataset.tab==="calendar")calendar?.updateSize();
+}));
+["search","filterStatus","filterDate"].forEach(id=>$(id).addEventListener("input",()=>grid?.setFilter(filterRow)));
+$("resetFilters").addEventListener("click",()=>{
+  ["search","filterStatus","filterDate"].forEach(id=>$(id).value="");
+  grid?.setFilter(filterRow);
+});
+$("refresh").addEventListener("click",loadRecords);
+function csvCell(input){
+  const val=String(input??"");
+  const neutralized=/^[\s]*[=+\-@\t\r]/.test(val)?"'"+val:val;
+  return '"'+neutralized.replace(/"/g,'""')+'"';
+}
+$("exportCsv").addEventListener("click",()=>{
+  const keys=["folio","client_name","client_phone","motorcycle","motorcycle_year","service","requested_date","requested_slot","details","status","created_at"];
+  const headings=["Folio","Cliente","Teléfono","Motocicleta","Año","Servicio","Fecha","Horario","Observaciones","Estado","Registro"];
+  const content=[headings.map(csvCell).join(","),...records.filter(filterRow).map(record=>keys.map(k=>csvCell(record[k])).join(","))].join("\r\n");
+  const file=new Blob(["\ufeff"+content],{type:"text/csv;charset=utf-8;"});
+  const link=document.createElement("a");link.href=URL.createObjectURL(file);link.download="torre-fuerte-comandas.csv";
+  link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);
+});
+document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.close).close()));
+$("newOrder").addEventListener("click",()=>{
+  $("newForm").reset();$("newForm").elements.namedItem("requested_date").value=todayLocal();$("newDialog").showModal();
+});
+$("newForm").addEventListener("submit",async e=>{
+  e.preventDefault();const btn=$("saveNew");btn.disabled=true;
+  const fields=Object.fromEntries(new FormData(e.currentTarget).entries());
+  const phone=String(fields.client_phone||"").replace(/\D/g,"");
+  if(phone.length<10||phone.length>15){message("El teléfono debe tener entre 10 y 15 dígitos.",true);btn.disabled=false;return;}
+  const payload={...fields,client_phone:phone,source:"manual",motorcycle_year:fields.motorcycle_year?Number(fields.motorcycle_year):null};
+  try{
+    const {data,error}=await db.from("tf_requests").insert(payload).select("id,folio").single();
+    if(error)throw error;
+    $("newDialog").close();await loadRecords();message("Orden "+data.folio+" guardada.");await openOrder(data.id);
+  }catch{message("No se pudo guardar la orden. Revisa los datos o la conexión.",true);}
+  finally{btn.disabled=false;}
+});
+async function openOrder(id){
+  selected=records.find(record=>record.id===id);
+  if(!selected){message("La orden ya no está disponible; actualiza el panel.",true);return;}
+  $("orderTitle").textContent=selected.folio;
+  const container=$("orderInfo");container.replaceChildren();
+  textRow(container,"Cliente",selected.client_name);
+  textRow(container,"Teléfono",selected.client_phone);
+  textRow(container,"Motocicleta",selected.motorcycle+(selected.motorcycle_year?" · "+selected.motorcycle_year:""));
+  textRow(container,"Servicio",selected.service);
+  textRow(container,"Fecha solicitada",formatDate(selected.requested_date)+" · "+selected.requested_slot);
+  if(selected.details)textRow(container,"Observaciones",selected.details);
+  $("orderStatus").value=selected.status;
+  $("internalNotes").value=selected.internal_notes||"";
+  $("items").replaceChildren();
+  $("orderDialog").showModal();
+  const {data,error}=await db.from("tf_service_lines").select("*").eq("request_id",id).order("created_at");
+  if(error){message("No se pudo leer el desglose de servicio.",true);return;}
+  serviceLines=(data||[]).map(line=>({id:line.id,kind:line.kind,description:line.description,quantity:Number(line.quantity),unit_price:Number(line.unit_price)}));
+  renderLines();
+}
+$("saveOrder").addEventListener("click",async()=>{
+  if(!selected)return;
+  const {data,error}=await db.from("tf_requests").update({status:$("orderStatus").value,internal_notes:$("internalNotes").value})
+    .eq("id",selected.id).select("*").single();
+  if(error){message("No se pudo actualizar la orden.",true);return;}
+  selected=data;await loadRecords();message("Cambios guardados en "+selected.folio+".");
+});
+function lineElement(line,i){
+  const div=document.createElement("div");div.className="itemrow";
+  const make=(title,el)=>{
+    const label=document.createElement("label");label.textContent=title;label.appendChild(el);div.appendChild(label);
+  };
+  const type=document.createElement("select");
+  [["mano_obra","Mano de obra"],["refaccion","Refacción"]].forEach(([v,t])=>{
+    const o=document.createElement("option");o.value=v;o.textContent=t;type.appendChild(o);
+  });type.value=line.kind;
+  type.addEventListener("change",()=>{serviceLines[i].kind=type.value;});
+  make("Tipo",type);
+  const description=document.createElement("input");description.placeholder="Descripción";description.maxLength=200;description.value=line.description;
+  description.addEventListener("input",()=>{serviceLines[i].description=description.value;});make("Concepto",description);
+  const quantity=document.createElement("input");quantity.type="number";quantity.step="0.01";quantity.min="0.01";quantity.value=line.quantity;
+  quantity.addEventListener("input",()=>{serviceLines[i].quantity=Number(quantity.value);updateTotal();});make("Cantidad",quantity);
+  const price=document.createElement("input");price.type="number";price.min="0";price.step="0.01";price.value=line.unit_price;
+  price.addEventListener("input",()=>{serviceLines[i].unit_price=Number(price.value);updateTotal();});make("Precio",price);
+  const remove=document.createElement("button");remove.type="button";remove.textContent="×";remove.setAttribute("aria-label","Quitar concepto");
+  remove.addEventListener("click",()=>{serviceLines.splice(i,1);renderLines();});div.appendChild(remove);
+  return div;
+}
+function renderLines(){
+  const holder=$("items");holder.replaceChildren();
+  serviceLines.forEach((line,i)=>holder.append(lineElement(line,i)));
+  updateTotal();
+}
+function updateTotal(){
+  const total=serviceLines.reduce((sum,line)=>sum+Math.max(0,Number(line.quantity)||0)*Math.max(0,Number(line.unit_price)||0),0);
+  $("total").textContent=currency(total);
+}
+$("addItem").addEventListener("click",()=>{
+  serviceLines.push({kind:"mano_obra",description:"",quantity:1,unit_price:0});renderLines();
+});
+$("saveItems").addEventListener("click",saveLines);
+async function saveLines(){
+  if(!selected)return false;
+  const btn=$("saveItems");
+  const valid=serviceLines.every(line=>line.description.trim().length>=2&&line.description.length<=200&&
+    Number.isFinite(line.quantity)&&line.quantity>0&&Number.isFinite(line.unit_price)&&line.unit_price>=0);
+  if(!valid){message("Completa las descripciones, cantidades y precios del desglose.",true);return false;}
+  btn.disabled=true;
+  try{
+    const {data:existing,error:queryError}=await db.from("tf_service_lines").select("id").eq("request_id",selected.id);
+    if(queryError)throw queryError;
+    const persisted=new Set(serviceLines.filter(line=>line.id).map(line=>line.id));
+    const toDelete=(existing||[]).map(line=>line.id).filter(id=>!persisted.has(id));
+    if(toDelete.length){
+      const {error}=await db.from("tf_service_lines").delete().in("id",toDelete).eq("request_id",selected.id);
+      if(error)throw error;
+    }
+    for(const line of serviceLines){
+      const payload={request_id:selected.id,kind:line.kind,description:line.description.trim(),quantity:line.quantity,unit_price:line.unit_price};
+      const result=line.id
+        ?await db.from("tf_service_lines").update(payload).eq("id",line.id).eq("request_id",selected.id).select("id").single()
+        :await db.from("tf_service_lines").insert(payload).select("id").single();
+      if(result.error)throw result.error;
+      line.id=result.data.id;
+    }
+    message("Desglose guardado.");return true;
+  }catch{message("No se guardó todo el desglose. Revisa la conexión antes de generar la nota.",true);return false;}
+  finally{btn.disabled=false;}
+}
+function generateTicket(){
+  if(!selected)return;
+  const div=$("printReceipt");div.replaceChildren();
+  const add=(tag,txt,cl="")=>{
+    const el=document.createElement(tag);el.textContent=txt;
+    if(cl)el.className=cl;div.append(el);
+  };
+  add("h1","TORRE FUERTE");add("p","TALLER DE MOTOCICLETAS · PUERTO ESCONDIDO","center");
+  add("hr","");add("p","COMANDA DE SOLICITUD","center");
+  add("p","FOLIO: "+selected.folio);
+  add("p","Registrada: "+new Date(selected.created_at).toLocaleString("es-MX",{timeZone:"America/Mexico_City"}));
+  add("hr","");
+  add("p","CLIENTE: "+selected.client_name);add("p","TELÉFONO: "+selected.client_phone);
+  add("p","MOTO: "+selected.motorcycle+(selected.motorcycle_year?" ("+selected.motorcycle_year+")":""));
+  add("p","SERVICIO: "+selected.service);
+  add("p","FECHA SOLICITADA: "+formatDate(selected.requested_date));
+  add("p","HORARIO SOLICITADO: "+selected.requested_slot);
+  if(selected.details)add("p","OBSERVACIONES: "+selected.details);
+  add("hr","");add("p","ESTADO: "+(states[selected.status]||selected.status));
+  add("p","La fecha no queda confirmada hasta que el taller la acepte.","center");
+}
+$("printOrder").addEventListener("click",()=>{
+  if(!selected)return;generateTicket();
+  window.print();
+});
+async function buildPdfBlob(){
+  if(!selected)throw new Error("Selecciona una orden.");
+  if(!window.pdfMake)throw new Error("No pudo cargarse pdfmake. Revisa internet.");
+  const ok=await saveLines();
+  if(!ok)throw new Error("Primero guarda el desglose.");
+  const body=[
+    [{text:"Concepto",bold:true},{text:"Tipo",bold:true},{text:"Cant.",bold:true,alignment:"right"},{text:"P. unit.",bold:true,alignment:"right"},{text:"Subtotal",bold:true,alignment:"right"}],
+    ...serviceLines.map(item=>[
+      item.description,item.kind==="refaccion"?"Refacción":"Mano de obra",
+      {text:String(item.quantity),alignment:"right"},
+      {text:currency(item.unit_price),alignment:"right"},
+      {text:currency(item.quantity*item.unit_price),alignment:"right"}
+    ])
+  ];
+  const total=serviceLines.reduce((sum,item)=>sum+item.quantity*item.unit_price,0);
+  const doc={
+    pageSize:"A4",pageMargins:[36,46,36,45],
+    content:[
+      {text:"TORRE FUERTE",bold:true,fontSize:21,color:"#191c21"},
+      {text:"Taller de motocicletas · Puerto Escondido, Oaxaca",fontSize:10,color:"#646c74",margin:[0,0,0,20]},
+      {text:"NOTA DE SERVICIO  ·  "+selected.folio,bold:true,fontSize:14,margin:[0,0,0,16]},
+      {text:"Cliente: "+selected.client_name+"\nTeléfono: "+selected.client_phone+
+        "\nMotocicleta: "+selected.motorcycle+(selected.motorcycle_year?" · "+selected.motorcycle_year:"")+
+        "\nServicio solicitado: "+selected.service+
+        "\nFecha solicitada: "+formatDate(selected.requested_date)+" · "+selected.requested_slot,margin:[0,0,0,17]},
+      {text:"DESGLOSE DE TRABAJOS Y REFACCIONES",bold:true,fontSize:10,margin:[0,0,0,7]},
+      {table:{headerRows:1,widths:["*","auto",38,66,74],body},layout:"lightHorizontalLines"},
+      {text:"TOTAL: "+currency(total),alignment:"right",bold:true,fontSize:16,margin:[0,18,0,18]},
+      {text:"Observaciones: "+(selected.internal_notes||selected.details||"Sin observaciones"),fontSize:10},
+      {text:"Documento informativo de servicio. No sustituye una factura fiscal.",fontSize:9,color:"#626b72",margin:[0,30,0,0]}
+    ],defaultStyle:{fontSize:10}
+  };
+  return await new Promise((resolve,reject)=>{
+    try{window.pdfMake.createPdf(doc).getBlob(blob=>resolve(blob));}catch(err){reject(err);}
+  });
+}
+$("pdfDownload").addEventListener("click",async()=>{
+  try{
+    const blob=await buildPdfBlob();
+    const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=selected.folio+"-nota-servicio.pdf";
+    a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);message("Nota PDF generada.");
+  }catch(err){message(err.message||"No se pudo crear el PDF.",true);}
+});
+$("pdfShare").addEventListener("click",async()=>{
+  try{
+    const blob=await buildPdfBlob();const file=new File([blob],selected.folio+"-nota-servicio.pdf",{type:"application/pdf"});
+    if(navigator.canShare?.({files:[file]})&&navigator.share){
+      await navigator.share({files:[file],title:"Torre Fuerte · "+selected.folio,text:"Nota de servicio "+selected.folio});
+    }else{
+      const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=file.name;
+      a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
+      message("PDF descargado. Ahora adjúntalo manualmente en WhatsApp.");
+    }
+  }catch(err){
+    if(err?.name!=="AbortError")message("No fue posible compartir el PDF; prueba Descargar PDF.",true);
+  }
+});
