@@ -38,8 +38,11 @@ Deno.serve(async (req: Request) => {
   const username = typeof payload?.username === "string"
     ? payload.username.trim().toLowerCase() : "";
   const password = payload?.password;
-  if (!/^[a-z][a-z0-9_]{3,31}$/.test(username) || typeof password !== "string" || password.length < 12 || password.length > 256 || /^\d+$/.test(password)) {
+  if (!/^[a-z][a-z0-9_]{3,31}$/.test(username) || typeof password !== "string" || !password.length || password.length > 256) {
     return respond({ error: "Usuario o contraseña incorrectos" }, 401);
+  }
+  if (password.length < 12 || /^\d+$/.test(password)) {
+    return respond({ error: "La contraseña debe tener al menos 12 caracteres y no ser solo números. Actualízala desde Supabase → Authentication → Users." }, 422);
   }
 
   const url = Deno.env.get("SUPABASE_URL");
