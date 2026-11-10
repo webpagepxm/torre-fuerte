@@ -270,6 +270,57 @@ $("newForm").addEventListener("submit",async e=>{
   }catch{message("No se pudo guardar la orden. Revisa los datos o la conexión.",true);}
   finally{btn.disabled=false;}
 });
+
+const ORDER_TOUR_SEEN_KEY = "tf-orden-recorrido-v1";
+const orderTourSteps = [
+  {id:"orderInfo",title:"Datos de la orden",text:"Aquí aparecen el folio, nombre del cliente, motocicleta, servicio y cita solicitada. Compruébalos antes de continuar."},
+  {id:"orderStatus",title:"Estado de la moto",text:"Selecciona si está pendiente, en reparación, lista o entregada. El cambio no se guarda hasta pulsar el botón siguiente."},
+  {id:"internalNotes",title:"Anota los avances",text:"Escribe aquí lo que encontraste al revisar la moto o las indicaciones para el trabajo."},
+  {id:"saveOrder",title:"Guardar cambios",text:"Pulsa este botón cuando hayas cambiado el estado o las notas internas de la orden."},
+  {id:"addItem",title:"Agregar un trabajo o pieza",text:"Crea un renglón para escribir cada trabajo, refacción, cantidad y precio. El total se calcula automáticamente."},
+  {id:"saveItems",title:"Guardar el desglose",text:"Guarda los conceptos de mano de obra y refacciones. Hazlo antes de descargar el PDF."},
+  {id:"printOrder",title:"Imprimir comanda",text:"Abre la impresión del ticket blanco con el folio y datos de la solicitud. Elige la impresora disponible en tu teléfono."},
+  {id:"pdfDownload",title:"Descargar nota PDF",text:"Genera la nota de servicio para conservarla o enviársela al cliente más tarde. No es una factura fiscal."},
+  {id:"pdfShare",title:"Compartir con el cliente",text:"En teléfonos compatibles puedes compartir el PDF directamente a WhatsApp. Si no, descárgalo y adjúntalo en el chat."}
+];
+let orderGuideIndex = 0;
+function hideOrderGuide(){
+  $("orderTourPanel").hidden=true;
+  document.querySelectorAll(".guide-highlight").forEach(el=>el.classList.remove("guide-highlight"));
+}
+function renderOrderGuide(){
+  const step=orderTourSteps[orderGuideIndex];
+  if(!step)return;
+  $("orderTourPanel").hidden=false;
+  $("orderTourTitle").textContent=step.title;
+  $("orderTourText").textContent=step.text;
+  $("orderTourCounter").textContent=(orderGuideIndex+1)+" / "+orderTourSteps.length;
+  $("orderTourPrev").disabled=orderGuideIndex===0;
+  $("orderTourNext").textContent=orderGuideIndex===orderTourSteps.length-1?"Terminar":"Siguiente";
+  document.querySelectorAll(".guide-highlight").forEach(el=>el.classList.remove("guide-highlight"));
+  const highlight=$(step.id);
+  if(highlight){
+    highlight.classList.add("guide-highlight");
+    highlight.scrollIntoView({behavior:"smooth",block:"nearest",inline:"nearest"});
+  }
+}
+function startOrderGuide(auto=false){
+  if(!$("orderDialog").open)return;
+  orderGuideIndex=0;
+  renderOrderGuide();
+  if(auto)localStorage.setItem(ORDER_TOUR_SEEN_KEY,"1");
+}
+$("orderTutorialButton").addEventListener("click",()=>startOrderGuide());
+$("orderTourNext").addEventListener("click",()=>{
+  if(orderGuideIndex===orderTourSteps.length-1){hideOrderGuide();return;}
+  orderGuideIndex++;renderOrderGuide();
+});
+$("orderTourPrev").addEventListener("click",()=>{
+  orderGuideIndex=Math.max(0,orderGuideIndex-1);renderOrderGuide();
+});
+$("orderTourClose").addEventListener("click",hideOrderGuide);
+$("orderDialog").addEventListener("close",hideOrderGuide);
+
 async function openOrder(id){
   selected=records.find(record=>record.id===id);
   if(!selected){message("La orden ya no está disponible; actualiza el panel.",true);return;}
@@ -284,11 +335,13 @@ async function openOrder(id){
   $("orderStatus").value=selected.status;
   $("internalNotes").value=selected.internal_notes||"";
   $("items").replaceChildren();
+  hideOrderGuide();
   $("orderDialog").showModal();
   const {data,error}=await db.from("tf_service_lines").select("*").eq("request_id",id).order("created_at");
   if(error){message("No se pudo leer el desglose de servicio.",true);return;}
   serviceLines=(data||[]).map(line=>({id:line.id,kind:line.kind,description:line.description,quantity:Number(line.quantity),unit_price:Number(line.unit_price)}));
   renderLines();
+  if(!localStorage.getItem(ORDER_TOUR_SEEN_KEY)) setTimeout(()=>startOrderGuide(true),350);
 }
 $("saveOrder").addEventListener("click",async()=>{
   if(!selected)return;
