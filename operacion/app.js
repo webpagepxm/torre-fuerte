@@ -1,6 +1,11 @@
 // TORRE FUERTE · Operación V1 · Supabase Auth + RLS
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.0";
 const $ = id => document.getElementById(id);
+// Identidad interna para Supabase Auth. El mecánico nunca debe introducir un correo.
+// Esta dirección es un alias técnico, NO una cuenta de correo ni una clave secreta.
+const STAFF_USERNAME = "mecanicolider";
+const STAFF_AUTH_EMAIL = "mecanicolider@torre-fuerte.example";
+const TOUR_SEEN_KEY = "tf-portal-recorrido-v1";
 const cfg = window.TF_CONFIG || {};
 const configured = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(cfg.supabaseUrl || "") &&
   typeof cfg.supabasePublishableKey === "string" && cfg.supabasePublishableKey.length > 25;
@@ -41,12 +46,18 @@ async function hasAccess(){
 async function enter(){
   if(!(await hasAccess()))return false;
   $("gate").hidden=true;$("workspace").hidden=false;$("signout").hidden=false;
+  $("restartTour").hidden=false;$("changePass").hidden=false;
   await loadRecords();
+  if(!localStorage.getItem(TOUR_SEEN_KEY)){
+    // Dar tiempo a la tabla para que complete el primer render.
+    setTimeout(()=>startWelcomeTour(true),650);
+  }
   return true;
 }
 function leave(){
   currentUser=null;records=[];selected=null;$("gate").hidden=false;
   $("workspace").hidden=true;$("signout").hidden=true;
+  $("restartTour").hidden=true;$("changePass").hidden=true;
 }
 if(!db){$("setupNotice").hidden=false;$("loginForm").querySelector("button").disabled=true;}
 else {try{await enter();}catch{$("loginMessage").textContent="No se pudo conectar. Intenta iniciar sesión.";}}
@@ -55,13 +66,75 @@ $("loginForm").addEventListener("submit",async event=>{
   const submit=$("loginForm").querySelector("button");submit.disabled=true;
   $("loginMessage").textContent="";
   try{
-    const {error}=await db.auth.signInWithPassword({email:$("email").value,password:$("password").value});
+    const username=$("username").value.trim().toLocaleLowerCase("es-MX");
+    if(username!==STAFF_USERNAME)throw Error("Usuario no válido.");
+    const {error}=await db.auth.signInWithPassword({email:STAFF_AUTH_EMAIL,password:$("password").value});
     if(error)throw error;
     if(!(await enter()))$("loginMessage").textContent||="No autorizado para este taller.";
   }catch{$("loginMessage").textContent="No se pudo iniciar sesión. Revisa tus datos y conexión.";}
   finally{submit.disabled=false;}
 });
 $("signout").addEventListener("click",async()=>{if(db)await db.auth.signOut();leave();});
+
+function startWelcomeTour(auto=false){
+  const driverFactory=window.driver?.js?.driver;
+  if(typeof driverFactory!=="function"){
+    if(!auto)message("La guía interactiva no pudo cargarse. Revisa la conexión a internet.",true);
+    return;
+  }
+  // Todas las referencias de la guía apuntan a controles visibles, aun con cero solicitudes.
+  document.querySelector('[data-tab="orders"]')?.click();
+  const tour=driverFactory({
+    showProgress:true,animate:true,allowClose:true,
+    nextBtnText:"Siguiente",prevBtnText:"Atrás",doneBtnText:"Terminar",
+    progressText:"Paso {{current}} de {{total}}",
+    steps:[
+      {element:".workspacehead",popover:{title:"Bienvenido a tu taller",description:"Esta es tu pantalla principal. Aquí puedes revisar lo importante sin entrar a Excel."}},
+      {element:"#newOrder",popover:{title:"Crear una orden",description:"Usa este botón cuando una moto llegue directamente al taller. Ingresa cliente, moto y servicio; el folio se crea automáticamente."}},
+      {element:"#activityRings",popover:{title:"Anillos del taller",description:"Muestran órdenes pendientes, en reparación y listas. Los números vienen de las órdenes registradas."}},
+      {element:'[data-tab="orders"]',popover:{title:"Todas tus comandas",description:"Abre la tabla de órdenes para ver datos, modificar estados y generar tickets."}},
+      {element:"#search",popover:{title:"Encontrar un cliente",description:"Busca por folio, nombre, teléfono o motocicleta. También puedes filtrar por fecha y estado."}},
+      {element:"#exportCsv",popover:{title:"Guardar una lista",description:"Descarga un archivo compatible con Excel. Solo exporta las órdenes visibles según los filtros."}},
+      {element:'[data-tab="calendar"]',popover:{title:"Tu calendario",description:"Cambia a Calendario para consultar las fechas solicitadas. Recuerda confirmar las citas antes de recibir la moto."}},
+      {element:"#refresh",popover:{title:"Actualizar información",description:"Pulsa aquí para cargar nuevas citas. En el detalle de una orden puedes imprimir la comanda y crear la nota PDF."}},
+      {element:"#restartTour",popover:{title:"Vuelve cuando quieras",description:"Con este botón puedes repetir la guía todas las veces que necesites. ¡Listo!"}}
+    ]
+  });
+  try{tour.drive();localStorage.setItem(TOUR_SEEN_KEY,"1");}
+  catch{if(!auto)message("No fue posible iniciar la guía.",true);}
+}
+$("restartTour").addEventListener("click",()=>startWelcomeTour());
+$("changePass").addEventListener("click",()=>{
+  $("changePasswordForm").reset();$("passwordFeedback").textContent="";
+  $("passwordDialog").showModal();
+});
+$("changePasswordForm").addEventListener("submit",async event=>{
+  event.preventDefault();if(!db||!currentUser)return;
+  const current=$("currentPassword").value;
+  const next=$("newPassword").value;
+  const feedback=$("passwordFeedback");
+  feedback.textContent="";
+  if(next.length<12||/^\d+$/.test(next)){
+    feedback.textContent="Usa al menos 12 caracteres y combina palabras, letras o símbolos. Evita claves solo numéricas.";
+    return;
+  }
+  if(next!==$("confirmNewPassword").value){feedback.textContent="La confirmación no coincide.";return;}
+  if(current===next){feedback.textContent="La nueva contraseña debe ser distinta a la actual.";return;}
+  const button=event.currentTarget.querySelector('button[type="submit"]');button.disabled=true;
+  try{
+    // Revalidar la clave vigente antes de intentar cambiarla.
+    const {error:verifyError}=await db.auth.signInWithPassword({email:STAFF_AUTH_EMAIL,password:current});
+    if(verifyError)throw Error("La contraseña actual es incorrecta.");
+    const {error}=await db.auth.updateUser({password:next});
+    if(error)throw Error("Supabase no permitió cambiar la contraseña. Inténtalo de nuevo.");
+    await db.auth.signOut();
+    $("passwordDialog").close();leave();
+    $("loginMessage").textContent="Contraseña actualizada. Vuelve a entrar con tu nueva clave.";
+    $("password").value="";
+  }catch(error){feedback.textContent=error?.message||"No se pudo guardar la contraseña.";}
+  finally{button.disabled=false;}
+});
+
 function renderActivity(){
   // Proporción por estado entre órdenes activas, no objetivos ni progreso ficticio.
   const pending=records.filter(r=>r.status==="pendiente").length;
