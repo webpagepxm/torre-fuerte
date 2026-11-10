@@ -10,24 +10,24 @@
 - **Registro manual:** el taller también puede dar de alta una orden que no provenga de la web.
 
 ## Autenticación y tutorial para entrega V1
-- **La pantalla del taller pide solo Usuario y Contraseña.** El único usuario visible de este piloto es \`mecanicolider\`.
-- Supabase Auth exige una identidad de correo o teléfono internamente. Para mantener la experiencia solicitada, la interfaz transforma \`mecanicolider\` al alias técnico \`mecanicolider@torre-fuerte.example\`. **Este alias NO es una dirección de correo operativa** y no sirve para recuperación por email.
-- El alias no es una contraseña ni un dato secreto; el acceso real requiere contraseña y que el UUID del usuario esté autorizado en \`tf_staff\`.
-- **NO utilizar \`123456\` como contraseña de producción.** Almacenar teléfonos y notas obliga a una contraseña de al menos 12 caracteres, privada, que el taller podrá cambiar con **Cambiar clave**. Para un acceso de demostración con clave simple habría que usar exclusivamente información ficticia.
-- Si el propietario desea recuperación autónoma por correo más adelante, utilizar una dirección real controlada por él detrás del usuario visible, actualizando \`STAFF_AUTH_EMAIL\` en \`operacion/app.js\`.
-- **Tutorial principal:** al entrar por primera vez en el dispositivo, Driver.js presenta los botones principales. El botón «¿Cómo funciona?» lo vuelve a mostrar siempre. La visita se registra solo en localStorage (no afecta datos del taller).
-- **Tutorial de cada orden:** al abrir una orden por primera vez, una guía contextual enseña cómo cambiar el estado, guardar notas, añadir conceptos, imprimir y crear/compartir PDF. «Recorrido por cada botón» permite repetirlo siempre; existe también una guía escrita desplegable.
+- **La pantalla del taller pide solo Usuario y Contraseña.** El usuario de este piloto es \`mecanicolider\`.
+- Supabase Auth utiliza una dirección real del administrador **solo en el servidor**; el navegador nunca la recibe ni la necesita.
+- \`tf-staff-login\` es una Edge Function (requiere \`verify_jwt=false\` porque ocurre antes del inicio de sesión). Comprueba en Supabase que \`mecanicolider\` sea personal autorizado, consulta su correo real de Auth en servidor, valida la contraseña mediante Supabase Auth y devuelve una sesión normal. No almacena contraseñas ni publica claves privadas.
+- **No utilizar \`123456\` como contraseña de producción.** Se recomienda una contraseña única de al menos 12 caracteres, privada, que el titular pueda cambiar desde el botón **Cambiar clave**. Para una demo con contraseña simple solo usar datos ficticios.
+- **Tutorial principal:** al entrar por primera vez, Driver.js presenta los botones principales. «¿Cómo funciona?» lo repite. El estado de primera visita se registra solo en el dispositivo mediante localStorage.
+- **Tutorial dentro de la orden:** recorrido por estados, notas, conceptos, impresión y PDF, repetible con «Recorrido por cada botón». También hay guía escrita desplegable.
 
 ## Configuración necesaria ANTES de usar con datos reales
-1. Proyecto **torre-fuerte** ya creado en Supabase bajo **webpagepxm**, independiente de Denbou y SOMMO.
-2. Tablas \`tf_staff\`, \`tf_requests\`, \`tf_service_lines\` creadas con RLS. La revisión de seguridad inicial no reportó alertas.
-3. **Pendiente:** crear usuario en Supabase → Authentication → Users → Add user / Create new user. Usar email interno \`mecanicolider@torre-fuerte.example\` (confirmar usuario administrativamente, no intentar enviarle correo) y contraseña privada fuerte. Si el proveedor rechaza un dominio reservado, sustituirlo por una cuenta real controlada por el propietario y actualizar el alias en app.js. No compartir nunca la contraseña por GitHub ni por este chat.
-4. **Pendiente:** copiar UUID de ese usuario creado en \`auth.users\` y autorizarlo una sola vez en SQL Editor: \`insert into public.tf_staff(user_id) values ('UUID_DEL_USUARIO');\`. El UUID es del usuario real recién creado, no un valor inventado.
-5. La Edge Function \`tf-create-request\` está desplegada **con verify_jwt=true temporalmente**. El formulario público aún no está activado para enviar solicitudes; antes de abrirla a anónimos, añadir protección antispam robusta y completar aviso de privacidad. Solo entonces volver a desplegar con \`verify_jwt=false\`.
-6. \`tf-config.js\` ya tiene la **URL pública y publishable key** del proyecto exclusivo Torre Fuerte. Nunca incluir ninguna service_role ni key secreta en archivos del repositorio.
-7. **Pendiente:** confirmar nombre del responsable del tratamiento, contacto y aviso de privacidad antes de activar la captura pública de teléfonos.
-8. **Pendiente:** publicar rama tras pruebas en GitHub Pages \`/torre-fuerte/operacion/\`. El código actual de la función y panel todavía no se ha probado de extremo a extremo contra una sesión autorizada.
-9. **Pendiente:** probar todos los botones, PDFs, impresión desde Android y compartir WhatsApp, antes de entregar el sistema.
+1. **Hecho:** proyecto Supabase \`torre-fuerte\` dentro de \`webpagepxm\`, separado de Denbou y SOMMO.
+2. **Hecho:** tres tablas iniciales, RLS y columna \`tf_staff.username\`, con autorización de personal y denegación de lectura anónima.
+3. **Hecho:** cuenta Auth del administrador creada y correo confirmado; usuario visible \`mecanicolider\` autorizado en \`tf_staff\`.
+4. **Hecho:** \`tf-staff-login\` desplegada, el portal utiliza esta función y el correo real no figura en el código público.
+5. **Hecho:** \`tf-create-request\` sigue bloqueada con \`verify_jwt=true\`. Aún no abrir el formulario público a solicitudes.
+6. **Hecho:** \`tf-config.js\` contiene solo Supabase URL y publishable key (públicas).
+7. **Pendiente:** verificar el inicio de sesión con la contraseña en Android/navegador; crear órdenes de prueba, comprobar calendario, PDF, impresión y tutorial.
+8. **Pendiente:** implantar límites de intentos de login efectivos antes de exposición pública y revisar la advertencia de protección contra contraseñas filtradas en Supabase.
+9. **Pendiente:** finalizar aviso de privacidad y protección contra bots antes de permitir la recepción pública de solicitudes.
+10. **Pendiente:** publicar en GitHub Pages después de pruebas. El PR sigue en borrador.
 
 ## Prueba de extremo a extremo
 - Enviar cita desde #form-cita → la función devuelve folio → aparece en /operacion/ tras iniciar sesión.
@@ -40,7 +40,7 @@
 - Intentar leer la tabla sin sesión y desde el cliente público: debe ser imposible.
 
 ## Limitaciones iniciales
-- La rama de GitHub es **desarrollo**, no producción. El portal no tiene datos reales hasta configurar Supabase.
+- La rama de GitHub es **desarrollo**, no producción. Supabase ya está configurado; aún falta validar el inicio de sesión y el recorrido completo en navegador.
 - La función pública tiene validación, honeypot y limitación por número telefónico, pero no un rate limiter perimetral por IP; para exponerla a tráfico público, implementar protección de bots y limitación robusta (por ejemplo Turnstile o gateway).
 - Se muestran las primeras 1000 solicitudes en el panel; si crece, agregar paginación desde servidor.
 - El PDF es nota de servicio, no CFDI/factura fiscal.
