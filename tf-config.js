@@ -1,6 +1,6 @@
-// Torre Fuerte · configuración pública (NO colocar claves secretas aquí)
-// Sustituir los valores después de crear un proyecto Supabase exclusivo de Torre Fuerte.
+// Torre Fuerte · conexión pública. NO agregar service_role ni claves secretas.
+// Proyecto Supabase exclusivo: torre-fuerte (webpagepxm).
 window.TF_CONFIG = {
-  supabaseUrl: "",
-  supabasePublishableKey: ""
+  supabaseUrl: "https://pmeomhohqgdgaygkbeoe.supabase.co",
+  supabasePublishableKey: "sb_publishable_O07XyDWZxiu4DmZOC5uP4g_cxxboCxH"
 };
