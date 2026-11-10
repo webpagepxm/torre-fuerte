@@ -29,6 +29,17 @@
 9. **Pendiente:** finalizar aviso de privacidad y protección contra bots antes de permitir la recepción pública de solicitudes.
 10. **Pendiente:** publicar en GitHub Pages después de pruebas. El PR sigue en borrador.
 
+## Folio automático desde la página pública (solicitud de cita)
+- **Un solo folio:** `tf_requests.folio` lo asigna Postgres en el momento de insertar la solicitud, incluso antes de confirmar la cita.
+- **Mismo folio para tres momentos:** solicitud web, comanda para pegar en la moto y nota de servicio PDF para el cliente. **La nota no crea otro folio.**
+- La interfaz pública de la rama de desarrollo ya incluye teléfono, consentimiento de almacenamiento, campo anti-bot, validación de fecha y envío a `tf-create-request`.
+- Al recibir respuesta correcta, muestra el folio grande y propone enviarlo a WhatsApp. El usuario no necesita mandar WhatsApp para que el registro llegue a Supabase.
+- Si ocurre un error de red se puede reintentar sin duplicar la solicitud gracias a `idempotency_key`. Si cambia el formulario, genera un nuevo identificador.
+- `tf-create-request` valida y registra únicamente solicitudes. Añadimos límite por teléfono y por huella técnica de IP (hash diario, sin conservar IP legible) usando `tf_booking_allow`, con RLS y privilegios solo `service_role`.
+- **ESTADO:** solo está implementado en la rama `feature/comandas-v1-calendario-20261110`. La función desplegada tiene `verify_jwt=true`, por lo que NO se reciben aún citas públicas; la web actual `main` sigue enviando solicitudes solo por WhatsApp.
+- **Para activar:** primero sustituir el aviso de privacidad borrador por uno final aprobado por el responsable, incluyendo razón social/nombre legal, domicilio y contacto de privacidad. Después actualizar `index.html` de `main` y publicar la función con `verify_jwt=false`. Nunca exponer claves secretas; probar con información ficticia y confirmar folio + tabla Operación.
+- No publicitar una cita como confirmada hasta que el mecánico cambie su estado a `confirmada`.
+
 ## Prueba de extremo a extremo
 - Enviar cita desde #form-cita → la función devuelve folio → aparece en /operacion/ tras iniciar sesión.
 - Reenviar la misma petición/idempotency_key → debe devolver el mismo folio sin crear duplicado.
