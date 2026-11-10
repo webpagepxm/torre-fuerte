@@ -104,7 +104,7 @@
  <div class="dialogcontent">
   <div id="orderInfo" class="orderinfo"></div>
   <div class="formgrid"><label>Estado<select id="orderStatus"><option value="pendiente">Pendiente</option><option value="confirmada">Confirmada</option><option value="en_reparacion">En reparación</option><option value="lista">Lista para entregar</option><option value="entregada">Entregada</option><option value="cancelada">Cancelada</option></select></label><label class="full">Notas internas<textarea id="internalNotes" maxlength="2000" placeholder="Diagnóstico, avances, observaciones..."></textarea></label></div>
-  <button id="saveOrder">Guardar estado y notas</button>
+  <button id="saveOrder">Guardar estado y notas</button><p id="orderMessage" class="inline-feedback" role="status" aria-live="polite" hidden></p>
   <div class="sectionline"></div>
   <h3>Nota de servicio</h3><p class="hint">Desglosa mano de obra y refacciones; el total se calcula solo.</p>
   <button type="button" id="orderTutorialButton" class="guide-trigger">▶ Recorrido por cada botón</button>
@@ -119,7 +119,7 @@
     </div>
   </div>
   <details id="orderHelp" class="order-help"><summary>¿Cómo se usa esta orden? · Guía rápida</summary><ol><li>Revisa al cliente y los datos de su moto.</li><li>Elige el estado y pulsa <strong>Guardar estado y notas</strong>.</li><li>En <strong>Agregar concepto</strong>, registra mano de obra o refacciones.</li><li>Pulsa <strong>Guardar desglose</strong> para guardar los importes.</li><li><strong>Imprimir comanda</strong> abre el diálogo de impresión de tu equipo.</li><li><strong>Descargar PDF</strong> genera la nota; <strong>Compartir PDF</strong> intenta abrir las apps compatibles de tu teléfono.</li></ol></details>
-  <div id="items"></div><div class="itemfooter"><button id="addItem">+ Agregar concepto</button><strong id="total">$0.00</strong></div><button id="saveItems">Guardar desglose</button>
+  <div id="items"></div><div class="itemfooter"><button id="addItem">+ Agregar concepto</button><strong id="total">$0.00</strong></div><button id="saveItems">Guardar desglose</button><p id="itemsMessage" class="inline-feedback" role="status" aria-live="polite" hidden></p>
  </div>
  <div class="dialogactions">
   <button id="printOrder">Imprimir comanda</button>
