@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f6f6">
+<meta name="robots" content="noindex,nofollow">
+<title>Torre Fuerte | Operación del taller</title>
+<link rel="icon" href="../assets/emblema-mono.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.3.1/dist/css/tabulator.min.css">
+<link rel="stylesheet" href="./style.css">
+<script src="../tf-config.js" onerror="this.remove()"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.19/locales/es.global.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.20/pdfmake.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.20/vfs_fonts.min.js"></script>
+<script type="module" src="./app.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="../assets/emblema-mono.png" alt="" width="44" height="44"><div><strong>TORRE <span>FUERTE</span></strong><small>PORTAL DE OPERACIÓN</small></div></div>
+  <div class="toplinks"><a href="../">Ver sitio público</a><button id="signout" class="linkbtn" hidden>Cerrar sesión</button></div>
+</header>
+<main class="shell">
+  <section id="gate" class="gate">
+    <div class="gatecopy">
+      <p class="eyebrow">ACCESO EXCLUSIVO DEL TALLER</p>
+      <h1>El control del taller, sin complicaciones.</h1>
+      <p>Un solo lugar para revisar citas, imprimir comandas y generar notas de servicio. Pensado para usarse desde el celular.</p>
+      <div class="features"><div><span>01</span><strong>Citas organizadas</strong></div><div><span>02</span><strong>Tickets imprimibles</strong></div><div><span>03</span><strong>Notas PDF</strong></div></div>
+    </div>
+    <div class="signin">
+      <h2>Entrar a mi taller</h2><p>Solo personal autorizado. Los datos de clientes no son públicos.</p>
+      <div id="setupNotice" class="alert err" hidden>Falta conectar una base de datos independiente. Revisa la guía de instalación. No se guardará información hasta configurar el sistema.</div>
+      <form id="loginForm">
+        <label>Correo electrónico<input id="email" type="email" autocomplete="username" required></label>
+        <label>Contraseña<input id="password" type="password" autocomplete="current-password" required></label>
+        <button class="primary" type="submit">Entrar al portal</button>
+      </form>
+      <p class="footnote" id="loginMessage" role="status"></p>
+    </div>
+  </section>
+  <section id="workspace" hidden>
+    <div class="workspacehead">
+      <div><p class="eyebrow">OPERACIÓN DIARIA</p><h1>Buen día, taller.</h1><p class="hint">Citas, órdenes y notas en el mismo lugar.</p></div>
+      <div class="headbuttons"><button id="refresh">Actualizar</button><button id="newOrder" class="primary">+ Nueva orden</button></div>
+    </div>
+    <div id="statusMessage" role="status"></div>
+    <div class="kpis"><div><strong id="kpiPending">0</strong><small>Por confirmar</small></div><div><strong id="kpiWorking">0</strong><small>En reparación</small></div><div><strong id="kpiReady">0</strong><small>Listas para entregar</small></div></div>
+    <div class="tabs" role="tablist" aria-label="Secciones del portal">
+      <button class="active" data-tab="orders" role="tab" aria-selected="true">Comandas</button>
+      <button data-tab="calendar" role="tab" aria-selected="false">Calendario</button>
+    </div>
+    <section id="ordersSection" class="panel">
+      <div class="panelheading"><div><h2>Órdenes y solicitudes</h2><p>Las nuevas solicitudes del sitio llegan como pendientes de confirmar.</p></div><button id="exportCsv">Descargar CSV</button></div>
+      <div class="filters"><label>Buscar<input id="search" type="search" placeholder="Folio, nombre, teléfono o moto"></label><label>Estado<select id="filterStatus"><option value="">Todos</option><option value="pendiente">Pendiente</option><option value="confirmada">Confirmada</option><option value="en_reparacion">En reparación</option><option value="lista">Lista</option><option value="entregada">Entregada</option><option value="cancelada">Cancelada</option></select></label><label>Fecha<input id="filterDate" type="date"></label><button id="resetFilters">Limpiar</button></div>
+      <div id="ordersTable"></div><p class="footnote">Selecciona «Abrir» para cambiar el estado, imprimir la comanda o elaborar una nota de servicio.</p>
+    </section>
+    <section id="calendarSection" class="panel" hidden><div class="panelheading"><div><h2>Calendario de citas</h2><p>Los bloques son fechas y franjas solicitadas, no horas exactas confirmadas.</p></div></div><div id="calendar"></div></section>
+  </section>
+</main>
+
+<dialog id="newDialog">
+ <div class="dialoghead"><h2>Nueva orden manual</h2><button data-close="newDialog" aria-label="Cerrar">×</button></div>
+ <form id="newForm"><div class="formgrid">
+  <label>Nombre del cliente<input name="client_name" minlength="2" maxlength="100" required></label>
+  <label>Teléfono<input name="client_phone" type="tel" minlength="10" maxlength="20" required></label>
+  <label>Motocicleta<input name="motorcycle" minlength="2" maxlength="100" required></label>
+  <label>Año (opcional)<input name="motorcycle_year" type="number" min="1950" max="2100"></label>
+  <label>Servicio<input name="service" maxlength="150" required></label>
+  <label>Fecha solicitada<input name="requested_date" type="date" required></label>
+  <label>Horario<select name="requested_slot"><option>Por acordar</option><option>Mañana (9:00 a 12:00)</option><option>Mediodía (12:00 a 15:00)</option><option>Tarde (15:00 a 18:00)</option></select></label>
+  <label>Estado<select name="status"><option value="pendiente">Pendiente</option><option value="confirmada">Confirmada</option></select></label>
+  <label class="full">Observaciones<textarea name="details" maxlength="1000" placeholder="¿Qué necesita la moto?"></textarea></label>
+ </div><div class="dialogactions"><button type="button" data-close="newDialog">Cancelar</button><button id="saveNew" class="primary" type="submit">Guardar orden</button></div></form>
+</dialog>
+
+<dialog id="orderDialog">
+ <div class="dialoghead"><h2 id="orderTitle">Orden</h2><button data-close="orderDialog" aria-label="Cerrar">×</button></div>
+ <div class="dialogcontent">
+  <div id="orderInfo" class="orderinfo"></div>
+  <div class="formgrid"><label>Estado<select id="orderStatus"><option value="pendiente">Pendiente</option><option value="confirmada">Confirmada</option><option value="en_reparacion">En reparación</option><option value="lista">Lista para entregar</option><option value="entregada">Entregada</option><option value="cancelada">Cancelada</option></select></label><label class="full">Notas internas<textarea id="internalNotes" maxlength="2000" placeholder="Diagnóstico, avances, observaciones..."></textarea></label></div>
+  <button id="saveOrder">Guardar estado y notas</button>
+  <div class="sectionline"></div>
+  <h3>Nota de servicio</h3><p class="hint">Desglosa mano de obra y refacciones; el total se calcula solo.</p>
+  <div id="items"></div><div class="itemfooter"><button id="addItem">+ Agregar concepto</button><strong id="total">$0.00</strong></div><button id="saveItems">Guardar desglose</button>
+ </div>
+ <div class="dialogactions">
+  <button id="printOrder">Imprimir comanda</button>
+  <button id="pdfDownload">Descargar PDF</button>
+  <button id="pdfShare" class="primary">Compartir PDF</button>
+ </div>
+</dialog>
+<div id="printReceipt" aria-hidden="true"></div>
+</body>
+</html>
