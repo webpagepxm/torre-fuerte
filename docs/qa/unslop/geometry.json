@@ -1,0 +1,35 @@
+{
+  "checkpoint": "a9e326fdf590e6bd5059d9bc6fb7254231e4209f",
+  "viewportHeight": 844,
+  "data": "Fixtures; misma fecha y cuatro órdenes",
+  "geometry": [
+    {
+      "width": 320,
+      "firstOrderBefore": 623,
+      "firstOrderAfter": 468,
+      "printBefore": 1098,
+      "printAfter": 464
+    },
+    {
+      "width": 375,
+      "firstOrderBefore": 610,
+      "firstOrderAfter": 474,
+      "printBefore": 1035,
+      "printAfter": 442
+    },
+    {
+      "width": 390,
+      "firstOrderBefore": 610,
+      "firstOrderAfter": 463,
+      "printBefore": 1035,
+      "printAfter": 442
+    },
+    {
+      "width": 430,
+      "firstOrderBefore": 610,
+      "firstOrderAfter": 453,
+      "printBefore": 1015,
+      "printAfter": 442
+    }
+  ]
+}

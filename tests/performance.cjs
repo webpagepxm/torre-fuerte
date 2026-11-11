@@ -35,12 +35,10 @@ const { setup, base, output } = require("./browser.cjs");
     ...window.__tfPerformance,
     domContentLoaded:
       performance.getEntriesByType("navigation")[0].domContentLoadedEventEnd,
-    resources: performance
-      .getEntriesByType("resource")
-      .map((r) => ({
-        name: r.name.replace(location.origin, ""),
-        bytes: r.transferSize,
-      })),
+    resources: performance.getEntriesByType("resource").map((r) => ({
+      name: r.name.replace(location.origin, ""),
+      bytes: r.transferSize,
+    })),
   }));
   fs.writeFileSync(
     output + "/performance.json",
@@ -57,6 +55,34 @@ const { setup, base, output } = require("./browser.cjs");
   console.log(JSON.stringify(metrics));
   // Carga diferida: el portal debe crear un PDF real sin etiquetas de biblioteca precargadas.
   await page.goto(base + "/operacion/");
+  await page.waitForSelector(".order-card");
+  await page.waitForTimeout(750);
+  const portal = await page.evaluate(() => ({
+    ...window.__tfPerformance,
+    domContentLoaded:
+      performance.getEntriesByType("navigation")[0].domContentLoadedEventEnd,
+    resources: performance.getEntriesByType("resource").map((r) => ({
+      name: r.name.replace(location.origin, ""),
+      bytes: r.transferSize,
+    })),
+    calendarLoaded: !!window.FullCalendar,
+    pdfLoaded: !!window.pdfMake,
+  }));
+  if (portal.calendarLoaded || portal.pdfLoaded)
+    throw Error("Calendario/PDF cargados antes de necesitarlos");
+  fs.writeFileSync(
+    output + "/performance-ops.json",
+    JSON.stringify(
+      {
+        conditions:
+          "Chromium local 390×844, CPU 4×, 200000 B/s, latencia 150 ms; Supabase aislado y CDN transportado por fixture. Una muestra, no medición de Android físico ni del servidor real.",
+        ...portal,
+      },
+      null,
+      2,
+    ),
+  );
+  console.log("OPS", JSON.stringify(portal));
   await page.locator(".order-card button").first().click();
   await page.waitForFunction(
     () => !document.querySelector("#addItem").disabled,
