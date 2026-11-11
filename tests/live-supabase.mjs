@@ -5,6 +5,7 @@ import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import vm from "node:vm";
 import { randomUUID } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import {
   readLines,
   persistLines,
@@ -86,24 +87,65 @@ const ownOrder = async () => {
 };
 try {
   // La credencial puede ser un placeholder: usarla únicamente por el HTTPS proxy autorizado.
-  const response = await fetch(base + "/functions/v1/tf-staff-login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Origin: "https://webpagepxm.github.io",
-      apikey: cfg.supabasePublishableKey,
-    },
-    body: JSON.stringify({
-      username: "mecanicolider",
-      password: process.env.TF_STAFF_PASSWORD,
-    }),
+  const loginPayload = JSON.stringify({
+    username: "mecanicolider",
+    password: process.env.TF_STAFF_PASSWORD,
   });
-  if (!response.ok) {
-    const error = Error("No se pudo autenticar");
-    error.status = response.status;
-    throw error;
+  let session;
+  if (process.env.TF_LOGIN_TRANSPORT === "curl") {
+    // Comparar el cliente HTTP conservando proxy/CA; jamás poner la contraseña en argumentos o archivos.
+    const result = execFileSync(
+      "curl",
+      [
+        "--silent",
+        "--show-error",
+        "--max-time",
+        "25",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Origin: https://webpagepxm.github.io",
+        "--header",
+        "apikey: " + cfg.supabasePublishableKey,
+        "--data-binary",
+        "@-",
+        "--write-out",
+        "\n%{http_code}",
+        base + "/functions/v1/tf-staff-login",
+      ],
+      {
+        input: loginPayload,
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
+      },
+    );
+    const split = result.lastIndexOf("\n");
+    const status = Number(result.slice(split + 1));
+    if (status < 200 || status >= 300) {
+      const error = Error("No se pudo autenticar");
+      error.status = status;
+      throw error;
+    }
+    session = JSON.parse(result.slice(0, split));
+  } else {
+    const response = await fetch(base + "/functions/v1/tf-staff-login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: "https://webpagepxm.github.io",
+        apikey: cfg.supabasePublishableKey,
+      },
+      body: loginPayload,
+    });
+    if (!response.ok) {
+      const error = Error("No se pudo autenticar");
+      error.status = response.status;
+      throw error;
+    }
+    session = await response.json();
   }
-  const session = await response.json();
   assert(
     session.access_token && session.refresh_token,
     "La función debe devolver una sesión",
