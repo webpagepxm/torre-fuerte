@@ -114,9 +114,9 @@ export async function persistLines(db, requestId, lines, baseline) {
 }
 export function saveError(error) {
   if (error?.code === "42501")
-    return "Tu sesión no tiene permiso para guardar conceptos. Vuelve a entrar; si continúa, revisa las políticas RLS de tf_service_lines.";
+    return "Tu sesión no tiene permiso para guardar estos conceptos. Vuelve a entrar; si continúa, avisa al administrador del taller.";
   if (["42P01", "PGRST205"].includes(error?.code))
-    return "Falta la tabla de conceptos en la base de datos. El administrador debe revisar tf_service_lines.";
+    return "La base de datos no está lista para guardar conceptos. Avisa al administrador del taller.";
   if (["23514", "22P02", "23502"].includes(error?.code))
     return "La base de datos rechazó un concepto. Revisa tipo, descripción, cantidad y precio.";
   if (

@@ -1,0 +1,26 @@
+[
+  {
+    "surface": "Página pública móvil",
+    "violations": []
+  },
+  {
+    "surface": "Portal móvil",
+    "violations": []
+  },
+  {
+    "surface": "Detalle de orden",
+    "violations": []
+  },
+  {
+    "surface": "Tabla escritorio",
+    "violations": []
+  },
+  {
+    "surface": "Calendario",
+    "violations": []
+  },
+  {
+    "surface": "Acceso sin sesión y SDK real",
+    "violations": []
+  }
+]
