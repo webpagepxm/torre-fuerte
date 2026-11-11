@@ -91,3 +91,5 @@ function assertBusinessContracts() {
   return { baseline, protectedFunctions: 16, queries: queries(now).length };
 }
 module.exports = { assertBusinessContracts, baseline };
+
+if (require.main === module) console.log(assertBusinessContracts());

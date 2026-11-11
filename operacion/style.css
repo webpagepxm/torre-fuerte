@@ -713,6 +713,73 @@ button:active {
   font-weight: 400;
   color: var(--muted);
 }
+/* TORRE FUERTE / RULO ILLUSTRATIONS v1: assets locales decorativos. */
+.ops-login-art img,
+.ops-illustrated-empty img,
+.ops-mini-empty img,
+.ops-complete-art img,
+.ops-connection-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.ops-illustrated-empty {
+  padding: 20px 16px 28px;
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.ops-illustrated-empty picture {
+  display: block;
+  width: 176px;
+  max-width: 100%;
+  margin: 0 auto 12px;
+}
+.ops-illustrated-empty h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+.ops-illustrated-empty p {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 auto;
+  max-width: 340px;
+}
+#ordersSection.ops-illustrated-zero #ordersTable,
+#ordersSection.ops-illustrated-zero #ordersPagination,
+#ordersSection.ops-illustrated-zero #mobileOrders,
+#ordersSection.ops-illustrated-zero #moreOrders {
+  display: none !important;
+}
+#ordersSection[aria-busy="true"] .ops-illustrated-empty {
+  visibility: hidden;
+}
+.ops-mini-empty {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  grid-column: 1 / -1;
+}
+.ops-mini-empty picture {
+  display: block;
+  width: 88px;
+  flex: 0 0 88px;
+}
+.day-orders .ops-mini-empty .empty-state {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.workbench:has(#ordersSection[aria-busy="true"]) .ops-mini-empty picture,
+.workbench:has(#ordersSection[data-records-state="error"])
+  .ops-mini-empty
+  picture,
+.shell:has(#connectionMessage:not([hidden])) .ops-mini-empty picture,
+.shell:has(#connectionMessage:not([hidden])) .ops-illustrated-empty picture {
+  visibility: hidden;
+}
 .empty-state {
   font-size: 14px;
   color: var(--muted);
@@ -1363,6 +1430,26 @@ button:active {
   isolation: isolate;
   box-shadow: 0 12px 40px #303f7020;
 }
+.signin-intro {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.signin-intro > div {
+  min-width: 0;
+  flex: 1;
+}
+.signin-intro p {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+}
+.ops-login-art {
+  display: block;
+  flex: 0 0 112px;
+  width: 112px;
+  pointer-events: none;
+}
 .signin h1 {
   font-size: 28px;
   font-weight: 500;
@@ -1439,6 +1526,29 @@ textarea {
   padding: 12px 16px;
   border-radius: var(--radius);
   font-size: 14px;
+}
+.ops-connection-status {
+  position: relative;
+  margin: 14px 0;
+}
+.ops-connection-status:not(:has(#connectionMessage:not([hidden]))) {
+  display: none;
+}
+.ops-connection-status .connection-message {
+  margin: 0;
+  min-height: 120px;
+  padding-right: 128px;
+  display: flex;
+  align-items: center;
+}
+.ops-connection-art {
+  display: block;
+  width: 108px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 #newMessage {
   margin: 0 24px 16px;
@@ -1603,7 +1713,15 @@ dialog::backdrop {
   background: var(--positive-bg);
   color: var(--positive-ink);
 }
+.ops-complete-art {
+  display: block;
+  width: 112px;
+  flex: 0 0 112px;
+  align-self: center;
+  pointer-events: none;
+}
 .order-completion > .icon {
+  display: none;
   margin-top: 4px;
   width: 24px;
   height: 24px;
@@ -2006,6 +2124,59 @@ dialog::backdrop {
   }
 }
 @media (max-width: 760px) {
+  .signin-intro {
+    gap: 12px;
+  }
+  .ops-login-art {
+    width: 80px;
+    flex-basis: 80px;
+  }
+  .ops-illustrated-empty picture {
+    width: 152px;
+  }
+  .ops-connection-art {
+    width: 86px;
+  }
+  .ops-connection-status .connection-message {
+    padding-right: 108px;
+    min-height: 104px;
+  }
+  .order-completion {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 76px;
+    gap: 8px 12px;
+    padding: 16px;
+  }
+  .order-completion > div {
+    display: contents;
+  }
+  .ops-complete-art {
+    width: 76px;
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .order-completion h3 {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    margin: 0;
+  }
+  #completionSummary {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0;
+  }
+  .order-completion button {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    justify-self: start;
+  }
+  .order-completion .hint {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    margin: 0;
+  }
+
   .topbar {
     padding: 8px 16px;
   }
