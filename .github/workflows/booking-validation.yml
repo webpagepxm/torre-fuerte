@@ -1,0 +1,37 @@
+name: Validación de citas Torre Fuerte
+on:
+  push:
+    branches:
+      - fix/booking-phone-ops-20261111
+  workflow_dispatch:
+jobs:
+  booking-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validación estática
+        run: |
+          node --check operacion/app.js
+          node --check tests/functional.cjs
+          node --check tests/contracts.cjs
+          node --check tests/premium-ui.cjs
+          node tests/contracts.cjs
+          node --test tests/service-lines.test.mjs
+      - name: Instalar navegador de pruebas
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.58.0
+          npx playwright install --with-deps chromium
+          CHROME_PATH="$(find "$HOME/.cache/ms-playwright" -path '*/chrome-linux64/chrome' -o -path '*/chrome-linux/chrome' | head -n 1)"
+          test -n "$CHROME_PATH"
+          sudo ln -sf "$CHROME_PATH" /usr/bin/chromium
+      - name: Probar cita web y funcionamiento del portal
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/tf-local-server.log 2>&1 &
+          sleep 2
+          node tests/functional.cjs
