@@ -90,6 +90,7 @@ try {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Origin: "https://webpagepxm.github.io",
       apikey: cfg.supabasePublishableKey,
     },
     body: JSON.stringify({

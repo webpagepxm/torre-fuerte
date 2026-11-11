@@ -8,7 +8,7 @@ La limpieza intenta quitar los conceptos y cancelar la orden de prueba aunque fa
 
 ## Requisito pendiente
 
-No hay ninguna credencial de personal disponible en los bindings ni en las variables actuales. El usuario `mecanicolider` ya forma parte del contrato del portal; la clave publicable no permite iniciar su sesión.
+El secreto TF_STAFF_PASSWORD ya está aplicado: la observación del entorno lo marca ready y la variable está presente. El usuario `mecanicolider` forma parte del contrato del portal; la clave publicable no permite iniciar su sesión. No se imprime ni se guarda el valor de la contraseña.
 
 Añadir por los ajustes de secretos HTTP del entorno un secreto llamado `TF_STAFF_PASSWORD`, con variable del mismo nombre y destino permitido `pmeomhohqgdgaygkbeoe.supabase.co`. El valor es la contraseña del portal y debe introducirse en la interfaz segura, nunca en chat ni en el repositorio. El intento de declarar este requisito mediante la herramienta de borrador no pudo confirmar persistencia (`INVALID_ARGUMENT`).
 
@@ -23,4 +23,4 @@ node --use-env-proxy tests/live-supabase.mjs --allow-test-records
 
 Node conserva el proxy y TLS del entorno. La contraseña se usa únicamente en la solicitud HTTPS de inicio de sesión; los tokens quedan en memoria, sin almacenamiento persistente de Auth. Los resultados y el identificador del registro ficticio se guardan en `/tmp/torre-fuerte-qa/live`, sin credenciales.
 
-**Estado:** script preparado y comprobación de sintaxis aprobada. Al ejecutarlo sin credencial devuelve salida 78 y no hace peticiones ni escribe registros. La prueba real sigue sin ejecutarse hasta que esté disponible el acceso del personal.
+**Estado:** script preparado y sintaxis aprobada. Sin credencial devuelve salida 78 sin peticiones ni registros. Con el secreto ya aplicado, la primera solicitud sin Origin recibió 403; se confirmó que tf-staff-login exige el origen del sitio y se añadió Origin: https://webpagepxm.github.io al runner. El intento corregido recibió HTTP 401 en el inicio de sesión. No se creó ninguna orden y no se ejecutaron escrituras. Se pidió al usuario confirmar si puede entrar al portal con esa misma contraseña antes de repetir intentos o cambiar credenciales. El guardado real continúa pendiente.
