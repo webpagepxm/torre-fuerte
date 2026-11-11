@@ -7,7 +7,7 @@ import {
   totalCents,
   lineTotal,
   saveError,
-} from "./service-lines.mjs?v=workbench-20261111-2";
+} from "./service-lines.mjs?v=unslop-20261111-1";
 const $ = (id) => document.getElementById(id);
 // La dirección de correo de Auth nunca forma parte del código público.
 const STAFF_USERNAME = "mecanicolider";
@@ -26,6 +26,9 @@ let records = [],
   selected = null,
   serviceLines = [];
 let currentUser = null;
+let recordsLoaded = false;
+let recordsFailed = false;
+const mobileCalendar = matchMedia("(max-width: 760px)");
 let savedLines = [],
   linesLoaded = false,
   linesDirty = false,
@@ -63,13 +66,50 @@ function showOrderFeedback(target, content, bad = false) {
   node.className = "inline-feedback" + (bad ? " is-error" : "");
   node.hidden = !content;
 }
+// El foco nativo no descuenta las barras fijas de un diálogo. Mantener el
+// campo fuera de ellas también cuando el teclado reduce el área visible.
+function revealDialogField() {
+  const field = document.activeElement;
+  if (!field?.matches("input,select,textarea")) return;
+  const dialog = field.closest("dialog[open]");
+  if (!dialog) return;
+  const frame = dialog.getBoundingClientRect();
+  const top =
+    dialog.querySelector(".dialoghead").getBoundingClientRect().bottom + 12;
+  const actions = dialog.querySelector(".dialogactions");
+  const viewportBottom = window.visualViewport
+    ? visualViewport.offsetTop + visualViewport.height
+    : innerHeight;
+  const bottom =
+    Math.min(
+      actions?.getBoundingClientRect().top ?? frame.bottom,
+      viewportBottom,
+    ) - 12;
+  const box = field.getBoundingClientRect();
+  if (box.bottom > bottom) dialog.scrollTop += box.bottom - bottom;
+  else if (box.top < top) dialog.scrollTop -= top - box.top;
+}
+document.addEventListener("focusin", revealDialogField);
+window.visualViewport?.addEventListener("resize", revealDialogField);
 function textRow(parent, title, content) {
   const p = document.createElement("p"),
     strong = document.createElement("strong");
-  strong.textContent = title + ": ";
+  strong.textContent = title;
   p.append(strong, document.createTextNode(String(content ?? "—")));
   parent.append(p);
+  return p;
 }
+function updateConnectionState() {
+  $("connectionMessage").hidden = navigator.onLine || !currentUser;
+  $("connectionMessage").textContent =
+    "Sin conexión. La lista puede estar desactualizada; los cambios necesitan internet para guardarse.";
+}
+window.addEventListener("offline", updateConnectionState);
+window.addEventListener("online", () => {
+  updateConnectionState();
+  if (currentUser)
+    message("La conexión volvió. Pulsa Actualizar para consultar las órdenes.");
+});
 function todayLocal() {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Mexico_City",
@@ -136,6 +176,7 @@ async function enter() {
   $("restartTour").hidden = false;
   $("changePass").hidden = false;
   $("password").value = "";
+  updateConnectionState();
   $("workspaceDate").textContent = new Intl.DateTimeFormat("es-MX", {
     timeZone: "America/Mexico_City",
     weekday: "long",
@@ -152,6 +193,8 @@ async function enter() {
 function leave() {
   currentUser = null;
   records = [];
+  recordsLoaded = false;
+  recordsFailed = false;
   selected = null;
   serviceLines = [];
   savedLines = [];
@@ -168,6 +211,7 @@ function leave() {
   $("accountMenu").open = false;
   $("restartTour").hidden = true;
   $("changePass").hidden = true;
+  updateConnectionState();
 }
 if (!db) {
   $("setupNotice").hidden = false;
@@ -433,7 +477,8 @@ async function loadRecords() {
   const user = currentUser;
   if (!user) return;
   $("refresh").disabled = true;
-  $("refresh").textContent = "Actualizando…";
+  $("refresh").querySelector(".refresh-label").textContent = "Actualizando…";
+  $("refresh").setAttribute("aria-label", "Actualizando órdenes");
   $("ordersSection").setAttribute("aria-busy", "true");
   try {
     const { data, error } = await db
@@ -443,31 +488,34 @@ async function loadRecords() {
       .limit(1000);
     if (currentUser !== user) return;
     if (error) {
-      message(
-        "No se pudieron consultar las órdenes. Verifica la conexión y los permisos.",
-        true,
-      );
-      return;
+      throw error;
     }
     records = data || [];
+    recordsLoaded = true;
+    recordsFailed = false;
     renderActivity();
     renderMobileOrders();
     renderGrid();
-    renderCalendar();
-    if (window.Tabulator && window.FullCalendar)
+    if (calendar || !$("calendarSection").hidden) renderCalendar();
+    if (window.Tabulator)
       message(
         records.length === 1000
           ? "Se muestran las últimas 1000 órdenes; los contadores corresponden a esa lista."
           : "",
       );
   } catch {
+    recordsFailed = true;
+    renderMobileOrders();
     message(
-      "No se pudo conectar. Conservamos la última lista cargada; pulsa Actualizar para reintentar.",
+      recordsLoaded
+        ? "No pudimos actualizar. Se conserva la última lista cargada; pulsa Actualizar para reintentar."
+        : "No pudimos consultar las órdenes. Revisa la conexión y pulsa Actualizar para reintentar.",
       true,
     );
   } finally {
     $("refresh").disabled = false;
-    $("refresh").textContent = "Actualizar";
+    $("refresh").querySelector(".refresh-label").textContent = "Actualizar";
+    $("refresh").setAttribute("aria-label", "Actualizar órdenes");
     $("ordersSection").setAttribute("aria-busy", "false");
   }
 }
@@ -526,7 +574,7 @@ function renderGrid() {
           field: "folio",
           responsive: 0,
           minWidth: 110,
-          width: 130,
+          width: 140,
           formatter: "plaintext",
         },
         {
@@ -551,7 +599,7 @@ function renderGrid() {
         {
           title: "Estado",
           field: "status",
-          width: 135,
+          width: 150,
           formatter: (cell) => stateBadge(cell.getValue()),
         },
         {
@@ -621,6 +669,11 @@ function renderMobileOrders() {
     : records.length
       ? "Sin coincidencias"
       : "Aún no hay órdenes";
+  if (recordsFailed)
+    $("listCount").textContent = recordsLoaded
+      ? $("listCount").textContent + " · sin actualizar"
+      : "Órdenes no disponibles";
+  $("ordersLoadError").hidden = recordsLoaded || !recordsFailed;
   const activeFilters = ["filterStatus", "filterDate"].filter(
     (id) => $(id).value,
   ).length;
@@ -638,11 +691,12 @@ function renderMobileOrders() {
     button.classList.toggle("is-current", current);
     button.setAttribute("aria-pressed", String(current));
   });
-  if (!rows.length) {
+  if (!rows.length && recordsLoaded) {
     const p = document.createElement("p");
     p.className = "empty-state";
-    p.textContent =
-      "Sin órdenes para estos filtros. Límpialos o crea una nueva orden para recibir una moto.";
+    p.textContent = records.length
+      ? "No encontramos esa moto. Prueba otro dato o pulsa Limpiar para quitar los filtros."
+      : "Aún no hay motos registradas. Pulsa Recibir moto para crear la primera orden.";
     holder.append(p);
   }
   rows.slice(0, mobileLimit).forEach((record) => {
@@ -661,7 +715,7 @@ function renderMobileOrders() {
     const service = document.createElement("p");
     service.textContent = record.service;
     const open = document.createElement("button");
-    open.textContent = "Abrir →";
+    open.textContent = "Abrir";
     open.setAttribute("aria-label", "Abrir orden " + record.folio);
     open.addEventListener("click", () => openOrder(record.id));
     article.append(header, title, client, service, open);
@@ -673,19 +727,68 @@ $("moreOrders").addEventListener("click", () => {
   mobileLimit += 10;
   renderMobileOrders();
 });
-function renderCalendar() {
-  if (!window.FullCalendar) {
-    message(
-      "No se pudo cargar el calendario. Revisa la conexión y pulsa Actualizar.",
-      true,
-    );
+let calendarAssets;
+function ensureCalendarAssets() {
+  if (!calendarAssets) {
+    const load = (src) =>
+      new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = () => {
+          script.remove();
+          reject(Error("Calendario no disponible"));
+        };
+        document.head.append(script);
+      });
+    calendarAssets = (async () => {
+      if (!window.FullCalendar)
+        await load(
+          "https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js",
+        );
+      await load(
+        "https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.19/locales/es.global.min.js",
+      );
+    })().catch((error) => {
+      calendarAssets = null;
+      throw error;
+    });
+  }
+  return calendarAssets;
+}
+async function renderCalendar() {
+  if (!currentUser) return;
+  if (!calendar) {
+    $("calendarState").hidden = false;
+    $("calendarState").textContent = "Cargando calendario…";
+    $("calendarSection").setAttribute("aria-busy", "true");
+  }
+  try {
+    await ensureCalendarAssets();
+  } catch {
+    $("calendarState").hidden = false;
+    $("calendarState").textContent =
+      "No pudimos cargar el calendario. Revisa la conexión y pulsa Actualizar para reintentar.";
+    $("calendarSection").setAttribute("aria-busy", "false");
     return;
   }
+  $("calendarSection").setAttribute("aria-busy", "false");
+  $("calendarState").hidden = true;
+  if (!currentUser) return;
   const events = records
     .filter((r) => r.status !== "cancelada")
     .map((r) => ({
       id: r.id,
-      title: r.client_name + " · " + r.service + " · " + r.requested_slot,
+      title:
+        r.motorcycle +
+        " · " +
+        r.client_name +
+        " · " +
+        r.service +
+        " · " +
+        (states[r.status] || "Sin estado") +
+        " · " +
+        r.requested_slot,
       start: r.requested_date,
       allDay: true,
       backgroundColor:
@@ -700,10 +803,12 @@ function renderCalendar() {
     }));
   if (!calendar) {
     calendar = new FullCalendar.Calendar($("calendar"), {
-      initialView: "dayGridMonth",
+      initialView: mobileCalendar.matches ? "listWeek" : "dayGridMonth",
       locale: "es",
       firstDay: 1,
       buttonText: { today: "Hoy", month: "Mes", list: "Semana" },
+      noEventsContent: "No hay citas solicitadas para esta semana",
+      allDayText: "Franja",
       viewDidMount: () =>
         $("calendar")
           .querySelectorAll(".fc-icon")
@@ -723,6 +828,9 @@ function renderCalendar() {
     calendar.addEventSource(events);
   }
 }
+mobileCalendar.addEventListener("change", () => {
+  calendar?.changeView(mobileCalendar.matches ? "listWeek" : "dayGridMonth");
+});
 document.querySelectorAll("[data-tab]").forEach((button) =>
   button.addEventListener("click", () => {
     document.querySelectorAll("[data-tab]").forEach((b) => {
@@ -730,15 +838,16 @@ document.querySelectorAll("[data-tab]").forEach((button) =>
       b.setAttribute("aria-selected", String(b === button));
       b.tabIndex = b === button ? 0 : -1;
     });
-    $("workspaceViewTitle").textContent =
-      button.dataset.tab === "orders"
-        ? "Órdenes del taller"
-        : "Calendario del taller";
+    $("workspaceViewName").textContent =
+      button.dataset.tab === "orders" ? "Órdenes" : "Calendario";
     document.querySelector(".activity-summary").hidden =
       button.dataset.tab !== "orders";
     $("ordersSection").hidden = button.dataset.tab !== "orders";
     $("calendarSection").hidden = button.dataset.tab !== "calendar";
-    if (button.dataset.tab === "calendar") calendar?.updateSize();
+    if (button.dataset.tab === "calendar") {
+      calendar?.updateSize();
+      renderCalendar();
+    }
   }),
 );
 document.querySelectorAll('[role="tab"]').forEach((tab) =>
@@ -905,14 +1014,33 @@ document.querySelectorAll("[data-close]").forEach((b) =>
 $("newOrder").addEventListener("click", () => {
   showOrderFeedback("newMessage", "");
   $("newForm").reset();
+  $("newForm")
+    .querySelectorAll("[aria-invalid]")
+    .forEach((input) => input.removeAttribute("aria-invalid"));
   $("newForm").elements.namedItem("requested_date").value = todayLocal();
   $("newDialog").showModal();
 });
 $("newForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const btn = $("saveNew");
+  if (btn.disabled) return;
   btn.disabled = true;
   const fields = Object.fromEntries(new FormData(e.currentTarget).entries());
+  for (const name of ["client_name", "motorcycle", "service"]) {
+    fields[name] = String(fields[name] || "").trim();
+    if (fields[name].length < 2) {
+      showOrderFeedback(
+        "newMessage",
+        "Completa el nombre, la moto y el servicio con al menos 2 caracteres.",
+        true,
+      );
+      const input = $("newForm").elements.namedItem(name);
+      input.setAttribute("aria-invalid", "true");
+      input.focus();
+      btn.disabled = false;
+      return;
+    }
+  }
   const phone = String(fields.client_phone || "").replace(/\D/g, "");
   if (phone.length < 10 || phone.length > 15) {
     showOrderFeedback(
@@ -920,6 +1048,10 @@ $("newForm").addEventListener("submit", async (e) => {
       "El teléfono debe tener entre 10 y 15 dígitos.",
       true,
     );
+    $("newForm")
+      .elements.namedItem("client_phone")
+      .setAttribute("aria-invalid", "true");
+    $("newForm").elements.namedItem("client_phone").focus();
     btn.disabled = false;
     return;
   }
@@ -933,13 +1065,16 @@ $("newForm").addEventListener("submit", async (e) => {
   };
   btn.textContent = "Guardando…";
   $("newForm").setAttribute("aria-busy", "true");
+  const inputs = $("newForm").querySelectorAll("input,select,textarea");
+  inputs.forEach((input) => (input.disabled = true));
   try {
     const { data, error } = await db
       .from("tf_requests")
       .insert(payload)
       .select("id,folio")
       .single();
-    if (error) throw error;
+    if (error || !data?.id || !data?.folio)
+      throw error || Error("Sin confirmación");
     $("newDialog").close();
     await loadRecords();
     message("Orden " + data.folio + " guardada.");
@@ -947,14 +1082,18 @@ $("newForm").addEventListener("submit", async (e) => {
   } catch {
     showOrderFeedback(
       "newMessage",
-      "No se pudo guardar la orden. Revisa los datos, tu sesión o la conexión.",
+      "No pudimos confirmar el guardado. Antes de repetir, cierra y actualiza la lista para comprobar si la moto ya aparece.",
       true,
     );
   } finally {
     btn.disabled = false;
     btn.textContent = "Guardar orden";
+    inputs.forEach((input) => (input.disabled = false));
     $("newForm").setAttribute("aria-busy", "false");
   }
+});
+$("newForm").addEventListener("input", (event) => {
+  event.target.removeAttribute("aria-invalid");
 });
 
 const ORDER_TOUR_SEEN_KEY = "tf-orden-recorrido-v1";
@@ -981,27 +1120,27 @@ const orderTourSteps = [
   },
   {
     id: "printOrder",
-    title: "COMANDA · Para la moto",
+    title: "Comanda para la moto",
     text: "Es el ticket interno que pegas o sujetas a la moto para identificar el trabajo. No lleva precios.",
   },
   {
     id: "addItem",
-    title: "NOTA · Agregar trabajos",
+    title: "Nota · Agregar trabajos",
     text: "La nota es para el cliente. Aquí escribes cada trabajo o refacción, cantidad y precio.",
   },
   {
     id: "saveItems",
     title: "Guardar precios de la nota",
-    text: "Guarda los conceptos y el total que verá el cliente. Esto NO imprime la comanda.",
+    text: "Guarda los conceptos y el total que verá el cliente. La comanda se imprime desde su propio botón.",
   },
   {
     id: "pdfDownload",
-    title: "Descargar NOTA para el cliente",
+    title: "Descargar nota para el cliente",
     text: "Genera el PDF con los conceptos y el total. No es una factura fiscal.",
   },
   {
     id: "pdfShare",
-    title: "Compartir NOTA con el cliente",
+    title: "Compartir nota con el cliente",
     text: "En teléfonos compatibles puedes compartir el PDF a WhatsApp u otra app. Si no, descárgalo y adjúntalo.",
   },
 ];
@@ -1069,23 +1208,27 @@ async function openOrder(id) {
   $("orderTitle").textContent = selected.folio;
   const container = $("orderInfo");
   container.replaceChildren();
-  textRow(container, "Cliente", selected.client_name);
-  textRow(container, "Teléfono", selected.client_phone);
   textRow(
     container,
     "Motocicleta",
     selected.motorcycle +
       (selected.motorcycle_year ? " · " + selected.motorcycle_year : ""),
-  );
-  textRow(container, "Servicio", selected.service);
+  ).className = "order-motorcycle";
+  textRow(container, "Cliente", selected.client_name);
+  textRow(container, "Teléfono", selected.client_phone);
+  textRow(container, "Servicio solicitado", selected.service).className =
+    "order-service";
   textRow(
     container,
     "Fecha solicitada",
     formatDate(selected.requested_date) + " · " + selected.requested_slot,
-  );
-  if (selected.details) textRow(container, "Observaciones", selected.details);
+  ).className = "order-service";
+  if (selected.details)
+    textRow(container, "Observaciones", selected.details).className =
+      "order-details";
   $("orderStatus").value = selected.status;
   $("internalNotes").value = selected.internal_notes || "";
+  updateOrderSaveState();
   $("items").replaceChildren();
   showOrderFeedback("itemsMessage", "");
   showOrderFeedback("orderMessage", "");
@@ -1099,6 +1242,7 @@ async function openOrder(id) {
   setLineControls(true);
   hideOrderGuide();
   $("orderDialog").showModal();
+  $("orderDialog").scrollTop = 0;
   try {
     const data = await readLines(db, id);
     if (version !== orderLoadVersion || !$("orderDialog").open) return;
@@ -1116,9 +1260,34 @@ async function openOrder(id) {
     showOrderFeedback("itemsMessage", saveError(error), true);
   }
 }
+function updateOrderSaveState() {
+  const changed =
+    selected &&
+    ($("orderStatus").value !== selected.status ||
+      $("internalNotes").value !== (selected.internal_notes || ""));
+  $("orderSaveState").textContent = savingOrder
+    ? "Guardando…"
+    : changed
+      ? "Cambios sin guardar"
+      : "Sin cambios pendientes";
+}
+for (const id of ["orderStatus", "internalNotes"]) {
+  $(id).addEventListener("input", () => {
+    showOrderFeedback("orderMessage", "");
+    updateOrderSaveState();
+  });
+}
+$("jumpToNote").addEventListener("click", (event) => {
+  event.preventDefault();
+  $("docClientHeading").focus({ preventScroll: true });
+  $("docClientHeading").scrollIntoView({ block: "start", behavior: "instant" });
+});
 $("saveOrder").addEventListener("click", async () => {
   if (!selected || savingOrder) return;
   savingOrder = true;
+  updateOrderSaveState();
+  $("orderEditing").setAttribute("aria-busy", "true");
+  showOrderFeedback("orderMessage", "");
   $("orderStatus").disabled = true;
   $("internalNotes").disabled = true;
   $("saveOrder").disabled = true;
@@ -1132,7 +1301,7 @@ $("saveOrder").addEventListener("click", async () => {
       .eq("id", selected.id)
       .select("*")
       .single();
-    if (error) {
+    if (error || !data?.id) {
       showOrderFeedback(
         "orderMessage",
         "No se pudo actualizar la orden. Revisa la conexión.",
@@ -1142,7 +1311,7 @@ $("saveOrder").addEventListener("click", async () => {
     }
     selected = data;
     await loadRecords();
-    showOrderFeedback("orderMessage", "✓ Estado y notas guardados.");
+    showOrderFeedback("orderMessage", "Estado y notas guardados");
     message("Cambios guardados en " + selected.folio + ".");
   } catch {
     showOrderFeedback(
@@ -1152,6 +1321,8 @@ $("saveOrder").addEventListener("click", async () => {
     );
   } finally {
     savingOrder = false;
+    updateOrderSaveState();
+    $("orderEditing").setAttribute("aria-busy", "false");
     $("orderStatus").disabled = false;
     $("internalNotes").disabled = false;
     $("saveOrder").disabled = false;
@@ -1224,7 +1395,13 @@ function lineElement(line, i) {
   make("Precio", price);
   const remove = document.createElement("button");
   remove.type = "button";
-  remove.textContent = "×";
+  const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  icon.setAttribute("class", "icon");
+  icon.setAttribute("aria-hidden", "true");
+  const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+  use.setAttribute("href", "#icon-close");
+  icon.append(use);
+  remove.append(icon);
   remove.setAttribute("aria-label", "Quitar concepto");
   remove.addEventListener("click", () => {
     serviceLines.splice(i, 1);

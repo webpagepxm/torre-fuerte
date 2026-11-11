@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-11",
+  "branch": "feat/ops-unslop-audit",
+  "checkpoint": "a9e326fdf590e6bd5059d9bc6fb7254231e4209f",
+  "data": "Supabase aislado con fixtures. Sin escrituras de producción ni mensajes reales.",
+  "checks": {
+    "service-lines": 6,
+    "functional": 24,
+    "ux-audit": 10,
+    "ops-unslop": 11,
+    "pdf-feedback": "PASS",
+    "browser": "14 combinaciones, sin overflow ni errores JS",
+    "axe": "6 superficies, 0 infracciones detectadas",
+    "syntax": "PASS",
+    "diff-check": "PASS",
+    "format": "Prettier 3.6.2: PASS"
+  },
+  "source_sha256": {
+    "operacion/index.html": "37d3b87d502fd137e2db724cbf8ba13b30292db87befe94c1644d8ccdda90b35",
+    "operacion/style.css": "03f1891c558a97e47b462ab8d32c589a05787a0d3e98e119a24742485e21180a",
+    "operacion/app.js": "80779ba2dde4ad41d004a978b8b07bb46f875aa39fcefd46019458576086fc71",
+    "operacion/service-lines.mjs": "6033af810f96f8b812ccbb3ea4b993c57c56bb25c8d180de3b042d2cc92478ad",
+    "index.html": "eb64b9bdf0ee1a5af69fd1a37d8a810aa5030e3c9b3158ef909302f414fec76b"
+  }
+}
