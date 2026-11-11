@@ -44,7 +44,10 @@ Deno.serve(async (req) => {
     if (input.consent !== true) return response({ error: "Debes aceptar el aviso de privacidad." }, 400, origin);
 
     const client_name = clean(input.nombre, 100);
-    const client_phone = clean(input.telefono, 24).replace(/[^\d]/g, "");
+    // El formulario actual no pide teléfono: se obtiene después en la conversación
+    // que el cliente inicia voluntariamente por WhatsApp. No inventar un número.
+    const provided_phone = clean(input.telefono, 24).replace(/[^\d]/g, "");
+    const client_phone = provided_phone || "Por confirmar en WhatsApp";
     const motorcycle = clean(input.moto, 100);
     const service = clean(input.servicio, 150);
     const requested_date = clean(input.fecha, 10);
@@ -54,7 +57,7 @@ Deno.serve(async (req) => {
     const idempotency_key = clean(input.idempotency_key, 36);
     const uuidOk = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idempotency_key);
     const allowedSlots = ["Mañana (9:00 a 12:00)", "Mediodía (12:00 a 15:00)", "Tarde (15:00 a 18:00)"];
-    if (client_name.length < 2 || client_phone.length < 10 || client_phone.length > 15 || motorcycle.length < 2 ||
+    if (client_name.length < 2 || (provided_phone.length > 0 && (provided_phone.length < 10 || provided_phone.length > 15)) || motorcycle.length < 2 ||
         service.length < 2 || !validDate(requested_date) || !allowedSlots.includes(requested_slot) ||
         (motorcycle_year !== null && (!Number.isInteger(motorcycle_year) || motorcycle_year < 1950 || motorcycle_year > 2100)) ||
         !uuidOk) {
@@ -87,10 +90,12 @@ Deno.serve(async (req) => {
     if (!allowed) return response({ error: "Demasiadas solicitudes recientes. Contacta al taller por WhatsApp." }, 429, origin);
 
     const limitSince = new Date(Date.now() - 15 * 60 * 1000).toISOString();
-    const { data: recent, error: recentError } = await db.from("tf_requests")
-      .select("id").eq("client_phone", client_phone).gte("created_at", limitSince).limit(4);
-    if (recentError) return response({ error: "No se pudo procesar la solicitud." }, 503, origin);
-    if ((recent || []).length >= 4) return response({ error: "Demasiadas solicitudes recientes. Contacta al taller por WhatsApp." }, 429, origin);
+    if (provided_phone) {
+      const { data: recent, error: recentError } = await db.from("tf_requests")
+        .select("id").eq("client_phone", client_phone).gte("created_at", limitSince).limit(4);
+      if (recentError) return response({ error: "No se pudo procesar la solicitud." }, 503, origin);
+      if ((recent || []).length >= 4) return response({ error: "Demasiadas solicitudes recientes. Contacta al taller por WhatsApp." }, 429, origin);
+    }
 
     const { data, error } = await db.from("tf_requests").insert({
       idempotency_key, source: "web", client_name, client_phone, motorcycle,
