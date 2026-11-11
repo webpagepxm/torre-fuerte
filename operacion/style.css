@@ -1984,13 +1984,18 @@ dialog::backdrop {
 #printReceipt {
   display: none;
 }
-/* Android: ayuda de instalación visible únicamente bajo el login en móvil. */
+/* Guía Android bajo el login: disponible para verla también desde escritorio. */
 .android-install[hidden],
 .android-install-steps[hidden] {
   display: none !important;
 }
 .android-install {
-  display: none;
+  display: grid;
+  gap: 12px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+  margin-top: 20px;
 }
 .android-install-illustration {
   display: block;
@@ -2057,14 +2062,18 @@ dialog::backdrop {
 .android-install-steps strong {
   color: var(--ink);
 }
+.android-install-status {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.android-install-status[hidden] {
+  display: none;
+}
 @media (max-width: 760px) {
-  .android-install:not([hidden]) {
-    display: grid;
-    gap: 12px;
-    text-align: center;
-    border-top: 1px solid var(--line);
-    padding-top: 24px;
-    margin-top: 20px;
+  .android-install-illustration {
+    width: min(72%, 190px);
   }
 }
 @media all and (display-mode: standalone) {
