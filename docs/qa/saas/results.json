@@ -1,0 +1,55 @@
+{
+  "base": "e9578bc13ffcedd3e1670178d3d5f7a361583ef0",
+  "suites": [
+    {
+      "name": "conceptos",
+      "passed": 6,
+      "log": "✔ importes en centavos y entradas inválidas (3.015983ms)\n✔ crear, actualizar y eliminar con lectura verificada (37.0407ms)\n✔ inserción fallida no elimina los conceptos previos (1.09154ms)\n✔ RLS que no devuelve filas no se considera éxito de eliminación (1.371532ms)\n✔ conflicto entre sesiones rechaza sobrescritura (2.115138ms)\n✔ respuesta parcial bloquea éxito y conserva id de inserción confirmado (2.26888ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 233.210602\n"
+    },
+    {
+      "name": "funcional",
+      "passed": 24,
+      "log": "PASS Usuario sin correo, validación de acceso, limpieza de clave y cierre de sesión\nPASS Acceso con rol y apertura de orden desde móvil\nPASS Validación rechaza conceptos incompletos\nPASS Guardar, calcular y verificar lectura posterior; evita doble guardado\nPASS Desglose recuperado al reabrir\nPASS Cambio de estado persistido y contadores actualizados\nPASS Tutorial de orden: avance, retroceso, salida y conservación de datos\nPASS PDF real con precios, total y sin notas internas; no reescribe datos sin cambios\nPASS Compartir: descarga alternativa en navegador sin Web Share\nPASS Comanda de 76 mm sin precios y separada de la nota\nPASS Detalle de orden sin desbordamiento en siete anchos\nPASS Error RLS visible; no falso éxito ni PDF tras fallo\nPASS Fallo de carga no reutiliza el desglose de otra moto\nPASS Conflicto con otra sesión detectado antes de escribir\nPASS Filtros por estado, búsqueda y estado vacío\nPASS Exportación CSV con datos de prueba\nPASS Calendario y pestañas con teclado\nPASS Guía inicial reiniciable y salida con Escape\nPASS Orden manual con cliente, moto y folio devuelto por servidor\nPASS Solicitud pendiente + WhatsApp + clave idempotente; caché sin datos personales\nPASS Fallo de registro público conserva ruta WhatsApp y muestra resultado real\nPASS Formularios públicos, menú móvil y navegación con teclado\nPASS Sin errores JavaScript en las interacciones probadas\nPASS SDK Supabase real carga desde jsDelivr y acceso sin sesión disponible\nAXE [{\"surface\":\"Página pública móvil\",\"violations\":[]},{\"surface\":\"Portal móvil\",\"violations\":[]},{\"surface\":\"Detalle de orden\",\"violations\":[]},{\"surface\":\"Tabla escritorio\",\"violations\":[]},{\"surface\":\"Calendario\",\"violations\":[]},{\"surface\":\"Acceso sin sesión y SDK real\",\"violations\":[]}]\n24 comprobaciones funcionales completadas; backend aislado mediante fixture.\n"
+    },
+    {
+      "name": "ux",
+      "passed": 10,
+      "log": "PASS Formulario de acceso completo en la primera pantalla de un móvil pequeño\nPASS Abrir orden disponible y funcional en tablet y escritorio\nPASS Filtros activos visibles y recuperables aun con panel cerrado\nPASS Navegación actualiza título y muestra filtros del contexto correcto\nPASS Notas y estado sin guardar protegidos al cerrar o pulsar Escape\nPASS Validación enfoca el campo incompleto y distingue precio vacío de cero explícito\nPASS Orden nueva con datos no se descarta accidentalmente\nPASS Cuenta se cierra por teclado sin perder foco\nPASS Acciones principales y filtros conservan objetivos táctiles de al menos 44 px a 320 px\nPASS Nueve pasos del tutorial caben a 320 px y no alteran datos\n10 comprobaciones adicionales de auditoría UX aprobadas.\n"
+    },
+    {
+      "name": "auditoria anterior",
+      "passed": 11,
+      "log": "PASS Primera moto y comanda accesibles en móvil; salto a nota conserva foco visible\nPASS Calendario diferido: semana legible con moto y estado en móvil, mes en escritorio\nPASS Estado de guardado distingue borrador, respuesta confirmada y nueva edición\nPASS Alta rechaza espacios/teléfono inválido, enfoca error y bloquea envíos simultáneos\nPASS Formulario usable con viewport reducido a 500 px; campos enfocados fuera de cabecera y acciones\nPASS Error inicial de consulta no se presenta como lista vacía ni carga perpetua\nPASS Lista anterior se identifica al fallar; recuperación y desconexión tienen mensajes reales\nPASS Taller vacío explica cómo recibir la primera moto sin métricas ficticias\nPASS Fallo de descarga del calendario permite reintentar sin perder órdenes\nPASS Datos de cliente se muestran como texto; exportación neutraliza fórmulas CSV\nPASS Sin errores JavaScript en los escenarios adicionales\n{\"passed\":11,\"geometry\":[{\"width\":320,\"firstOrderBefore\":623,\"firstOrderAfter\":473,\"printBefore\":1098,\"printAfter\":462},{\"width\":375,\"firstOrderBefore\":610,\"firstOrderAfter\":479,\"printBefore\":1035,\"printAfter\":440},{\"width\":390,\"firstOrderBefore\":610,\"firstOrderAfter\":468,\"printBefore\":1035,\"printAfter\":440},{\"width\":430,\"firstOrderBefore\":610,\"firstOrderAfter\":458,\"printBefore\":1015,\"printAfter\":440}]}\n"
+    },
+    {
+      "name": "refinamiento",
+      "passed": 7,
+      "log": "PASS Scripts públicos, WhatsApp, enlaces, validaciones y archivos de negocio idénticos al checkpoint\nPASS CTA responde al pulsar y navega de inmediato al formulario existente\nPASS Transición transitions.dev aplicada; movimiento reducido elimina desplazamientos animados\nPASS Objetivos táctiles, menú con Escape y foco de formulario conservados en móvil\nPASS Cuenta se abre desde el origen correcto y mantiene cierre por teclado en móvil/escritorio\nPASS Carga tiene feedback solo mientras ocurre; diálogo abre y cierra sin esperas ni escrituras decorativas\nPASS Acciones siguen disponibles con movimiento reducido y sin errores JavaScript\n7 comprobaciones de refinamiento aprobadas\n"
+    },
+    {
+      "name": "shader SaaS",
+      "passed": 10,
+      "log": "PASS Landing, autenticación, datos, documentos y eventos sin cambios\nPASS WebGL compila, cambia píxeles, no reporta errores y respeta raster/FPS acotados\nPASS Familias y tamaños de letra aprobados conservados\nPASS Pausa accesible, persistente y reactivación sin cambiar datos\nPASS Política de documento oculto: evento de visibilidad simulado pausa y reanuda\nPASS El shader se detiene al trabajar en un diálogo y vuelve al cerrarlo\nPASS Movimiento reducido pausa el dibujo y mantiene los controles del taller\nPASS Fuera de pantalla se detiene y vuelve a dibujar al regresar\nPASS Pérdida de contexto gráfico conserva fallback y búsqueda utilizable\nPASS Sin WebGL: acceso móvil completo, halo estático y sin desbordamiento\n10 comprobaciones SaaS correctas\n"
+    }
+  ],
+  "passed": 68,
+  "pdfRegression": "PASS recuperación del mensaje PDF y descarga sin repetir UPDATE de un desglose sin cambios\n",
+  "protectedHashes": {
+    "index.html": "34f743863d239c2197238b0eb3ad1b3484892e67e49efc130cbfce3c9ad39a76",
+    "assets/ui-interactions.css": "1177a75d52413de570774fe14716247c049d85bc57b9e31c20832fb750e23272",
+    "operacion/app.js": "80779ba2dde4ad41d004a978b8b07bb46f875aa39fcefd46019458576086fc71",
+    "operacion/service-lines.mjs": "6033af810f96f8b812ccbb3ea4b993c57c56bb25c8d180de3b042d2cc92478ad",
+    "tf-config.js": "efcf7b5db36437bab2d21c421ab303d1ab0093d74f6721fea601f16ce62be40d"
+  },
+  "widths": [
+    320,
+    375,
+    390,
+    430,
+    768,
+    1280,
+    1440
+  ],
+  "realSupabaseWrites": false,
+  "conditions": "Chromium con backend aislado y datos ficticios; no Android físico ni validación del servidor real."
+}
