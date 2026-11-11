@@ -41,6 +41,7 @@ Desde la raíz: `python3 -m http.server 8000 --bind 0.0.0.0`. No hay instalació
 
 - `node --check operacion/app.js` y `git diff --check`.
 - `node --test tests/service-lines.test.mjs`: errores, conflictos, eliminación, validación y cálculos.
+- `tests/live-supabase.mjs` es una prueba optativa contra la base real. Requiere autorización explícita para ese proyecto, flag `--allow-test-records` y contraseña por secreto HTTP; nunca ejecutarla como suite habitual. Ver `docs/qa/LIVE-TEST.md`.
 - Con Playwright disponible y Chromium en `/usr/bin/chromium`: `node tests/browser.cjs`, `node tests/functional.cjs`, `node tests/performance.cjs`.
 - Fixtures interceptan Supabase solo en pruebas; nunca añadir un modo de acceso ficticio al producto. `tests/browser.cjs` transporta assets públicos con curl y TLS verificado para respetar proxy/CA de nube.
 - Captura ambas superficies a 320, 375, 390, 430, 768, 1280 y 1440 px. Inspecciona composición, scroll, teclado, menús, orden, formularios, estados, tutorial y documentos; corrige y repite donde cambió.

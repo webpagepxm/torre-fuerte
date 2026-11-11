@@ -1,0 +1,26 @@
+# Prueba del Supabase real
+
+El usuario confirmó que el proyecto actual está en construcción, sin órdenes reales, y autorizó probar sobre ese mismo proyecto. No hace falta crear otro proyecto de Supabase. Esta autorización de la conversación no convierte la prueba en un paso automático para futuras tareas.
+
+`tests/live-supabase.mjs` usa el SDK oficial 2.95.0 y el mismo módulo `operacion/service-lines.mjs` que la aplicación. Crea una orden ficticia marcada `PRUEBA CODEX TF-QA-…`, añade mano de obra/refacción, verifica importes por lectura posterior, edita, recupera, cambia estado y elimina un concepto. Todas las modificaciones se limitan al ID creado en esa ejecución; para modificar/eliminar la orden también se comprueba su nombre exacto de prueba.
+
+La limpieza intenta quitar los conceptos y cancelar la orden de prueba aunque falle el desglose. Si el rol permite eliminar la orden, también la elimina; si no, conserva únicamente esa orden cancelada y lo informa. Nunca se borra una tabla ni se cambian permisos/esquema. La sesión creada por el test se cierra con scope local para no cerrar las otras sesiones del taller.
+
+## Requisito pendiente
+
+No hay ninguna credencial de personal disponible en los bindings ni en las variables actuales. El usuario `mecanicolider` ya forma parte del contrato del portal; la clave publicable no permite iniciar su sesión.
+
+Añadir por los ajustes de secretos HTTP del entorno un secreto llamado `TF_STAFF_PASSWORD`, con variable del mismo nombre y destino permitido `pmeomhohqgdgaygkbeoe.supabase.co`. El valor es la contraseña del portal y debe introducirse en la interfaz segura, nunca en chat ni en el repositorio. El intento de declarar este requisito mediante la herramienta de borrador no pudo confirmar persistencia (`INVALID_ARGUMENT`).
+
+## Ejecución autorizada
+
+Herramientas de prueba aisladas fuera del checkout:
+
+```sh
+npm_config_cache=/tmp/tf-npm npm install --prefix /tmp/tf-live-tools --no-audit --no-fund --ignore-scripts @supabase/supabase-js@2.95.0
+node --use-env-proxy tests/live-supabase.mjs --allow-test-records
+```
+
+Node conserva el proxy y TLS del entorno. La contraseña se usa únicamente en la solicitud HTTPS de inicio de sesión; los tokens quedan en memoria, sin almacenamiento persistente de Auth. Los resultados y el identificador del registro ficticio se guardan en `/tmp/torre-fuerte-qa/live`, sin credenciales.
+
+**Estado:** script preparado y comprobación de sintaxis aprobada. Al ejecutarlo sin credencial devuelve salida 78 y no hace peticiones ni escribe registros. La prueba real sigue sin ejecutarse hasta que esté disponible el acceso del personal.
