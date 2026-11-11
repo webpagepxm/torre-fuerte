@@ -33,8 +33,8 @@
 - **Nombre comercial provisional:** Torre Fuerte de Puerto Escondido.
 - **Domicilio informado:** Calle 29 de Octubre, La Guayabillera, C. P. 70934, La Barra de Colotepec, Oaxaca, México.
 - **WhatsApp de contacto visible en la página:** 954 544 5822 (aún debe confirmarse como canal formal de privacidad).
-- **Falta:** confirmar nombre legal de la persona física o razón social responsable del tratamiento. El nombre comercial provisional no se presenta como identidad legal.
-- **Aviso:** `aviso-privacidad.html` ahora tiene texto completo para revisión, señalizado expresamente como borrador. **No activar almacenamiento de solicitudes desde la página pública hasta aprobarlo.**
+- **Responsable legal informado:** José Francisco Díaz Medina. El nombre comercial provisional no sustituye su identidad como responsable.
+- **Aviso:** `aviso-privacidad.html` incluye a José Francisco Díaz Medina y el domicilio proporcionado; se mantiene como borrador hasta que el responsable apruebe el contenido y confirme el canal ARCO de WhatsApp **954 544 5822**. No activar el almacenamiento desde la web sin esa aprobación.
 
 ## Folio automático desde la página pública (solicitud de cita)
 - **Un solo folio:** `tf_requests.folio` lo asigna Postgres en el momento de insertar la solicitud, incluso antes de confirmar la cita.
