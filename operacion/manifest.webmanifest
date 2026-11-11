@@ -1,0 +1,27 @@
+{
+  "id": "./",
+  "name": "Torre Fuerte Ops",
+  "short_name": "Torre Fuerte",
+  "description": "Órdenes, citas y operación del taller de motos Torre Fuerte.",
+  "lang": "es-MX",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7fc",
+  "theme_color": "#f6f7fc",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./icons/torre-fuerte-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/torre-fuerte-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
