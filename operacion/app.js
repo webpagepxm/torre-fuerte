@@ -1154,6 +1154,7 @@ $("saveItems").addEventListener("click", saveLines);
 function markLinesDirty() {
   linesDirty = true;
   showOrderFeedback("itemsMessage", "");
+  showOrderFeedback("pdfMessage", "");
   $("linesState").textContent = "Cambios sin guardar · importes en MXN";
 }
 function setLineControls(disabled) {
@@ -1175,7 +1176,6 @@ $("orderDialog").addEventListener("cancel", (event) => {
 });
 async function saveLines() {
   if (!selected || !linesLoaded || savingLines) return false;
-  showOrderFeedback("itemsMessage", "");
   if (!serviceLines.length && !savedLines.length) {
     showOrderFeedback(
       "itemsMessage",
@@ -1193,6 +1193,7 @@ async function saveLines() {
     return false;
   }
   if (!linesDirty) return true;
+  showOrderFeedback("itemsMessage", "");
   savingLines = true;
   setLineControls(true);
   $("saveItems").textContent = "Guardando y verificando…";
@@ -1205,6 +1206,7 @@ async function saveLines() {
     );
     savedLines = structuredClone(serviceLines);
     linesDirty = false;
+    showOrderFeedback("pdfMessage", "");
     renderLines();
     showOrderFeedback(
       "itemsMessage",
@@ -1319,7 +1321,10 @@ async function buildPdfBlob() {
   if (!selected) throw new Error("Selecciona una orden.");
   await ensurePdfLibrary();
   const ok = await saveLines();
-  if (!ok) throw new Error("Primero guarda el desglose.");
+  if (!ok)
+    throw new Error(
+      "No se pudo verificar el desglose. Revisa el mensaje de guardado.",
+    );
   if (!serviceLines.length)
     throw Error("La nota necesita al menos un concepto.");
   const body = [
