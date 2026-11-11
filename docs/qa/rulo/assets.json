@@ -1,0 +1,57 @@
+{
+  "source": "Rulo_Torre_Fuerte.zip, proporcionado por el usuario",
+  "zipSha256": "bd02404ecfea5598db84e822418b4991d16a25f9d2ea5d0230408111beb2159e",
+  "webpTotalBytes": 528680,
+  "assets": [
+    {
+      "file": "assets/ops/rulo-login.webp",
+      "bytes": 89222,
+      "sha256": "11e38fff6648aa2f37f200851a72111b619be9536340f93817e26605c5061608",
+      "width": 640,
+      "height": 640,
+      "pngFallback": "rulo-login.png"
+    },
+    {
+      "file": "assets/ops/rulo-servicio-finalizado.webp",
+      "bytes": 87712,
+      "sha256": "b43499d544cf59618c846f530795871c0307254d57d709af0bd8c3e0de5dd36a",
+      "width": 640,
+      "height": 640,
+      "pngFallback": "rulo-servicio-finalizado.png"
+    },
+    {
+      "file": "assets/ops/rulo-sin-conexion.webp",
+      "bytes": 78280,
+      "sha256": "dcebea66e6a4c91035d49720a58e9dae4f9724c38b3364ddb67dff4f5aa8a804",
+      "width": 640,
+      "height": 640,
+      "pngFallback": "rulo-sin-conexion.png"
+    },
+    {
+      "file": "assets/ops/rulo-sin-historial.webp",
+      "bytes": 72108,
+      "sha256": "0bea41f5e3178a4ff7aec4bec4a40ef00f369a716ea7d1d80d0a6026d7ed8cda",
+      "width": 640,
+      "height": 640,
+      "pngFallback": "rulo-sin-historial.png"
+    },
+    {
+      "file": "assets/ops/rulo-sin-ordenes.webp",
+      "bytes": 123242,
+      "sha256": "ac6c64af1df0a4d4d8b8cd2a67ef73e25d71c785fbc061723dd38fa8f5f625b8",
+      "width": 640,
+      "height": 640,
+      "pngFallback": "rulo-sin-ordenes.png"
+    },
+    {
+      "file": "assets/ops/rulo-sin-solicitudes.webp",
+      "bytes": 78116,
+      "sha256": "1183108363caaf5d5e6820c1a1e4a3a298073368802592b8d83c031c8157c1e2",
+      "width": 640,
+      "height": 640,
+      "pngFallback": "rulo-sin-solicitudes.png"
+    }
+  ],
+  "installerDryRun": "Anclas válidas",
+  "installerRerun": "Hashes de HTML, JS, CSS y 12 imágenes idénticos tras reejecutar"
+}

@@ -79,3 +79,11 @@ Una orden Lista/Entregada confirmada por el guardado existente ofrece resumen y 
 La vista usa FullCalendar 6.1.19 como motor diferido y controles propios Mes/Agenda/periodo/Hoy. Preservar fechas/franjas, seis estados, IDs de órdenes y apertura mediante `openOrder`; no añadir edición por arrastre ni escrituras de calendario. El panel del día es presentación de las mismas órdenes; la agenda general de hoy solo se muestra en Órdenes. En móvil el mes es compacto a ancho completo con fechas de 44 px y detalle debajo; Agenda es la vista inicial.
 
 Antes de publicar cambios de esta vista: `node tests/calendar-ui.cjs`, además de las comprobaciones de contratos y documentos. No confundir fallo inicial de datos con calendario vacío. El panel Más órdenes conserva botón de cierre enfocable, retorno de foco y Escape. Capturas reproducibles con `TF_PHASE=before|after node tests/capture-calendar.cjs` (base `6b41f40`).
+
+## Ilustraciones de Rulo
+
+Integración en `feat/rulo-illustrations`, sin despliegue ni merge a producción durante esta tarea. Paquete del usuario revisado; WebP preferido y PNG de respaldo locales en `assets/ops/`. No insertar estas ilustraciones en la web pública, comanda o PDF. Son decorativas y no sustituyen texto, errores o acciones.
+
+Los vacíos dependen de consulta terminada correctamente; `data-records-state` es solo presentación, no un campo de Supabase. El arte de éxito hereda exclusivamente `#orderCompletion`; no añadir confirmaciones por clic. Sin historial es búsqueda sin resultados, no una función nueva. El aviso sin conexión conserva la función y el nodo de texto originales; su imagen se mantiene cargada para el corte de red.
+
+`node tests/rulo-ui.cjs` verifica estados reales/negativos con fixtures, WebP seleccionado, corte de red del navegador, siete anchos, foco/acciones y accesibilidad. `TF_PHASE=before|after node tests/capture-rulo.cjs` captura las seis escenas contra `a3f6433`. Ver `docs/rulo-review.md` y `docs/rulo-integration.md`.

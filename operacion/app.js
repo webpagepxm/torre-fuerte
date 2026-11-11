@@ -442,7 +442,26 @@ function renderActivity() {
     const p = document.createElement("p");
     p.className = "empty-state";
     p.textContent = "No hay citas solicitadas para hoy.";
-    holder.append(p);
+    // TF_RULO_ART_V1: mostrar arte únicamente después de cargar correctamente.
+    if (recordsLoaded && !recordsFailed) {
+      const wrap = document.createElement("div");
+      wrap.className = "ops-mini-empty";
+      const picture = document.createElement("picture");
+      picture.setAttribute("aria-hidden", "true");
+      const source = document.createElement("source");
+      source.type = "image/webp";
+      source.srcset = "../assets/ops/rulo-sin-solicitudes.webp";
+      const img = document.createElement("img");
+      img.src = "../assets/ops/rulo-sin-solicitudes.png";
+      img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.width = 112;
+      img.height = 112;
+      picture.append(source, img);
+      wrap.append(picture, p);
+      holder.append(wrap);
+    } else holder.append(p);
   }
   today.slice(0, 3).forEach((record) => {
     const button = document.createElement("button");
@@ -660,6 +679,21 @@ function renderMobileOrders() {
   const holder = $("mobileOrders");
   holder.replaceChildren();
   const rows = records.filter(filterRow);
+  // TF_RULO_ART_V1: estados exclusivamente visuales, nunca mientras carga o falla la consulta.
+  $("ordersSection").dataset.recordsState = recordsFailed
+    ? "error"
+    : recordsLoaded
+      ? "ready"
+      : "loading";
+  const showEmptyOrders = recordsLoaded && !recordsFailed && !records.length;
+  const showEmptySearch =
+    recordsLoaded && !recordsFailed && records.length > 0 && !rows.length;
+  $("opsEmptyOrders").hidden = !showEmptyOrders;
+  $("opsEmptySearch").hidden = !showEmptySearch;
+  $("ordersSection").classList.toggle(
+    "ops-illustrated-zero",
+    showEmptyOrders || showEmptySearch,
+  );
   $("listCount").textContent = rows.length
     ? rows.length + (rows.length === 1 ? " orden" : " órdenes")
     : records.length

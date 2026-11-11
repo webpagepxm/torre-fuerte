@@ -74,3 +74,11 @@ Controles propios de periodo/Hoy y selector Mes/Agenda; retirar la barra visual 
 Fechas con foco único y flechas/Home/End. A 600 px o menos el mes ocupa el ancho completo para conservar botones de fecha de 44 px; muestra cantidad por día y detalle debajo. No representar franjas solicitadas como horas reservadas. En Agenda se leen cliente/servicio y se retira el panel duplicado del día. Controles, hover/foco, más órdenes y cierre por Escape pertenecen al mismo sistema. Transición de periodo: opacidad de 180 ms, sin espera y sin movimiento bajo reduced motion.
 
 `tests/calendar-ui.cjs` comprueba selección, teclado, toques, apertura única, estados de error y siete anchos con ambas vistas. Evidencia antes/después y medición acotada en `docs/calendar-workspace.md`.
+
+## Rulo · ilustraciones de estado
+
+Usar los seis WebP suministrados en `assets/ops/`, con PNG de respaldo en `picture`, sin recolorear ni recortar. Decoración con `alt=""` y `aria-hidden`; el texto útil permanece en HTML. Mantener el sistema blanco/lavanda, las familias y tamaños existentes.
+
+Contextos: acceso en la cabecera de `.signin`; sin órdenes únicamente con consulta correcta sin registros; agenda de hoy vacía después de carga correcta; carpeta/lupa para búsqueda/filtros sin coincidencias, sin inventar módulo de historial; servicio finalizado dentro de `#orderCompletion`, controlado por el éxito existente de Lista/Entregada; sin conexión junto al aviso existente. El aviso offline mantiene su ID y texto y su imagen local se carga con baja prioridad mientras existe red.
+
+Ocultar ilustraciones de vacío durante carga/error y cuando el aviso offline es prioritario. Reservar proporción cuadrada para evitar desplazamientos al decodificar. El acceso móvil mantiene Entrar en el primer viewport; el cierre móvil usa título/imagen y contenido a ancho completo para no estrechar la acción de nota. Sin bucles o animaciones de Rulo. No incluirlo en comanda o PDF. La ilustración de agenda conserva el suelo dibujado del original.

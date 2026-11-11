@@ -1,0 +1,64 @@
+{
+  "base": "a3f64337d8efb72eed7312836a5f46b8d216b4c1",
+  "branch": "feat/rulo-illustrations",
+  "passed": 110,
+  "suites": [
+    {
+      "name": "conceptos",
+      "passed": 6,
+      "log": "✔ importes en centavos y entradas inválidas (1.134856ms)\n✔ crear, actualizar y eliminar con lectura verificada (12.94096ms)\n✔ inserción fallida no elimina los conceptos previos (0.724689ms)\n✔ RLS que no devuelve filas no se considera éxito de eliminación (0.836467ms)\n✔ conflicto entre sesiones rechaza sobrescritura (0.400332ms)\n✔ respuesta parcial bloquea éxito y conserva id de inserción confirmado (0.501323ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 112.931683\n"
+    },
+    {
+      "name": "funcional",
+      "passed": 24,
+      "log": "PASS Usuario sin correo, validación de acceso, limpieza de clave y cierre de sesión\nPASS Acceso con rol y apertura de orden desde móvil\nPASS Validación rechaza conceptos incompletos\nPASS Guardar, calcular y verificar lectura posterior; evita doble guardado\nPASS Desglose recuperado al reabrir\nPASS Cambio de estado persistido y contadores actualizados\nPASS Tutorial de orden: avance, retroceso, salida y conservación de datos\nPASS PDF real con precios, total y sin notas internas; no reescribe datos sin cambios\nPASS Compartir: descarga alternativa en navegador sin Web Share\nPASS Comanda de 76 mm sin precios y separada de la nota\nPASS Detalle de orden sin desbordamiento en siete anchos\nPASS Error RLS visible; no falso éxito ni PDF tras fallo\nPASS Fallo de carga no reutiliza el desglose de otra moto\nPASS Conflicto con otra sesión detectado antes de escribir\nPASS Filtros por estado, búsqueda y estado vacío\nPASS Exportación CSV con datos de prueba\nPASS Calendario y pestañas con teclado\nPASS Guía inicial reiniciable y salida con Escape\nPASS Orden manual con cliente, moto y folio devuelto por servidor\nPASS Solicitud pendiente + WhatsApp + clave idempotente; caché sin datos personales\nPASS Fallo de registro público conserva ruta WhatsApp y muestra resultado real\nPASS Formularios públicos, menú móvil y navegación con teclado\nPASS Sin errores JavaScript en las interacciones probadas\nPASS SDK Supabase real carga desde jsDelivr y acceso sin sesión disponible\nAXE [{\"surface\":\"Página pública móvil\",\"violations\":[]},{\"surface\":\"Portal móvil\",\"violations\":[]},{\"surface\":\"Detalle de orden\",\"violations\":[]},{\"surface\":\"Tabla escritorio\",\"violations\":[]},{\"surface\":\"Calendario\",\"violations\":[]},{\"surface\":\"Acceso sin sesión y SDK real\",\"violations\":[]}]\n24 comprobaciones funcionales completadas; backend aislado mediante fixture.\n"
+    },
+    {
+      "name": "UX",
+      "passed": 10,
+      "log": "PASS Formulario de acceso completo en la primera pantalla de un móvil pequeño\nPASS Abrir orden disponible y funcional en tablet y escritorio\nPASS Filtros activos visibles y recuperables aun con panel cerrado\nPASS Navegación actualiza título y muestra filtros del contexto correcto\nPASS Notas y estado sin guardar protegidos al cerrar o pulsar Escape\nPASS Validación enfoca el campo incompleto y distingue precio vacío de cero explícito\nPASS Orden nueva con datos no se descarta accidentalmente\nPASS Cuenta se cierra por teclado sin perder foco\nPASS Acciones principales y filtros conservan objetivos táctiles de al menos 44 px a 320 px\nPASS Nueve pasos del tutorial caben a 320 px y no alteran datos\n10 comprobaciones adicionales de auditoría UX aprobadas.\n"
+    },
+    {
+      "name": "auditoría previa",
+      "passed": 11,
+      "log": "PASS Primera moto y comanda accesibles en móvil; salto a nota conserva foco visible\nPASS Calendario diferido: semana legible con moto y estado en móvil, mes en escritorio\nPASS Estado de guardado distingue borrador, respuesta confirmada y nueva edición\nPASS Alta rechaza espacios/teléfono inválido, enfoca error y bloquea envíos simultáneos\nPASS Formulario usable con viewport reducido a 500 px; campos enfocados fuera de cabecera y acciones\nPASS Error inicial de consulta no se presenta como lista vacía ni carga perpetua\nPASS Lista anterior se identifica al fallar; recuperación y desconexión tienen mensajes reales\nPASS Taller vacío explica cómo recibir la primera moto sin métricas ficticias\nPASS Fallo de descarga del calendario permite reintentar sin perder órdenes\nPASS Datos de cliente se muestran como texto; exportación neutraliza fórmulas CSV\nPASS Sin errores JavaScript en los escenarios adicionales\n{\"passed\":11,\"geometry\":[{\"width\":320,\"firstOrderBefore\":623,\"firstOrderAfter\":473,\"printBefore\":1098,\"printAfter\":462},{\"width\":375,\"firstOrderBefore\":610,\"firstOrderAfter\":479,\"printBefore\":1035,\"printAfter\":440},{\"width\":390,\"firstOrderBefore\":610,\"firstOrderAfter\":468,\"printBefore\":1035,\"printAfter\":440},{\"width\":430,\"firstOrderBefore\":610,\"firstOrderAfter\":458,\"printBefore\":1015,\"printAfter\":440}]}\n"
+    },
+    {
+      "name": "refinamiento",
+      "passed": 7,
+      "log": "PASS WhatsApp, enlaces, validaciones, consultas y documentos preservados\nPASS CTA responde al pulsar y navega de inmediato al formulario existente\nPASS Transición transitions.dev aplicada; movimiento reducido elimina desplazamientos animados\nPASS Objetivos táctiles, menú con Escape y foco de formulario conservados en móvil\nPASS Cuenta se abre desde el origen correcto y mantiene cierre por teclado en móvil/escritorio\nPASS Carga tiene feedback solo mientras ocurre; diálogo abre y cierra sin esperas ni escrituras decorativas\nPASS Acciones siguen disponibles con movimiento reducido y sin errores JavaScript\n7 comprobaciones de refinamiento aprobadas\n"
+    },
+    {
+      "name": "calendario",
+      "passed": 14,
+      "log": "PASS Solo cambia la presentación del calendario; contratos, landing, shader y documentos preservados\nPASS Carga diferida y controles propios Mes/Agenda con selección real\nPASS Día seleccionado muestra las cuatro órdenes reales del fixture, sin notas internas ni agenda duplicada\nPASS Fechas con flechas y Home, foco único y vacío específico del día\nPASS Periodo anterior/siguiente y Hoy actualizan fecha, resumen y selección\nPASS Más órdenes se abre también por teclado y conserva acceso a los registros\nPASS Eventos del mes y panel del día abren la orden existente, con teclado y clic\nPASS Agenda presenta moto, cliente, estado, servicio y franja; abre una sola vez\nPASS Mes y Agenda caben en siete anchos; controles y fechas conservan 44 px\nPASS Axe sin infracciones detectadas en las cuatro superficies nuevas\nPASS Taps sintetizados a 320 px abren Agenda, orden y selección mensual\nPASS Fallo de carga retira controles no disponibles; Actualizar recupera el calendario\nPASS Error inicial de datos no se presenta como calendario vacío y permite recuperar\nPASS Datos del cliente se presentan como texto y no ejecutan HTML\n14 comprobaciones de calendario aprobadas\n"
+    },
+    {
+      "name": "cierres",
+      "passed": 14,
+      "log": "PASS Consultas, validaciones, autenticación, WhatsApp y documentos preservados\nPASS Primera visita y primera orden funcionales, sin guías automáticas\nPASS Finalización aparece solo después de respuesta persistida, con folio, moto y servicio\nPASS Acción de cierre lleva al documento existente y conserva foco, sin escribir datos\nPASS Editar retira la confirmación anterior; notas sin cambio de estado no repiten el cierre especial\nPASS Fallo al guardar conserva estado y notas sin mostrar cierre confirmado\nPASS Respuesta sin registro no confirma; reintento válido confirma la entrega real\nPASS Cancelar el menú de compartir termina la preparación y ofrece descarga\nPASS Web Share resuelto no se presenta como mensaje enviado al cliente\nPASS Impresión distingue comanda preparada de impresión física confirmada\nPASS Reabrir una orden no conserva confirmaciones de la operación anterior\nPASS Calendario toma los mismos tokens de estado de la lista\nPASS Salida pública explica envío manual en WhatsApp y verificación, sin prometer cuentas ni historial conectado\nPASS Taps sintetizados en Chromium abren/cierra orden y despliegan filtros\n14 comprobaciones finales aprobadas\n"
+    },
+    {
+      "name": "shader",
+      "passed": 12,
+      "log": "PASS Contratos de datos, WhatsApp y documentos preservados\nPASS Reposo inicial sin GPU ni animación decorativa automática\nPASS WebGL compila, cambia píxeles, no reporta errores y mantiene raster acotado\nPASS Familias y tamaños de letra aprobados conservados\nPASS El halo se detiene tras 1.6 s; no hay bucle en reposo\nPASS Pausa accesible, persistente y reactivación sin cambiar datos\nPASS Política de documento oculto: evento de visibilidad simulado pausa y reanuda\nPASS El shader se detiene al trabajar en un diálogo y vuelve al cerrarlo\nPASS Movimiento reducido pausa el dibujo y mantiene los controles del taller\nPASS Fuera de pantalla se detiene y vuelve a dibujar al regresar\nPASS Pérdida de contexto gráfico conserva fallback y búsqueda utilizable\nPASS Sin WebGL: acceso móvil completo, halo estático y sin desbordamiento\n12 comprobaciones SaaS correctas\n"
+    },
+    {
+      "name": "Rulo",
+      "passed": 12,
+      "log": "PASS Autenticación, consultas, WhatsApp, órdenes, comanda, PDF y landing idénticos; solo cambian dos renderers visuales\nPASS Una lista normal no muestra vacíos, desconexión o éxito de Rulo\nPASS Búsqueda sin coincidencias usa carpeta/lupa y Limpiar recupera las órdenes\nPASS Taller vacío solo tras consulta correcta; la escena se retira durante la carga\nPASS Un fallo inicial o de actualización no se presenta con ilustraciones de datos vacíos\nPASS La recuperación y la llegada de órdenes retiran el vacío y mantienen Abrir\nPASS La tabla de escritorio recupera sus columnas y Abrir al pasar de cero a una orden\nPASS Sin solicitudes corresponde a la agenda de hoy; no invade el calendario\nPASS La imagen offline ya está cargada cuando se corta la red; se mantiene el aviso y desaparece al reconectar\nPASS Servicio finalizado solo tras persistir lista/entregada, nunca por clic, fallo o guardado de notas\nPASS Las seis escenas usan WebP decorativo, proporción reservada y caben en siete anchos con acciones visibles\nPASS Sin solicitudes PNG ni errores JavaScript; axe sin infracciones en los estados ilustrados\n12 comprobaciones Rulo aprobadas\n"
+    }
+  ],
+  "pdfRegression": "PASS recuperación del mensaje PDF y descarga sin repetir UPDATE de un desglose sin cambios\n",
+  "viewports": "public 320 OK\npublic 375 OK\npublic 390 OK\npublic 430 OK\npublic 768 OK\npublic 1280 OK\npublic 1440 OK\nportal 320 OK\nportal 375 OK\nportal 390 OK\nportal 430 OK\nportal 768 OK\nportal 1280 OK\nportal 1440 OK\nJS errors []\n",
+  "protectedFilesSha256": {
+    "index.html": "1c58ac70e7ea7656708be2b159628e4d70d9b40a818433b776ef7988ae9bdf7e",
+    "tf-config.js": "efcf7b5db36437bab2d21c421ab303d1ab0093d74f6721fea601f16ce62be40d",
+    "operacion/service-lines.mjs": "6033af810f96f8b812ccbb3ea4b993c57c56bb25c8d180de3b042d2cc92478ad",
+    "operacion/atmosphere.js": "3f1983cc32ffb4b0034c9d4890dc2642aff1e0997db82dd53bd9d4aeaa9a233f",
+    "assets/ui-interactions.css": "1177a75d52413de570774fe14716247c049d85bc57b9e31c20832fb750e23272"
+  },
+  "productionDeployment": false,
+  "realSupabaseWrites": false,
+  "conditions": "Chromium con fixtures aislados. Corte real de red del navegador tras carga inicial; no dispositivo Android físico o impresora real."
+}

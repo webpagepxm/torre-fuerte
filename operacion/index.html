@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="../assets/ui-interactions.css?v=premium-20261111-1"
     />
-    <link rel="stylesheet" href="./style.css?v=calendar-20261111-1" />
+    <link rel="stylesheet" href="./style.css?v=rulo-20261111-1" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.css"
@@ -33,7 +33,7 @@
       src="https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.js.iife.js"
     ></script>
     <script type="module" src="./atmosphere.js?v=final-20261111-1"></script>
-    <script type="module" src="./app.js?v=calendar-20261111-1"></script>
+    <script type="module" src="./app.js?v=rulo-20261111-1"></script>
   </head>
   <body>
     <!-- Lucide 0.468.0, ISC: vendor/lucide-LICENSE.txt. Trazos adaptados a 18 px / 1.5. -->
@@ -132,10 +132,29 @@
           <div class="aurora-frame" data-aurora aria-hidden="true">
             <canvas></canvas>
           </div>
-          <h1>Entrar al taller</h1>
-          <p>
-            Solo personal autorizado. Los datos de clientes no son públicos.
-          </p>
+          <!-- TORRE FUERTE / RULO ILLUSTRATIONS v1 -->
+
+          <div class="signin-intro">
+            <div>
+              <h1>Entrar al taller</h1>
+              <p>
+                Solo personal autorizado. Los datos de clientes no son públicos.
+              </p>
+            </div>
+            <picture class="ops-login-art" aria-hidden="true">
+              <source
+                srcset="../assets/ops/rulo-login.webp"
+                type="image/webp"
+              />
+              <img
+                src="../assets/ops/rulo-login.png"
+                alt=""
+                width="180"
+                height="180"
+                decoding="async"
+              />
+            </picture>
+          </div>
           <div id="setupNotice" class="alert err" hidden>
             El portal todavía no tiene una conexión configurada. No podrás
             iniciar sesión hasta completar la configuración.
@@ -188,12 +207,28 @@
             ><button id="newOrder" class="primary">Recibir moto</button>
           </div>
         </div>
-        <p
-          id="connectionMessage"
-          class="connection-message"
-          role="status"
-          hidden
-        ></p>
+        <div class="ops-connection-status">
+          <p
+            id="connectionMessage"
+            class="connection-message"
+            role="status"
+            hidden
+          ></p>
+          <picture class="ops-connection-art" aria-hidden="true">
+            <source
+              srcset="../assets/ops/rulo-sin-conexion.webp"
+              type="image/webp"
+            />
+            <img
+              src="../assets/ops/rulo-sin-conexion.png"
+              width="108"
+              height="108"
+              alt=""
+              decoding="async"
+              fetchpriority="low"
+            />
+          </picture>
+        </div>
         <div id="statusMessage" role="status"></div>
         <div class="tabs" role="tablist" aria-label="Secciones del portal">
           <button
@@ -307,6 +342,48 @@
             <p id="ordersLoadError" class="load-error" hidden>
               No pudimos consultar la lista. Pulsa Actualizar para reintentar
             </p>
+            <div id="opsEmptyOrders" class="ops-illustrated-empty" hidden>
+              <picture aria-hidden="true">
+                <source
+                  srcset="../assets/ops/rulo-sin-ordenes.webp"
+                  type="image/webp"
+                />
+                <img
+                  src="../assets/ops/rulo-sin-ordenes.png"
+                  width="240"
+                  height="240"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+              <h3>Todavía no hay órdenes</h3>
+              <p>
+                Cuando registres una moto, podrás consultarla aquí. Usa «Recibir
+                moto» para comenzar.
+              </p>
+            </div>
+            <div id="opsEmptySearch" class="ops-illustrated-empty" hidden>
+              <picture aria-hidden="true">
+                <source
+                  srcset="../assets/ops/rulo-sin-historial.webp"
+                  type="image/webp"
+                />
+                <img
+                  src="../assets/ops/rulo-sin-historial.png"
+                  width="240"
+                  height="240"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+              <h3>No encontramos coincidencias</h3>
+              <p>
+                Prueba otro nombre, folio o moto, o pulsa «Limpiar» para quitar
+                los filtros.
+              </p>
+            </div>
             <div id="ordersTable"></div>
             <nav
               id="ordersPagination"
@@ -587,6 +664,20 @@
           hidden
         >
           <svg class="icon" aria-hidden="true"><use href="#icon-check" /></svg>
+          <picture class="ops-complete-art" aria-hidden="true">
+            <source
+              srcset="../assets/ops/rulo-servicio-finalizado.webp"
+              type="image/webp"
+            />
+            <img
+              src="../assets/ops/rulo-servicio-finalizado.png"
+              width="138"
+              height="138"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
           <div>
             <h3 id="completionTitle">Lista para entregar</h3>
             <p id="completionSummary"></p>

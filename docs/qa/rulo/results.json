@@ -1,0 +1,587 @@
+{
+  "passed": 12,
+  "checks": [
+    "Autenticación, consultas, WhatsApp, órdenes, comanda, PDF y landing idénticos; solo cambian dos renderers visuales",
+    "Una lista normal no muestra vacíos, desconexión o éxito de Rulo",
+    "Búsqueda sin coincidencias usa carpeta/lupa y Limpiar recupera las órdenes",
+    "Taller vacío solo tras consulta correcta; la escena se retira durante la carga",
+    "Un fallo inicial o de actualización no se presenta con ilustraciones de datos vacíos",
+    "La recuperación y la llegada de órdenes retiran el vacío y mantienen Abrir",
+    "La tabla de escritorio recupera sus columnas y Abrir al pasar de cero a una orden",
+    "Sin solicitudes corresponde a la agenda de hoy; no invade el calendario",
+    "La imagen offline ya está cargada cuando se corta la red; se mantiene el aviso y desaparece al reconectar",
+    "Servicio finalizado solo tras persistir lista/entregada, nunca por clic, fallo o guardado de notas",
+    "Las seis escenas usan WebP decorativo, proporción reservada y caben en siete anchos con acciones visibles",
+    "Sin solicitudes PNG ni errores JavaScript; axe sin infracciones en los estados ilustrados"
+  ],
+  "geometry": [
+    {
+      "state": "login",
+      "viewport": 320,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-login.webp",
+        "alt": "",
+        "width": 80,
+        "height": 80,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "login",
+      "viewport": 375,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-login.webp",
+        "alt": "",
+        "width": 80,
+        "height": 80,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "login",
+      "viewport": 390,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-login.webp",
+        "alt": "",
+        "width": 80,
+        "height": 80,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "login",
+      "viewport": 430,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-login.webp",
+        "alt": "",
+        "width": 80,
+        "height": 80,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "login",
+      "viewport": 768,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-login.webp",
+        "alt": "",
+        "width": 112,
+        "height": 112,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "login",
+      "viewport": 1280,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-login.webp",
+        "alt": "",
+        "width": 112,
+        "height": 112,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "login",
+      "viewport": 1440,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-login.webp",
+        "alt": "",
+        "width": 112,
+        "height": 112,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "orders-empty",
+      "viewport": 320,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-ordenes.webp",
+        "alt": "",
+        "width": 152,
+        "height": 152,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "orders-empty",
+      "viewport": 375,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-ordenes.webp",
+        "alt": "",
+        "width": 152,
+        "height": 152,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "orders-empty",
+      "viewport": 390,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-ordenes.webp",
+        "alt": "",
+        "width": 152,
+        "height": 152,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "orders-empty",
+      "viewport": 430,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-ordenes.webp",
+        "alt": "",
+        "width": 152,
+        "height": 152,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "orders-empty",
+      "viewport": 768,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-ordenes.webp",
+        "alt": "",
+        "width": 176,
+        "height": 176,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "orders-empty",
+      "viewport": 1280,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-ordenes.webp",
+        "alt": "",
+        "width": 176,
+        "height": 176,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "orders-empty",
+      "viewport": 1440,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-ordenes.webp",
+        "alt": "",
+        "width": 176,
+        "height": 176,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "agenda-empty",
+      "viewport": 320,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-solicitudes.webp",
+        "alt": "",
+        "width": 88,
+        "height": 88,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "agenda-empty",
+      "viewport": 375,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-solicitudes.webp",
+        "alt": "",
+        "width": 88,
+        "height": 88,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "agenda-empty",
+      "viewport": 390,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-solicitudes.webp",
+        "alt": "",
+        "width": 88,
+        "height": 88,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "agenda-empty",
+      "viewport": 430,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-solicitudes.webp",
+        "alt": "",
+        "width": 88,
+        "height": 88,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "agenda-empty",
+      "viewport": 768,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-solicitudes.webp",
+        "alt": "",
+        "width": 88,
+        "height": 88,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "agenda-empty",
+      "viewport": 1280,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-solicitudes.webp",
+        "alt": "",
+        "width": 88,
+        "height": 88,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "agenda-empty",
+      "viewport": 1440,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-solicitudes.webp",
+        "alt": "",
+        "width": 88,
+        "height": 88,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "search-empty",
+      "viewport": 320,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-historial.webp",
+        "alt": "",
+        "width": 152,
+        "height": 152,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "search-empty",
+      "viewport": 375,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-historial.webp",
+        "alt": "",
+        "width": 152,
+        "height": 152,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "search-empty",
+      "viewport": 390,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-historial.webp",
+        "alt": "",
+        "width": 152,
+        "height": 152,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "search-empty",
+      "viewport": 430,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-historial.webp",
+        "alt": "",
+        "width": 152,
+        "height": 152,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "search-empty",
+      "viewport": 768,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-historial.webp",
+        "alt": "",
+        "width": 176,
+        "height": 176,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "search-empty",
+      "viewport": 1280,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-historial.webp",
+        "alt": "",
+        "width": 176,
+        "height": 176,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "search-empty",
+      "viewport": 1440,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-historial.webp",
+        "alt": "",
+        "width": 176,
+        "height": 176,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "complete",
+      "viewport": 320,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-servicio-finalizado.webp",
+        "alt": "",
+        "width": 76,
+        "height": 76,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "complete",
+      "viewport": 375,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-servicio-finalizado.webp",
+        "alt": "",
+        "width": 76,
+        "height": 76,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "complete",
+      "viewport": 390,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-servicio-finalizado.webp",
+        "alt": "",
+        "width": 76,
+        "height": 76,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "complete",
+      "viewport": 430,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-servicio-finalizado.webp",
+        "alt": "",
+        "width": 76,
+        "height": 76,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "complete",
+      "viewport": 768,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-servicio-finalizado.webp",
+        "alt": "",
+        "width": 112,
+        "height": 112,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "complete",
+      "viewport": 1280,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-servicio-finalizado.webp",
+        "alt": "",
+        "width": 112,
+        "height": 112,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "complete",
+      "viewport": 1440,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-servicio-finalizado.webp",
+        "alt": "",
+        "width": 112,
+        "height": 112,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "offline",
+      "viewport": 320,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-conexion.webp",
+        "alt": "",
+        "width": 86,
+        "height": 86,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "offline",
+      "viewport": 375,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-conexion.webp",
+        "alt": "",
+        "width": 86,
+        "height": 86,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "offline",
+      "viewport": 390,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-conexion.webp",
+        "alt": "",
+        "width": 86,
+        "height": 86,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "offline",
+      "viewport": 430,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-conexion.webp",
+        "alt": "",
+        "width": 86,
+        "height": 86,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "offline",
+      "viewport": 768,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-conexion.webp",
+        "alt": "",
+        "width": 108,
+        "height": 108,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "offline",
+      "viewport": 1280,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-conexion.webp",
+        "alt": "",
+        "width": 108,
+        "height": 108,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    },
+    {
+      "state": "offline",
+      "viewport": 1440,
+      "art": {
+        "source": "http://127.0.0.1:8000/assets/ops/rulo-sin-conexion.webp",
+        "alt": "",
+        "width": 108,
+        "height": 108,
+        "naturalWidth": 640,
+        "decorative": "true"
+      }
+    }
+  ],
+  "audits": [
+    {
+      "surface": "Confirmación con Rulo",
+      "violations": []
+    },
+    {
+      "surface": "Rulo login escritorio",
+      "violations": []
+    },
+    {
+      "surface": "Rulo login móvil",
+      "violations": []
+    },
+    {
+      "surface": "Rulo orders-empty escritorio",
+      "violations": []
+    },
+    {
+      "surface": "Rulo orders-empty móvil",
+      "violations": []
+    },
+    {
+      "surface": "Rulo agenda-empty escritorio",
+      "violations": []
+    },
+    {
+      "surface": "Rulo agenda-empty móvil",
+      "violations": []
+    },
+    {
+      "surface": "Rulo search-empty escritorio",
+      "violations": []
+    },
+    {
+      "surface": "Rulo search-empty móvil",
+      "violations": []
+    },
+    {
+      "surface": "Rulo complete escritorio",
+      "violations": []
+    },
+    {
+      "surface": "Rulo complete móvil",
+      "violations": []
+    },
+    {
+      "surface": "Rulo offline escritorio",
+      "violations": []
+    },
+    {
+      "surface": "Rulo offline móvil",
+      "violations": []
+    }
+  ],
+  "assetRequests": [
+    "http://127.0.0.1:8000/assets/ops/rulo-login.webp",
+    "http://127.0.0.1:8000/assets/ops/rulo-sin-conexion.webp",
+    "http://127.0.0.1:8000/assets/ops/rulo-sin-historial.webp",
+    "http://127.0.0.1:8000/assets/ops/rulo-sin-ordenes.webp",
+    "http://127.0.0.1:8000/assets/ops/rulo-sin-solicitudes.webp",
+    "http://127.0.0.1:8000/assets/ops/rulo-servicio-finalizado.webp"
+  ],
+  "errors": [],
+  "conditions": "Chromium con backend ficticio; corte real de red en contexto de navegador, no Android físico ni Supabase real."
+}
