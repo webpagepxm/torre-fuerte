@@ -1,27 +1,50 @@
 # Torre Fuerte — instrucciones para Codex
 
-## Propósito
-Sitio público y portal operativo del taller de motocicletas Torre Fuerte, Puerto Escondido. El sitio debe conseguir solicitudes reales y el portal debe permitir al mecánico trabajar desde un Android de gama media. La claridad operativa gana frente al espectáculo visual.
+## Producto y autonomía
+Taller de motocicletas en Puerto Escondido, Oaxaca. La web pública consigue solicitudes y contacto por WhatsApp. El portal administra el trabajo diario desde Android de gama media. Identidad y calidad visual son objetivos junto con facilidad de uso y confiabilidad: ninguno sustituye al otro.
 
-## Arquitectura real — leer antes de modificar
-- `index.html` es el sitio público activo: contiene CSS y JavaScript embebidos. `styles.css` y `script.js` son legado y NO controlan esa página.
-- `operacion/index.html`, `operacion/style.css` y `operacion/app.js` constituyen el portal privado.
-- `tf-config.js` define configuración pública de integración; nunca publicar tokens de servicio, contraseñas o datos privados.
-- Mantener la separación entre notas de servicio PDF y comandas imprimibles; no convertir la comanda en documento fiscal.
-- No cambiar la lógica de citas, órdenes, autenticación, Supabase, exportación, PDF, impresión, tour ni WhatsApp al ejecutar una tarea exclusivamente visual.
+Ejecuta directamente las acciones que puedas realizar con tus herramientas: inspeccionar, editar, arrancar, probar y capturar. No traslades trabajo rutinario al usuario. Comprueba alcance y recuperación antes de acciones destructivas o irreversibles. Trabaja en una rama; no publiques sobre `main` sin instrucción. Cada tarea de nube ya está aislada: usa el checkout existente, sin worktrees salvo petición expresa.
 
-## Identidad y skill obligatoria en tareas visuales
-Lee `design.md` y activa la skill `.agents/skills/direccion-visual/SKILL.md` para diseño/rediseño. No aplicar plantillas genéricas, estilos ajenos ni efectos pesados. Preservar el logotipo real y los colores y tipografías ya definidos en design.md.
+## Arquitectura activa
+- `index.html`: HTML, CSS y JavaScript públicos embebidos. `styles.css` y `script.js` son legado; no controlan la landing.
+- `operacion/index.html`, `style.css`, `app.js`: portal estático; no hay framework ni build. No migres de arquitectura por preferencia personal.
+- `operacion/service-lines.mjs`: validación, centavos MXN, persistencia y verificación del desglose; compartido con las pruebas.
+- `tf-config.js`: URL y clave **publicable** de Supabase, no secretos.
+- Supabase remoto: `tf_requests`, `tf_staff`, `tf_service_lines`; funciones `tf-staff-login` y `tf-create-request`. Sus fuentes y políticas de producción no están en este repositorio. No inventes sus contratos ni declares RLS auditada sin examinarlos.
+- `INSTRUCCIONES.txt` y `LEEME.txt` son instrucciones históricas; para la integración actual manda el código activo y este documento.
+- `seguimiento/` y `sliderbros-studio/`: superficies independientes, fuera del rediseño de operaciones. Conserva sus contratos.
+- Dependencias del portal fijadas en jsDelivr; pdfmake y sus fuentes se cargan al generar una nota. Fuentes de marca locales en `assets/fonts/`, licencia OFL incluida.
 
-## Criterios de entrega
-1. Antes de cambiar: examinar código, componentes reales y flujo de usuario; identificar la pantalla activa.
-2. Si la tarea es diseño, proponer y aplicar un cambio concreto de jerarquía, composición y detalle; no limitarse a cambiar colores o añadir tarjetas.
-3. Ejecutar sin delegar al usuario lo que Codex sí pueda hacer: edición, servidor local, pruebas y capturas.
-4. Validar pantalla pública y portal a 320, 375, 390, 768, 1280 y 1440 px; controles con teclado, menús, formularios, diálogo, tour, impresión y estados vacíos. Usar navegador si está disponible. No afirmar pruebas no realizadas.
-5. Confirmar que no hay scroll horizontal, controles superpuestos ni pérdida de foco, y respetar `prefers-reduced-motion`.
-6. Tomar un checkpoint/commit antes de refactors visuales grandes; mantener un diff acotado y reversible.
-7. No inventar resultados de reseñas, horarios, precios, citas confirmadas ni prestaciones del taller. No introducir dependencias sin justificación.
-8. Diferenciar claramente: revisión visual, pruebas funcionales reales y validación de producción. Documentar cualquier límite.
+## Dirección visual obligatoria
+Lee `design.md` y activa `.agents/skills/direccion-visual/SKILL.md` antes de trabajos visuales. Landing editorial con fotografía y tipografía condensada; portal con jerarquía operativa, folios, estados y acciones visibles. Logo existente, carbón, rojo de marca y superficies claras. Sin plantillas SaaS, métricas inventadas ni reseñas ficticias. Las fotografías disponibles son ilustraciones generadas; no presentarlas como fotos reales del taller.
 
-## Prioridad
-Primero flujo de citas y seguimiento confiable; segundo legibilidad y acceso para mecánico; tercero refinamiento de marca y detalles. El diseño nunca puede ocultar un error de guardado ni simular éxito.
+Modifica componentes y tokens existentes; no acumules temas al final del CSS. Una mejora de diseño debe cambiar composición y experiencia, además de color. No añadas dependencias visuales pesadas sin utilidad y licencia verificadas.
+
+## Componentes y acceso
+- Botones principales rojos; secundarios delineados. Estados con texto, nunca solo color. Ver tokens en `design.md`.
+- Objetivos táctiles de 44 px, campos de 48 px. Etiquetas asociadas, foco visible, pestañas con flechas/Home/End y diálogos nombrados; respeta `prefers-reduced-motion`.
+- En móvil las órdenes tienen fichas con acción Abrir visible; en escritorio tabla con paginación. Ambos usan los mismos filtros y registros.
+- Tutorial reiniciable, con salida y retroceso, sin editar datos automáticamente.
+- Autenticación mediante usuario y contraseña, sin exigir correo al mecánico. La comprobación de `tf_staff` en cliente no sustituye RLS ni autorización del servidor.
+
+## Integridad, seguridad y privacidad
+- No simules guardados. Cualquier confirmación debe depender de respuesta válida y lectura posterior. Conserva el desglose visible al fallar y bloquea reintentos de resultado incierto.
+- REST de conceptos no es una transacción: no prometas atomicidad. Una solución transaccional requiere función de servidor revisada con el esquema real. No apliques migraciones de producción a ciegas.
+- No escribas datos ficticios en producción. Usa fixtures o una base de pruebas explícita. No publiques teléfonos, expedientes, claves de servicio, contraseñas o tokens.
+- Usa `textContent` o formatters de texto para datos del cliente. Protege exportaciones contra fórmulas CSV.
+- **Notas internas nunca en PDF del cliente.** Comanda interna sin precios y 76 mm; nota de servicio con conceptos y total. Ninguna es factura fiscal. No añadir un ticket de cobro sin necesidad comprobada.
+- Solicitud web ≠ cita confirmada. Mantén consentimiento, aviso de privacidad, WhatsApp e idempotencia. Los duplicados deben prevenirse también en servidor; una clave del cliente por sí sola no lo garantiza.
+- En cambios exclusivamente visuales conserva IDs, eventos y contratos de citas, autenticación, Supabase, impresión, PDF, tour y WhatsApp.
+
+## Desarrollo y comprobación
+Desde la raíz: `python3 -m http.server 8000 --bind 0.0.0.0`. No hay instalación de aplicación ni build. Navegación interna: `/`, `/operacion/`.
+
+- `node --check operacion/app.js` y `git diff --check`.
+- `node --test tests/service-lines.test.mjs`: errores, conflictos, eliminación, validación y cálculos.
+- Con Playwright disponible y Chromium en `/usr/bin/chromium`: `node tests/browser.cjs`, `node tests/functional.cjs`, `node tests/performance.cjs`.
+- Fixtures interceptan Supabase solo en pruebas; nunca añadir un modo de acceso ficticio al producto. `tests/browser.cjs` transporta assets públicos con curl y TLS verificado para respetar proxy/CA de nube.
+- Captura ambas superficies a 320, 375, 390, 430, 768, 1280 y 1440 px. Inspecciona composición, scroll, teclado, menús, orden, formularios, estados, tutorial y documentos; corrige y repite donde cambió.
+- Mide rendimiento indicando condiciones; cero infracciones de axe no equivale a auditoría manual completa. No llames prueba de Android físico a una emulación Chromium.
+- Antes de refactors amplios toma un checkpoint recuperable. Distingue pruebas unitarias, navegador con backend aislado y validación real de producción. No declares checks no ejecutados.
+
+Consulta `docs/qa/REPORT.md` para evidencia y limitaciones de la última entrega, y `docs/cloud-start.md` para el entorno reutilizable.

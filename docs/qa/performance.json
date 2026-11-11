@@ -1,0 +1,28 @@
+{
+  "conditions": "Chromium local, viewport 390×844, CPU 4×, 200000 B/s download, latency 150ms. Una ejecución, sin servidor de producción.",
+  "lcp": 1680,
+  "cls": 0.05703455170464068,
+  "domContentLoaded": 774.8000000000466,
+  "resources": [
+    {
+      "name": "/assets/fonts/barlow-condensed-latin-800.woff2",
+      "bytes": 22764
+    },
+    {
+      "name": "/assets/moto-deportiva-taller.webp",
+      "bytes": 147298
+    },
+    {
+      "name": "/assets/emblema-mono.png",
+      "bytes": 48478
+    },
+    {
+      "name": "/tf-config.js",
+      "bytes": 600
+    },
+    {
+      "name": "/assets/emblema-mono.png",
+      "bytes": 48478
+    }
+  ]
+}
