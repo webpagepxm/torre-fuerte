@@ -5,22 +5,22 @@
   font-display: swap;
 }
 :root {
-  /* Tinta, papel y rojo de señal. Un único sistema para todas las pantallas OPS. */
-  --black: #191c21;
-  --red: #c5272e;
-  --red-hover: #a91f27;
-  --ink: #24282d;
-  --muted: #596168;
-  --subtle: #676d72;
-  --line: #dedfdf;
-  --field-line: #89949b;
+  /* OPS tiene identidad SaaS propia; la landing conserva carbón y rojo. */
+  --black: #273253;
+  --red: #315be8; /* Alias heredado de acción; no es color de error. */
+  --red-hover: #2448c8;
+  --ink: #292e45;
+  --muted: #5d627b;
+  --subtle: #697087;
+  --line: #e0e4f0;
+  --field-line: #8690aa;
   --white: #fff;
-  --paper: #f5f5f3;
-  --raised: #f0f1f0;
-  --pending: #9e272e;
-  --confirmed: #35567d;
-  --working: #815114;
-  --ready: #1c6349;
+  --paper: #f6f7fc;
+  --raised: #eef1fa;
+  --pending: #805210;
+  --confirmed: #234ab8;
+  --working: #6e3bb6;
+  --ready: #116b5d;
   --positive-bg: #edf6f1;
   --positive-ink: #18593e;
   --error-bg: #fff2f0;
@@ -35,7 +35,7 @@
   --space-6: 24px;
   --space-8: 32px;
   --ease: var(--motion-ease);
-  --layer-shadow: 0 12px 32px #191c2133;
+  --layer-shadow: 0 12px 32px #39456c24;
   font:
     15px/1.5 -apple-system,
     BlinkMacSystemFont,
@@ -50,7 +50,127 @@
   box-sizing: border-box;
 }
 body {
-  margin: 0 0 0 208px;
+  margin: 72px 0 0 208px;
+  scrollbar-color: #a9b2d3 var(--paper);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 72px auto 0 0;
+  width: 208px;
+  background: #eff0fa;
+  border-right: 1px solid #e0e2ef;
+  z-index: -1;
+}
+body:has(#gate:not([hidden])) {
+  margin-left: 0;
+}
+body:has(#gate:not([hidden]))::before,
+body:has(#gate:not([hidden])) .workspace-label,
+body:has(#gate:not([hidden])) .rail-location {
+  display: none;
+}
+::selection {
+  background: #dce5ff;
+  color: #263884;
+}
+.workspace-label {
+  position: fixed;
+  top: 103px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.workspace-label small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+.workspace-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #315be8;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+.effects-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+}
+.effects-play,
+.effects-paused .effects-pause {
+  display: none;
+}
+.effects-paused .effects-play {
+  display: block;
+}
+.effects-toggle[aria-pressed="true"] {
+  background: #edf0fa;
+}
+.aurora-frame {
+  position: absolute;
+  inset: -7px;
+  pointer-events: none;
+  border-radius: 16px;
+  z-index: -1;
+  background: transparent;
+  box-shadow:
+    -5px 0 18px #20d4e933,
+    5px 0 18px #9165f533;
+}
+.aurora-frame::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: var(--panel-radius);
+  background: var(--white);
+  border: 1px solid #b9baf2;
+}
+.aurora-frame canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+}
+.aurora-frame[data-renderer="webgl"] {
+  background: transparent;
+}
+.aurora-frame[data-renderer="webgl"]::after {
+  display: none;
+}
+.effects-paused .aurora-frame canvas {
+  visibility: hidden;
+}
+.effects-paused .aurora-frame::after {
+  display: block;
+}
+#ordersSection:not([hidden]),
+#calendarSection:not([hidden]) {
+  animation: workspace-view-in 220ms var(--ease);
+}
+@keyframes workspace-view-in {
+  from {
+    opacity: 0.75;
+    clip-path: inset(0 0 8px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
 }
 button,
 input,
@@ -108,13 +228,13 @@ button:hover {
   border-color: var(--subtle);
 }
 button:active {
-  background: #e6e7e6;
+  background: #e2e8fc;
 }
 .primary {
   color: white;
-  background: var(--red);
-  border-color: var(--red);
-  box-shadow: inset 0 1px 0 #ffffff26;
+  background: linear-gradient(110deg, var(--red), #6845db);
+  border-color: transparent;
+  box-shadow: 0 4px 10px #315be821;
 }
 .primary:hover {
   background: var(--red-hover);
@@ -165,29 +285,30 @@ button:active {
 }
 .topbar {
   position: fixed;
-  inset: 0 auto 0 0;
-  width: 208px;
-  padding: 32px 20px;
-  background: var(--black);
-  color: #f5f5f3;
+  inset: 0 0 auto;
+  height: 72px;
+  padding: 12px 24px;
+  background: #fff;
+  color: var(--ink);
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  border-right: 1px solid #15171b;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
   z-index: 20;
 }
 .brand {
   display: flex;
   gap: 8px;
   align-items: center;
-  padding-bottom: 32px;
-  border-bottom: 1px solid #41454b;
+  padding: 0;
+  border: 0;
 }
 .brand img {
   width: 32px;
   height: 32px;
   object-fit: contain;
-  filter: invert(1);
+  filter: none;
 }
 .brand strong {
   font:
@@ -197,40 +318,41 @@ button:active {
   white-space: nowrap;
 }
 .brand strong span {
-  color: #ff979a;
+  color: #5b49ce;
 }
 .brand small {
   display: block;
   font-size: 12px;
-  color: #bfc3c7;
+  color: var(--muted);
   margin-top: 8px;
 }
 .toplinks {
-  margin-top: auto;
+  margin-left: auto;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  flex-direction: row;
+  align-items: center;
   gap: 8px;
   font-size: 14px;
 }
 .toplinks > a {
-  padding: 12px 0;
-  color: #d3d5d8;
-  border-bottom: 1px solid #41454b;
+  padding: 12px;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
   min-height: 48px;
 }
 .help-link,
 .linkbtn {
   border: 0;
   background: transparent;
-  color: #eceeef;
+  color: var(--ink);
   text-align: left;
   padding: 12px 8px;
 }
 .help-link:hover,
 .linkbtn:hover {
-  background: #2c3036;
-  color: white;
+  background: var(--raised);
+  color: var(--red);
 }
 .account-menu {
   position: relative;
@@ -242,25 +364,28 @@ button:active {
 }
 .account-menu > div {
   position: absolute;
-  left: 0;
-  bottom: 52px;
+  right: 0;
+  top: 52px;
   width: 192px;
   z-index: 30;
   display: grid;
   padding: 8px;
   border: 0;
-  background: #25292f;
+  background: var(--white);
   border-radius: var(--radius);
   box-shadow: var(--layer-shadow);
-  transform-origin: bottom left;
+  transform-origin: top right;
 }
 .rail-location {
-  padding-top: 24px;
-  margin-top: 24px;
-  border-top: 1px solid #41454b;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 168px;
+  padding-top: 16px;
+  border-top: 1px solid #d9dded;
   font-size: 12px;
   line-height: 1.8;
-  color: #bfc3c7;
+  color: var(--muted);
 }
 .shell {
   max-width: 1600px;
@@ -313,27 +438,30 @@ button:active {
 .tabs {
   position: fixed;
   left: 16px;
-  top: 152px;
+  top: 164px;
   width: 176px;
   z-index: 21;
   display: grid;
   gap: 4px;
 }
 .tabs button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   text-align: left;
   background: transparent;
-  color: #c6c9cd;
+  color: var(--muted);
   border: 0;
   padding: 12px 16px;
   font-size: 15px;
 }
 .tabs button.active {
-  background: #30343a;
-  color: white;
-  box-shadow: inset 3px 0 #ff979a;
+  background: #dce5ff;
+  color: #234ab8;
+  box-shadow: none;
 }
 .tabs button:hover {
-  background: #30343a;
+  background: #e4e9fa;
 }
 .activity-summary {
   display: flex;
@@ -378,6 +506,30 @@ button:active {
 .state-filter.is-current strong {
   color: var(--red);
 }
+.state-filter strong {
+  background: #e8ecf8;
+  border-radius: 6px;
+  padding: 2px 5px;
+}
+.state-filter.is-current strong {
+  background: #dce5ff;
+}
+.metric--working strong {
+  color: var(--working);
+  background: #eee5fc;
+}
+.metric--pending strong {
+  color: var(--pending);
+  background: #fff0d2;
+}
+.metric--confirmed strong {
+  color: var(--confirmed);
+  background: #e3ebff;
+}
+.metric--ready strong {
+  color: var(--ready);
+  background: #dff3ed;
+}
 .workbench {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 208px;
@@ -386,10 +538,11 @@ button:active {
 }
 .panel {
   background: var(--white);
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: var(--panel-radius);
+  box-shadow: 0 6px 24px #303f7020;
   min-width: 0;
-  scroll-margin-top: 16px;
+  scroll-margin-top: 88px;
 }
 .panelheading {
   padding: 8px 20px;
@@ -425,6 +578,11 @@ button:active {
   gap: 12px;
   align-items: end;
   padding: 16px 20px;
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--panel-radius);
+  background: var(--white);
+  margin-bottom: 8px;
 }
 .filters label {
   font-size: 13px;
@@ -580,7 +738,7 @@ button:active {
   border-bottom: 1px solid var(--line);
 }
 .tabulator .tabulator-row:hover {
-  background: #f8f8f7;
+  background: #f3f5ff;
 }
 .tabulator .tabulator-row:focus-within {
   background: var(--raised);
@@ -659,19 +817,19 @@ button:active {
 }
 .state--pendiente {
   color: var(--pending);
-  background: #fcebec;
+  background: #fff2d9;
 }
 .state--confirmada {
   color: var(--confirmed);
-  background: #eaf0f9;
+  background: #e9efff;
 }
 .state--en_reparacion {
   color: var(--working);
-  background: #faf0df;
+  background: #f0e8ff;
 }
 .state--lista {
   color: var(--ready);
-  background: #e6f4ed;
+  background: #def5ef;
 }
 .mobile-orders {
   display: none;
@@ -716,7 +874,9 @@ button:active {
   grid-template-columns: 1.3fr 1fr;
   gap: 64px;
   align-items: center;
-  min-height: calc(100svh - 128px);
+  min-height: calc(100svh - 200px);
+  max-width: 1080px;
+  margin: auto;
 }
 .gatecopy .gate-title {
   font:
@@ -756,9 +916,12 @@ button:active {
 }
 .signin {
   background: var(--white);
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: var(--panel-radius);
   padding: 32px;
+  position: relative;
+  isolation: isolate;
+  box-shadow: 0 12px 40px #303f7020;
 }
 .signin h1 {
   font-size: 28px;
@@ -850,14 +1013,14 @@ dialog {
   overflow: auto;
   color: var(--ink);
   background: var(--white);
-  box-shadow: 0 24px 64px #191c2133;
+  box-shadow: 0 24px 80px #26336540;
   scrollbar-width: thin;
   scrollbar-color: var(--field-line) var(--white);
   overscroll-behavior: contain;
   scroll-padding-block: 112px 96px;
 }
 dialog::backdrop {
-  background: #191c216e;
+  background: #28305073;
 }
 .dialoghead {
   position: sticky;
@@ -868,13 +1031,13 @@ dialog::backdrop {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  background: var(--black);
-  color: white;
-  border-bottom: 2px solid var(--red);
+  background: #f6f7ff;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
 }
 .dialog-kicker {
   font-size: 12px;
-  color: #bfc3c7;
+  color: var(--muted);
   margin: 0 0 4px;
 }
 .dialoghead h2 {
@@ -894,8 +1057,8 @@ dialog::backdrop {
   display: grid;
   place-items: center;
   background: transparent;
-  color: white;
-  border-color: #62676d;
+  color: var(--ink);
+  border-color: var(--line);
   padding: 0;
 }
 .form-intro {
@@ -1087,7 +1250,7 @@ dialog::backdrop {
   background: #353a41;
 }
 .document-panel--client {
-  border-top: 2px solid var(--ink);
+  border-top: 1px solid var(--line);
   padding-top: 20px;
 }
 .document-panel__header {
@@ -1248,7 +1411,11 @@ dialog::backdrop {
 }
 @media (max-width: 1000px) {
   body {
-    margin-left: 0;
+    margin: 0;
+  }
+  body::before,
+  .workspace-label {
+    display: none;
   }
   .topbar {
     position: relative;
@@ -1259,7 +1426,8 @@ dialog::backdrop {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    border-bottom: 2px solid var(--red);
+    height: 64px;
+    border-bottom: 1px solid var(--line);
   }
   .brand {
     padding: 0;
@@ -1298,12 +1466,13 @@ dialog::backdrop {
     position: static;
     width: auto;
     display: flex;
-    gap: 24px;
+    gap: 8px;
     margin: 0 0 12px;
     border-bottom: 1px solid var(--line);
   }
   .tabs button {
-    padding: 12px 0;
+    padding: 12px;
+    gap: 8px;
     color: var(--muted);
     box-shadow: none !important;
     border-radius: 0;
@@ -1312,8 +1481,8 @@ dialog::backdrop {
     min-height: 48px;
   }
   .tabs button.active {
-    color: var(--ink);
-    background: transparent;
+    color: var(--red);
+    background: #e9eeff;
     border-bottom-color: var(--red);
   }
   .tabs button:hover {
@@ -1345,6 +1514,10 @@ dialog::backdrop {
     font-size: 22px;
   }
   .brand small {
+    display: none;
+  }
+  .effects-toggle > span,
+  .account-prefix {
     display: none;
   }
   .toplinks {
@@ -1682,6 +1855,7 @@ dialog::backdrop {
     gap: 4px;
   }
   .brand img {
+    display: none;
     width: 24px;
     height: 24px;
   }
@@ -1712,6 +1886,9 @@ dialog::backdrop {
   }
 }
 @media print {
+  body::before {
+    display: none;
+  }
   body {
     margin: 0 !important;
   }

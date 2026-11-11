@@ -15,18 +15,19 @@ Ejecuta directamente las acciones que puedas realizar con tus herramientas: insp
 - Supabase remoto: `tf_requests`, `tf_staff`, `tf_service_lines`; funciones `tf-staff-login` y `tf-create-request`. Sus fuentes y políticas de producción no están en este repositorio. No inventes sus contratos ni declares RLS auditada sin examinarlos.
 - `INSTRUCCIONES.txt` y `LEEME.txt` son instrucciones históricas; para la integración actual manda el código activo y este documento.
 - `seguimiento/` y `sliderbros-studio/`: superficies independientes, fuera del rediseño de operaciones. Conserva sus contratos.
+- `operacion/atmosphere.js`: presentación aislada de OPS, shader decorativo acotado con fallback CSS y pausa. No conectar con sesión, órdenes ni persistencia de negocio.
 - `assets/ui-interactions.css`: tokens de movimiento y respuestas visuales compartidas por landing y OPS; no añadir lógica de negocio aquí.
 - Dependencias del portal fijadas en jsDelivr; pdfmake y sus fuentes se cargan al generar una nota. Fuentes de marca locales en `assets/fonts/`, licencia OFL incluida.
 
 ## Dirección visual obligatoria
 
-Lee `DESIGN.md` y activa `.agents/skills/direccion-visual/SKILL.md` antes de trabajos visuales. Landing editorial con fotografía y tipografía condensada; portal con jerarquía operativa, folios, estados y acciones visibles. Logo existente, carbón, rojo de marca y superficies claras. Sin plantillas SaaS, métricas inventadas ni reseñas ficticias. Las fotografías disponibles son ilustraciones generadas; no presentarlas como fotos reales del taller.
+Lee `DESIGN.md` y activa `.agents/skills/direccion-visual/SKILL.md` antes de trabajos visuales. Landing editorial con fotografía y tipografía condensada; portal con jerarquía operativa, folios, estados y acciones visibles. Logo y tipografías existentes. La landing conserva carbón y rojo. Por petición explícita del usuario, OPS tiene identidad SaaS clara propia, inspirada en monday.com: lateral lavanda, acciones azules y halo cian/violeta. No añadir métricas inventadas, módulos ficticios ni reseñas. Las fotografías disponibles son ilustraciones generadas; no presentarlas como fotos reales del taller.
 
 Modifica componentes y tokens existentes; no acumules temas al final del CSS. Una mejora de diseño debe cambiar composición y experiencia, además de color. No añadas dependencias visuales pesadas sin utilidad y licencia verificadas.
 
 ## Componentes y acceso
 
-- Botones principales rojos; secundarios delineados. Estados con texto, nunca solo color. Ver tokens en `DESIGN.md`.
+- Botones principales rojos en la landing y azules/violetas en OPS; secundarios delineados. Estados con texto, nunca solo color. Ver tokens en `DESIGN.md`.
 - Objetivos táctiles de 44 px, campos de 48 px. Etiquetas asociadas, foco visible, pestañas con flechas/Home/End y diálogos nombrados; respeta `prefers-reduced-motion`.
 - En móvil las órdenes tienen fichas con acción Abrir visible; en escritorio tabla con paginación. Ambos usan los mismos filtros y registros.
 - Tutorial reiniciable, con salida y retroceso, sin editar datos automáticamente.
@@ -49,7 +50,7 @@ Desde la raíz: `python3 -m http.server 8000 --bind 0.0.0.0`. No hay instalació
 - `node --check operacion/app.js` y `git diff --check`.
 - `node --test tests/service-lines.test.mjs`: errores, conflictos, eliminación, validación y cálculos.
 - `tests/live-supabase.mjs` es una prueba optativa contra la base real. Requiere autorización explícita para ese proyecto, flag `--allow-test-records` y contraseña por secreto HTTP; nunca ejecutarla como suite habitual. Ver `docs/qa/LIVE-TEST.md`.
-- Con Playwright disponible y Chromium en `/usr/bin/chromium`: `node tests/browser.cjs`, `node tests/functional.cjs`, `node tests/ux-audit.cjs`, `node tests/ops-unslop.cjs`, `node tests/pdf-feedback.cjs`, `node tests/performance.cjs`, `node tests/premium-ui.cjs`. `TF_PHASE=after node tests/capture-ops.cjs` reproduce la evidencia visual actual con datos ficticios; `TF_PHASE=before` usa el checkpoint indicado en ese script.
+- Con Playwright disponible y Chromium en `/usr/bin/chromium`: `node tests/browser.cjs`, `node tests/functional.cjs`, `node tests/ux-audit.cjs`, `node tests/ops-unslop.cjs`, `node tests/pdf-feedback.cjs`, `node tests/performance.cjs`, `node tests/premium-ui.cjs`, `node tests/saas-ui.cjs`. `TF_PHASE=after node tests/capture-ops.cjs` reproduce la evidencia visual actual con datos ficticios; `TF_PHASE=before` usa el checkpoint indicado en ese script.
 - Fixtures interceptan Supabase solo en pruebas; nunca añadir un modo de acceso ficticio al producto. `tests/browser.cjs` transporta assets públicos con curl y TLS verificado para respetar proxy/CA de nube.
 - Captura ambas superficies a 320, 375, 390, 430, 768, 1280 y 1440 px. Inspecciona composición, scroll, teclado, menús, orden, formularios, estados, tutorial y documentos; corrige y repite donde cambió.
 - Mide rendimiento indicando condiciones; cero infracciones de axe no equivale a auditoría manual completa. No llames prueba de Android físico a una emulación Chromium.
@@ -60,3 +61,7 @@ Consulta `docs/torre-fuerte-ops-audit.md` para la auditoría actual con Unslop. 
 ## Refinamiento visual
 
 `PRODUCT.md` contiene el producto real y sus límites; `DESIGN.md` es la especificación visual canónica (`design.md` conserva el enlace anterior). Skills de diseño verificadas en `.agents/skills/`; procedencia en `docs/qa/premium/skills.json`. `tests/premium-ui.cjs` protege contra cambios involuntarios de scripts, URLs, formularios y archivos de negocio durante ajustes visuales. Evidencia: `docs/premium-ui-refinement.md`.
+
+## Identidad SaaS de OPS · petición del usuario
+
+La dirección nueva de `DESIGN.md` prevalece sobre las restricciones históricas de carbón/rojo, ausencia de shaders o identidad compartida. Conservar familias y tamaños de letra aprobados. Efecto focal: halo animado de búsqueda/acceso; navegación y diálogos mantienen respuesta corta y cierre inmediato. WebGL sin biblioteca, raster máximo 640×220, 18 FPS escritorio / 12 móvil; pausa en segundo plano, fuera de pantalla, al abrir diálogos, por preferencia persistente y movimiento reducido. Fallback CSS obligatorio. No extender esta paleta o efectos al sitio público. Evidencia en `docs/ops-saas-platform.md`.

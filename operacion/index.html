@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width,initial-scale=1,interactive-widget=resizes-content"
     />
-    <meta name="theme-color" content="#f5f5f3" />
+    <meta name="theme-color" content="#f6f7fc" />
     <meta name="robots" content="noindex,nofollow" />
     <title>Torre Fuerte | Operación del taller</title>
     <link rel="icon" href="../assets/emblema-mono.png" />
@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="../assets/ui-interactions.css?v=premium-20261111-1"
     />
-    <link rel="stylesheet" href="./style.css?v=premium-20261111-1" />
+    <link rel="stylesheet" href="./style.css?v=saas-20261111-1" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.css"
@@ -32,6 +32,7 @@
       defer
       src="https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.js.iife.js"
     ></script>
+    <script type="module" src="./atmosphere.js?v=saas-20261111-1"></script>
     <script type="module" src="./app.js?v=unslop-20261111-1"></script>
   </head>
   <body>
@@ -46,6 +47,14 @@
           <path
             d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8M21 3v5h-5M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16M8 16H3v5"
           />
+        </symbol>
+        <symbol id="icon-orders" viewBox="0 0 24 24">
+          <rect x="4" y="3" width="16" height="18" rx="2" />
+          <path d="M8 8h8M8 12h8M8 16h5" />
+        </symbol>
+        <symbol id="icon-calendar" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="16" rx="2" />
+          <path d="M16 3v4M8 3v4M3 11h18" />
         </symbol>
         <symbol id="icon-close" viewBox="0 0 24 24">
           <path d="m18 6-12 12M6 6l12 12" />
@@ -62,18 +71,35 @@
         </div>
       </div>
       <div class="toplinks">
+        <button
+          type="button"
+          id="motionToggle"
+          class="effects-toggle"
+          aria-label="Pausar efectos visuales"
+          aria-pressed="false"
+          title="Pausar efectos visuales"
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="effects-pause" d="M9 5v14M15 5v14" />
+            <path class="effects-play" d="m9 5 10 7-10 7Z" /></svg
+          ><span>Efectos</span>
+        </button>
         <a href="../">Sitio público</a
         ><button type="button" id="restartTour" class="help-link" hidden>
           Ayuda
         </button>
         <details id="accountMenu" class="account-menu" hidden>
-          <summary>Tu cuenta</summary>
+          <summary><span class="account-prefix">Tu </span>cuenta</summary>
           <div>
             <button type="button" id="changePass" class="linkbtn" hidden>
               Cambiar clave</button
             ><button id="signout" class="linkbtn" hidden>Cerrar sesión</button>
           </div>
         </details>
+      </div>
+      <div class="workspace-label">
+        <span class="workspace-avatar">TF</span>
+        <div>Torre Fuerte<small>Espacio de trabajo</small></div>
       </div>
       <div class="rail-location">
         Puerto Escondido, Oaxaca<br /><span>Taller de motocicletas</span>
@@ -88,12 +114,15 @@
             de servicio. Pensado para usarse desde el celular.
           </p>
           <div class="features">
-            <div><span>01</span><strong>Citas organizadas</strong></div>
-            <div><span>02</span><strong>Comanda para la moto</strong></div>
-            <div><span>03</span><strong>Nota para el cliente</strong></div>
+            <div><strong>Citas organizadas</strong></div>
+            <div><strong>Comanda para la moto</strong></div>
+            <div><strong>Nota para el cliente</strong></div>
           </div>
         </div>
         <div class="signin">
+          <div class="aurora-frame" data-aurora aria-hidden="true">
+            <canvas></canvas>
+          </div>
           <h1>Entrar al taller</h1>
           <p>
             Solo personal autorizado. Los datos de clientes no son públicos.
@@ -166,7 +195,9 @@
             role="tab"
             aria-selected="true"
           >
-            Órdenes
+            <svg class="icon" aria-hidden="true">
+              <use href="#icon-orders" /></svg
+            >Órdenes
           </button>
           <button
             data-tab="calendar"
@@ -176,7 +207,9 @@
             tabindex="-1"
             aria-selected="false"
           >
-            Calendario
+            <svg class="icon" aria-hidden="true">
+              <use href="#icon-calendar" /></svg
+            >Calendario
           </button>
         </div>
         <section
@@ -258,6 +291,9 @@
                 </select></label
               ><label>Fecha<input id="filterDate" type="date" /></label
               ><button id="resetFilters">Limpiar</button>
+              <div class="aurora-frame" data-aurora aria-hidden="true">
+                <canvas></canvas>
+              </div>
             </div>
             <p id="ordersLoadError" class="load-error" hidden>
               No pudimos consultar la lista. Pulsa Actualizar para reintentar
