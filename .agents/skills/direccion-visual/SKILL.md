@@ -39,3 +39,6 @@ La meta es que el trabajo parezca diseñado específicamente para un mecánico y
 
 ## Aprendizaje de la revisión del portal
 El usuario rechazó la composición de cuatro KPI, titular de campaña y franja de agenda vacía. No repetir ese patrón por seguir una referencia genérica de dashboards. En operación, mostrar las motos y el trabajo antes que los resúmenes; agenda secundaria, encabezados funcionales y filas legibles. Comparar también un taller con dos órdenes y sin solicitudes para hoy. La instalación de una skill no demuestra calidad: revisar la composición real y presentar las capturas antes de proponer publicación.
+
+## Auditoría de tareas antes de publicar
+Comprobar que el acceso móvil permite llegar a Entrar en la primera pantalla, Abrir no desaparece al colapsar columnas en tablet y los filtros activos siguen siendo reconocibles cuando su panel está cerrado. Probar cierre accidental de notas/estado/nueva orden y recuperar foco al añadir o quitar conceptos. Distinguir un precio vacío de cero explícito y llevar al campo que falta. La estética se revisa con capturas; su aceptación por el usuario no se deduce de las pruebas.

@@ -22,7 +22,7 @@
 Estados siempre escritos; no depender del color. Entregada/cancelada usan grises. Rojo funcional concentrado en acciones y folios, no en toda la pantalla.
 
 ## Tipografía y retícula
-- **Barlow Condensed 800**, local WOFF2 de 22 KB y OFL. Titulares públicos, marca y título de jornada. Una sola variante para reducir transferencia.
+- **Barlow Condensed 800**, local WOFF2 de 22 KB y OFL. Titulares públicos, marca e introducción de acceso en escritorio. Una sola variante para reducir transferencia.
 - Texto: sistema (`Segoe UI`, Arial, fuentes nativas); sin descarga de Inter. Jerarquía por tamaño, peso, espaciado y contraste.
 - Landing: H1 54–94 px según ancho, H2 43–69 px; cuerpo 14–17 px. Portal: título 29–38 px de sistema, títulos de sección 16–19 px, cuerpo 12–16 px; los metadatos pequeños no sustituyen la información principal.
 - Escala de espacio: 4 / 8 / 12 / 16 / 20 / 24 / 32 / 48 / 64 / 88. Contenedores de 1200 px públicos y 1280 px operativos; márgenes móviles 20 px.
@@ -31,11 +31,12 @@ Estados siempre escritos; no depender del color. Entregada/cancelada usan grises
 
 ## Componentes
 - Botón primario rojo, secundario blanco con borde, acción documental interna carbón. Altura ≥44 px; formularios ≥48 px. Radios 2–6 px en público y 6–8 px en operación; no sombras grandes salvo modal.
+- Acceso móvil: formulario completo en la primera pantalla; la introducción de marca queda para escritorio.
 - Etiquetas visibles antes de campos, placeholder solo de apoyo; descripción de error junto a la acción. `aria-live` para resultados. Guardado en curso bloquea escritura duplicada; error no se convierte en éxito al ocultarse el modal.
-- Tabla de escritorio con divisores horizontales, folios monoespaciados y motocicleta como dato principal. Filas móviles separadas por reglas, sin una tarjeta por moto; acción Abrir de 44 px. Misma búsqueda y filtros. En móvil, «Filtros» despliega fecha/estado sin alejar el listado de la primera pantalla.
+- Tabla de escritorio con divisores horizontales, folios monoespaciados y motocicleta como dato principal. Filas móviles separadas por reglas, sin una tarjeta por moto; acción Abrir de 44 px. Misma búsqueda y filtros. En móvil, «Filtros» despliega fecha/estado sin alejar el listado de la primera pantalla. Mostrar cantidad de filtros activos y Limpiar cuando corresponda, incluso con el panel cerrado.
 - Los números de cada estado van dentro de botones de filtro con aria-pressed; no forman tarjetas de resumen. Agenda del día muestra solicitudes, no disponibilidad ni citas inventadas. El límite de 1000 registros se comunica cuando aplica.
-- Pestañas con borde de selección rojo y navegación por teclado. Cuenta agrupa cambio de clave y salida; Ayuda permanece visible.
-- Diálogo con nombre accesible, cabecera carbón y borde rojo. Campos a una columna en móvil. El tutorial puede quedarse visible mientras señala controles; no debe modificar el borrador.
+- Pestañas con borde de selección rojo y navegación por teclado. El título sigue la vista elegida y los filtros de órdenes se retiran al ver el calendario. Cuenta agrupa cambio de clave y salida; Ayuda permanece visible.
+- Diálogo con nombre accesible, cabecera carbón y borde rojo. Proteger notas, estado y nueva orden sin guardar al cerrar; no bloquear cierres sin cambios. Campos a una columna en móvil. El tutorial puede quedarse visible mientras señala controles; no debe modificar el borrador.
 - Estados vacíos: explicar ausencia y siguiente acción. Error de carga: no reutilizar conceptos de otra orden. Éxito: solo después de confirmación y lectura. Tras resultado parcial: mantener datos visibles y exigir revisión antes de reintentar.
 - Iconografía funcional simple (flechas, cierre y numeración documental); no emojis de moto/papel en documentos. No incorporar componentes React a este sitio estático por motivos decorativos.
 

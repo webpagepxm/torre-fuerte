@@ -7,7 +7,7 @@ import {
   totalCents,
   lineTotal,
   saveError,
-} from "./service-lines.mjs";
+} from "./service-lines.mjs?v=workbench-20261111-2";
 const $ = (id) => document.getElementById(id);
 // La dirección de correo de Auth nunca forma parte del código público.
 const STAFF_USERNAME = "mecanicolider";
@@ -205,6 +205,20 @@ $("signout").addEventListener("click", async () => {
   leave();
 });
 
+document.addEventListener("click", (event) => {
+  if ($("accountMenu").open && !$("accountMenu").contains(event.target))
+    $("accountMenu").open = false;
+});
+document.addEventListener("keydown", (event) => {
+  if (
+    event.key === "Escape" &&
+    $("accountMenu").open &&
+    !document.querySelector("dialog[open]")
+  ) {
+    $("accountMenu").open = false;
+    $("accountMenu").querySelector("summary").focus();
+  }
+});
 function startWelcomeTour(auto = false) {
   const driverFactory = window.driver?.js?.driver;
   if (typeof driverFactory !== "function") {
@@ -231,7 +245,7 @@ function startWelcomeTour(auto = false) {
         popover: {
           title: "Bienvenido a tu taller",
           description:
-            "Esta es tu pantalla principal. Aquí puedes revisar lo importante sin entrar a Excel.",
+            "Aquí encuentras las motos registradas, su estado y las solicitudes del día.",
         },
       },
       {
@@ -311,6 +325,7 @@ $("restartTour").addEventListener("click", () => startWelcomeTour());
 $("changePass").addEventListener("click", () => {
   $("changePasswordForm").reset();
   $("passwordFeedback").textContent = "";
+  $("accountMenu").open = false;
   $("passwordDialog").showModal();
 });
 $("changePasswordForm").addEventListener("submit", async (event) => {
@@ -418,6 +433,7 @@ async function loadRecords() {
   const user = currentUser;
   if (!user) return;
   $("refresh").disabled = true;
+  $("refresh").textContent = "Actualizando…";
   $("ordersSection").setAttribute("aria-busy", "true");
   try {
     const { data, error } = await db
@@ -451,6 +467,7 @@ async function loadRecords() {
     );
   } finally {
     $("refresh").disabled = false;
+    $("refresh").textContent = "Actualizar";
     $("ordersSection").setAttribute("aria-busy", "false");
   }
 }
@@ -469,7 +486,10 @@ function filterRow(row) {
 }
 function renderGrid() {
   if (!window.Tabulator) {
-    message("No pudo cargarse Tabulator. Verifica internet.", true);
+    message(
+      "No se pudo cargar la tabla. Revisa la conexión y pulsa Actualizar.",
+      true,
+    );
     return;
   }
   if (!grid) {
@@ -504,6 +524,7 @@ function renderGrid() {
         {
           title: "Folio",
           field: "folio",
+          responsive: 0,
           minWidth: 110,
           width: 130,
           formatter: "plaintext",
@@ -511,6 +532,7 @@ function renderGrid() {
         {
           title: "Motocicleta",
           field: "motorcycle",
+          responsive: 0,
           minWidth: 155,
           formatter: "plaintext",
         },
@@ -534,6 +556,7 @@ function renderGrid() {
         },
         {
           title: "Abrir",
+          responsive: 0,
           width: 86,
           headerSort: false,
           formatter: () => {
@@ -594,11 +617,22 @@ function renderMobileOrders() {
   holder.replaceChildren();
   const rows = records.filter(filterRow);
   $("listCount").textContent = rows.length
-    ? rows.length +
-      (rows.length === 1 ? " orden en el registro" : " órdenes en el registro")
+    ? rows.length + (rows.length === 1 ? " orden" : " órdenes")
     : records.length
       ? "Sin coincidencias"
       : "Aún no hay órdenes";
+  const activeFilters = ["filterStatus", "filterDate"].filter(
+    (id) => $(id).value,
+  ).length;
+  $("toggleFilters").textContent = activeFilters
+    ? "Filtros (" + activeFilters + ")"
+    : "Filtros";
+  $("toggleFilters")
+    .closest(".filters")
+    .classList.toggle(
+      "has-filter",
+      Boolean(activeFilters || $("search").value.trim()),
+    );
   document.querySelectorAll("[data-state]").forEach((button) => {
     const current = button.dataset.state === $("filterStatus").value;
     button.classList.toggle("is-current", current);
@@ -641,7 +675,10 @@ $("moreOrders").addEventListener("click", () => {
 });
 function renderCalendar() {
   if (!window.FullCalendar) {
-    message("No pudo cargarse FullCalendar. Verifica internet.", true);
+    message(
+      "No se pudo cargar el calendario. Revisa la conexión y pulsa Actualizar.",
+      true,
+    );
     return;
   }
   const events = records
@@ -693,6 +730,12 @@ document.querySelectorAll("[data-tab]").forEach((button) =>
       b.setAttribute("aria-selected", String(b === button));
       b.tabIndex = b === button ? 0 : -1;
     });
+    $("workspaceViewTitle").textContent =
+      button.dataset.tab === "orders"
+        ? "Órdenes del taller"
+        : "Calendario del taller";
+    document.querySelector(".activity-summary").hidden =
+      button.dataset.tab !== "orders";
     $("ordersSection").hidden = button.dataset.tab !== "orders";
     $("calendarSection").hidden = button.dataset.tab !== "calendar";
     if (button.dataset.tab === "calendar") calendar?.updateSize();
@@ -808,6 +851,34 @@ $("exportCsv").addEventListener("click", () => {
   link.click();
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 });
+function hasUnsavedOrderChanges() {
+  return (
+    linesDirty ||
+    Boolean(
+      selected &&
+        ($("orderStatus").value !== selected.status ||
+          $("internalNotes").value !== (selected.internal_notes || "")),
+    )
+  );
+}
+function hasNewOrderDraft() {
+  return [
+    "client_name",
+    "client_phone",
+    "motorcycle",
+    "motorcycle_year",
+    "service",
+    "details",
+  ].some((name) => String($("newForm").elements.namedItem(name).value).trim());
+}
+$("newDialog").addEventListener("cancel", (event) => {
+  if (
+    $("saveNew").disabled ||
+    (hasNewOrderDraft() &&
+      !confirm("Hay una orden sin guardar. ¿Cerrar y descartar esos datos?"))
+  )
+    event.preventDefault();
+});
 document.querySelectorAll("[data-close]").forEach((b) =>
   b.addEventListener("click", () => {
     if (
@@ -815,9 +886,16 @@ document.querySelectorAll("[data-close]").forEach((b) =>
       (savingLines ||
         documentBusy ||
         savingOrder ||
-        (linesDirty &&
+        (hasUnsavedOrderChanges() &&
+          !confirm("Hay cambios sin guardar. ¿Cerrar y descartarlos?")))
+    )
+      return;
+    if (
+      b.dataset.close === "newDialog" &&
+      ($("saveNew").disabled ||
+        (hasNewOrderDraft() &&
           !confirm(
-            "Hay conceptos sin guardar. ¿Cerrar y descartar esos cambios?",
+            "Hay una orden sin guardar. ¿Cerrar y descartar esos datos?",
           )))
     )
       return;
@@ -853,6 +931,8 @@ $("newForm").addEventListener("submit", async (e) => {
       ? Number(fields.motorcycle_year)
       : null,
   };
+  btn.textContent = "Guardando…";
+  $("newForm").setAttribute("aria-busy", "true");
   try {
     const { data, error } = await db
       .from("tf_requests")
@@ -872,6 +952,8 @@ $("newForm").addEventListener("submit", async (e) => {
     );
   } finally {
     btn.disabled = false;
+    btn.textContent = "Guardar orden";
+    $("newForm").setAttribute("aria-busy", "false");
   }
 });
 
@@ -1103,6 +1185,8 @@ function lineElement(line, i) {
   const description = document.createElement("input");
   description.placeholder = "Descripción";
   description.maxLength = 200;
+  description.minLength = 2;
+  description.required = true;
   description.value = line.description;
   description.addEventListener("input", () => {
     serviceLines[i].description = description.value;
@@ -1112,10 +1196,14 @@ function lineElement(line, i) {
   const quantity = document.createElement("input");
   quantity.type = "number";
   quantity.step = "0.01";
+  quantity.required = true;
+  quantity.inputMode = "decimal";
   quantity.min = "0.01";
-  quantity.value = line.quantity;
+  quantity.max = "999999";
+  quantity.value = Number.isFinite(line.quantity) ? line.quantity : "";
   quantity.addEventListener("input", () => {
-    serviceLines[i].quantity = Number(quantity.value);
+    serviceLines[i].quantity =
+      quantity.value === "" ? NaN : Number(quantity.value);
     markLinesDirty();
     updateTotal();
   });
@@ -1124,9 +1212,12 @@ function lineElement(line, i) {
   price.type = "number";
   price.min = "0";
   price.step = "0.01";
-  price.value = line.unit_price;
+  price.required = true;
+  price.inputMode = "decimal";
+  price.max = "99999999";
+  price.value = Number.isFinite(line.unit_price) ? line.unit_price : "";
   price.addEventListener("input", () => {
-    serviceLines[i].unit_price = Number(price.value);
+    serviceLines[i].unit_price = price.value === "" ? NaN : Number(price.value);
     markLinesDirty();
     updateTotal();
   });
@@ -1139,6 +1230,8 @@ function lineElement(line, i) {
     serviceLines.splice(i, 1);
     markLinesDirty();
     renderLines();
+    const adjacent = $("items").children[Math.min(i, serviceLines.length - 1)];
+    (adjacent?.querySelector("button") || $("addItem")).focus();
   });
   div.appendChild(remove);
   return div;
@@ -1154,7 +1247,10 @@ function renderLines() {
 }
 function updateTotal() {
   const total = totalCents(serviceLines) / 100;
-  $("total").textContent = currency(total);
+  $("total").textContent = Number.isFinite(total)
+    ? currency(total)
+    : "Importes pendientes";
+  $("total").classList.toggle("is-incomplete", !Number.isFinite(total));
 }
 $("addItem").addEventListener("click", () => {
   if (!linesLoaded || savingLines) return;
@@ -1167,6 +1263,7 @@ $("addItem").addEventListener("click", () => {
   });
   showOrderFeedback("itemsMessage", "");
   renderLines();
+  $("items").lastElementChild?.querySelector("input")?.focus();
 });
 $("saveItems").addEventListener("click", saveLines);
 function markLinesDirty() {
@@ -1187,8 +1284,8 @@ $("orderDialog").addEventListener("cancel", (event) => {
     savingLines ||
     documentBusy ||
     savingOrder ||
-    (linesDirty &&
-      !confirm("Hay conceptos sin guardar. ¿Cerrar y descartar esos cambios?"))
+    (hasUnsavedOrderChanges() &&
+      !confirm("Hay cambios sin guardar. ¿Cerrar y descartarlos?"))
   )
     event.preventDefault();
 });
@@ -1203,6 +1300,12 @@ async function saveLines() {
     return false;
   }
   if (!validateLines(serviceLines)) {
+    const invalid = Array.from($("items").querySelectorAll("input")).find(
+      (input) =>
+        !input.checkValidity() ||
+        (input.type === "text" && input.value.trim().length < 2),
+    );
+    invalid?.focus();
     showOrderFeedback(
       "itemsMessage",
       "Completa la descripción (mínimo 2 letras), cantidad mayor que cero y precio válido. Usa como máximo dos decimales.",

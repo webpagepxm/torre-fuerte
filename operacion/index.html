@@ -7,14 +7,14 @@
 <title>Torre Fuerte | Operación del taller</title>
 <link rel="icon" href="../assets/emblema-mono.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.3.1/dist/css/tabulator.min.css">
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.css?v=workbench-20261111-2">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.css">
 <script src="../tf-config.js" onerror="this.remove()"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.19/locales/es.global.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.js.iife.js"></script>
-<script type="module" src="./app.js"></script>
+<script type="module" src="./app.js?v=workbench-20261111-2"></script>
 </head>
 <body>
 <a class="skip-link" href="#portalMain">Saltar al contenido</a>
@@ -26,13 +26,13 @@
   <section id="gate" class="gate">
     <div class="gatecopy">
       <p class="eyebrow">ACCESO EXCLUSIVO DEL TALLER</p>
-      <h1>El taller.<br><em>En orden.</em></h1>
+      <p class="gate-title">El taller.<br><em>En orden.</em></p>
       <p>Un solo lugar para revisar citas, imprimir comandas y generar notas de servicio. Pensado para usarse desde el celular.</p>
       <div class="features"><div><span>01</span><strong>Citas organizadas</strong></div><div><span>02</span><strong>Comanda para la moto</strong></div><div><span>03</span><strong>Nota para el cliente</strong></div></div>
     </div>
     <div class="signin">
-      <p class="eyebrow">TU JORNADA EMPIEZA AQUÍ</p><h2>Entrar al taller</h2><p>Solo personal autorizado. Los datos de clientes no son públicos.</p>
-      <div id="setupNotice" class="alert err" hidden>Falta conectar una base de datos independiente. Revisa la guía de instalación. No se guardará información hasta configurar el sistema.</div>
+      <p class="eyebrow">TU JORNADA EMPIEZA AQUÍ</p><h1>Entrar al taller</h1><p>Solo personal autorizado. Los datos de clientes no son públicos.</p>
+      <div id="setupNotice" class="alert err" hidden>El portal todavía no tiene una conexión configurada. No podrás iniciar sesión hasta completar la configuración.</div>
       <form id="loginForm">
         <label>Usuario<input id="username" name="username" type="text" autocapitalize="off" spellcheck="false" autocomplete="username" value="mecanicolider" placeholder="mecanicolider" required></label>
         <label>Contraseña<input id="password" type="password" autocomplete="current-password" required></label>
@@ -43,7 +43,7 @@
   </section>
   <section id="workspace" hidden>
     <div class="workspacehead">
-      <div><p class="eyebrow" id="workspaceDate">OPERACIÓN DIARIA</p><h1>Órdenes del taller<span class="title-stop">.</span></h1><p class="hint">Recepción, reparación y entrega.</p></div>
+      <div><p class="eyebrow" id="workspaceDate">OPERACIÓN DIARIA</p><h1><span id="workspaceViewTitle">Órdenes del taller</span><span class="title-stop" aria-hidden="true">.</span></h1></div>
       <div class="headbuttons"><button id="refresh">Actualizar</button><button id="newOrder" class="primary">+ Recibir moto</button></div>
     </div>
     <div id="statusMessage" role="status"></div>
@@ -60,7 +60,7 @@
     </div>
     <div class="workbench">
     <section id="ordersSection" class="panel" role="tabpanel" aria-labelledby="ordersTab">
-      <div class="panelheading"><div><h2>Registro de órdenes</h2><p id="listCount">Cargando registros…</p></div><button id="exportCsv">Exportar CSV ↓</button></div>
+      <div class="panelheading"><div><h2 class="sr-only">Listado de órdenes</h2><p id="listCount">Cargando registros…</p></div><button id="exportCsv">Exportar CSV ↓</button></div>
       <div class="filters"><label>Buscar<input id="search" type="search" placeholder="Buscar moto, cliente o folio…"></label><button type="button" id="toggleFilters" aria-expanded="false" aria-controls="filterStatus filterDate resetFilters">Filtros</button><label>Estado<select id="filterStatus"><option value="">Todos los estados</option><option value="pendiente">Pendiente</option><option value="confirmada">Confirmada</option><option value="en_reparacion">En reparación</option><option value="lista">Lista</option><option value="entregada">Entregada</option><option value="cancelada">Cancelada</option></select></label><label>Fecha<input id="filterDate" type="date"></label><button id="resetFilters">Limpiar</button></div>
       <div id="ordersTable"></div><nav id="ordersPagination" class="orders-pagination" aria-label="Páginas de órdenes"></nav><div id="mobileOrders" class="mobile-orders" aria-label="Órdenes de trabajo"></div><button type="button" id="moreOrders" class="more-orders" hidden>Ver más órdenes</button><p class="footnote">Las solicitudes pendientes requieren confirmación del taller.</p>
     </section>
@@ -74,7 +74,7 @@
  <div class="dialoghead"><h2 id="newTitle">Recibir una moto</h2><button data-close="newDialog" aria-label="Cerrar">×</button></div>
  <form id="newForm"><div class="formgrid">
   <label>Nombre del cliente<input name="client_name" minlength="2" maxlength="100" required></label>
-  <label>Teléfono<input name="client_phone" type="tel" minlength="10" maxlength="20" required></label>
+  <label>Teléfono<input name="client_phone" type="tel" inputmode="tel" autocomplete="tel" minlength="10" maxlength="20" required></label>
   <label>Motocicleta<input name="motorcycle" minlength="2" maxlength="100" required></label>
   <label>Año (opcional)<input name="motorcycle_year" type="number" min="1950" max="2100"></label>
   <label>Servicio<input name="service" maxlength="150" required></label>
