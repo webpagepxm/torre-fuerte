@@ -28,3 +28,11 @@ description: Dirección de arte y revisión anti-AI-slop para diseñar, auditar 
 - Declarar un diseño validado sin abrirlo; confundir una nota PDF con una comanda.
 
 La meta es que el trabajo parezca diseñado específicamente para un mecánico y sus clientes, no para demostrar que una IA sabe CSS.
+
+## Evidencia y revisión de referencias
+- Antes de decidir, distinguir un defecto visual de un fallo de datos. En operación la acción Abrir y el folio deben seguir visibles a 320 px.
+- Registrar capturas del checkpoint y del cambio, bajo los mismos anchos y con medios cargados. Los datos de prueba deben identificarse como ficticios.
+- Revisar también 375, 430 y 1280 px; no limitar la revisión al ancho de diseño.
+- Ejecutar los comandos de `AGENTS.md`; contrastar accesibilidad automatizada con teclado, foco y lectura visual.
+- No instalar una skill externa solo por su nombre. Revisar revisión exacta, licencia, instrucciones y compatibilidad; documentar descartes en `docs/qa/REPORT.md`. El sistema de Torre Fuerte tiene prioridad.
+- No presentar un fixture de Supabase como validación del servicio real. Las notas internas y datos privados tampoco deben aparecer en capturas públicas.

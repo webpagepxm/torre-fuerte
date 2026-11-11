@@ -1,37 +1,55 @@
-# Torre Fuerte — identidad visual y experiencia
+# Torre Fuerte — sistema de diseño
 
-## Posicionamiento
-Taller local de motos en Puerto Escondido. Confianza, oficio, energía de carretera y atención directa. Nada de estética fintech, SaaS genérico, gradientes morados, vidrio translúcido o paneles futuristas. Una marca mecánica real, contemporánea y reconocible.
+## Dirección
+**Oficio de taller, tinta carbón y rojo de señal.** La landing tiene ritmo editorial y fotografía protagonista. El portal es una mesa de trabajo: cada moto identificable, cada estado legible, cada acción al alcance. Ambos comparten logo, acentos y titulares condensados, sin convertir el portal en una campaña publicitaria.
 
-## Dos superficies, un mismo carácter
-1. **Sitio público** (`index.html`): editorial automotriz. Una foto protagonista, titulares condensados monumentales, ritmo de secciones claro, llamadas a agendar y WhatsApp. Debe leerse de inmediato desde móvil, incluso con mala señal.
-2. **Portal de operación** (`operacion/`): herramienta de trabajo silenciosa. Reducción de ruido, tablas legibles, formularios directos, estados y acciones explícitos. No trasladar el dramatismo del hero al flujo de guardar/editar órdenes.
+## Tokens
 
-## Tokens activos de marca
-- Rojo de acción: `#d92f30`; rojo oscuro interactivo `#b52329`. Usar prioritariamente en acciones, folios y acentos.
-- Carbón/negro de taller: `#171a1f` / `#191c21`.
-- Blanco de lectura y grises de trabajo: `#fff`, `#f5f6f7`, líneas `#e1e4e7`.
-- Titulares públicos: **Barlow Condensed 700–800**; texto público **Inter**. Portal: Inter / fuentes sistema, sin cargas adicionales innecesarias.
-- Aristas rectas o radios pequeños (0–8 px) en la landing; en el portal radios discretos según función, no tarjetas dentro de tarjetas.
-- Tipografía grande y contrastada; evitar etiquetas de 9 px para información imprescindible.
-- Íconos funcionales consistentes, sin emojis decorativos.
+| Uso | Valor |
+| --- | --- |
+| Marca original | `#d92f30`, preservada en recursos existentes |
+| Acción accesible sobre blanco / botón con texto blanco | `#c5272e` |
+| Hover de acción | `#a91f27` |
+| Carbón | `#171a1f` / `#191c21` |
+| Tinta / texto secundario | `#24282d` / `#59646b` |
+| Papel / superficie / línea | `#f3f4f2` / `#fff` / `#dce1e2` |
+| Rojo sobre carbón | `#ff979a` para texto pequeño; `#ff7378` para titulares |
+| Pendiente | fondo `#fcebec`, texto `#9e272e` |
+| Confirmada | fondo `#eaf0f9`, texto `#35567d` |
+| Reparación | fondo `#faf0df`, texto `#815114` |
+| Lista | fondo `#e6f4ed`, texto `#1c6349` |
 
-## Reglas de composición anti-slop
-- Una sola imagen dominante por sección, nunca fotos de stock colocadas para tapar espacios.
-- Jerarquía nítida: kicker → titular → acción → apoyo, con espacio negativo real.
-- Evitar grupos de seis tarjetas iguales como principal solución para todo. Utilizar listados editoriales, divisores y numeración cuando ayuden a escanear.
-- Diseñar primero en 390 px, luego 320 y escritorio. Tap targets preferentemente ≥44 px y campos ≥48 px.
-- No añadir nuevas barras de progreso, animaciones de scroll o shaders a una herramienta de trabajo.
-- Evitar falsos testimonios y afirmaciones no verificadas. Las imágenes presentes son ilustrativas, no fotografías verificadas del taller.
-- No crear una segunda biblioteca visual o CSS paralelo: modificar solo la fuente activa de cada superficie.
+Estados siempre escritos; no depender del color. Entregada/cancelada usan grises. Rojo funcional concentrado en acciones y folios, no en toda la pantalla.
 
-## Componentes y comportamientos irrenunciables
-- Header móvil: logo + **AGENDAR** + menú, sin solapamiento a 320 px.
-- Hero: servicio reconocible, llamada a acción visible.
-- Formularios públicos: preservar IDs, `data-book`, validaciones y flujo existente.
-- Portal: estados editables, guardar y feedback verdadero, comanda térmica, nota PDF, tour reiniciable, calendario y tabla.
-- Impresión: conservar reglas `@media print` para `#printReceipt` a 76 mm; no introducir cabecera ni fondos al ticket.
-- Accesibilidad: `:focus-visible`, etiquetas, contraste, teclado, diálogos y movimiento reducido.
+## Tipografía y retícula
+- **Barlow Condensed 800**, local WOFF2 de 22 KB y OFL. Titulares públicos, marca y título de jornada. Una sola variante para reducir transferencia.
+- Texto: sistema (`Segoe UI`, Arial, fuentes nativas); sin descarga de Inter. Jerarquía por tamaño, peso, espaciado y contraste.
+- Landing: H1 54–94 px según ancho, H2 43–69 px; cuerpo 14–17 px. Portal: título 46–64 px condensado, títulos de sección 19–23 px, cuerpo 13–16 px; los metadatos pequeños no sustituyen la información principal.
+- Escala de espacio: 4 / 8 / 12 / 16 / 20 / 24 / 32 / 48 / 64 / 88. Contenedores de 1200 px públicos y 1280 px operativos; márgenes móviles 20 px.
+- Landing: hero con campo carbón, foto a la derecha en escritorio y arriba en móvil; servicios numerados divididos por reglas; banda de mantenimiento con imagen del oficio; formulario con introducción lateral. Evitar seis tarjetas comerciales idénticas.
+- Portal: cabecera de jornada → cuatro estados → solicitudes del día → filtros y órdenes. Cuatro estados en escritorio, dos por fila en móvil. Sin porcentajes ni anillos ambiguos.
 
-## Revisión y aceptación
-Capturar antes/después de ambas superficies en 390 y 1440 px cuando exista navegador. Verificar disposición móvil, consistencia, foco, formularios y tiempos de carga; no decir “100% verificado” sin evidencias. Si la herramienta no permite navegador, reportar explícitamente la ausencia de prueba visual.
+## Componentes
+- Botón primario rojo, secundario blanco con borde, acción documental interna carbón. Altura ≥44 px; formularios ≥48 px. Radios 2–6 px en público y 6–8 px en operación; no sombras grandes salvo modal.
+- Etiquetas visibles antes de campos, placeholder solo de apoyo; descripción de error junto a la acción. `aria-live` para resultados. Guardado en curso bloquea escritura duplicada; error no se convierte en éxito al ocultarse el modal.
+- Tabla de escritorio con divisores horizontales, folio en rojo y badge textual. Fichas móviles con folio/estado, moto, cliente/fecha y Abrir. Misma búsqueda y filtros para ambos.
+- Contadores por estado son botones de filtro. Agenda del día muestra solicitudes, no disponibilidad ni citas inventadas. El límite de 1000 registros se comunica cuando aplica.
+- Pestañas con borde de selección rojo y navegación por teclado. Cuenta agrupa cambio de clave y salida; Ayuda permanece visible.
+- Diálogo con nombre accesible, cabecera carbón y borde rojo. Campos a una columna en móvil. El tutorial puede quedarse visible mientras señala controles; no debe modificar el borrador.
+- Estados vacíos: explicar ausencia y siguiente acción. Error de carga: no reutilizar conceptos de otra orden. Éxito: solo después de confirmación y lectura. Tras resultado parcial: mantener datos visibles y exigir revisión antes de reintentar.
+- Iconografía funcional simple (flechas, cierre y numeración documental); no emojis de moto/papel en documentos. No incorporar componentes React a este sitio estático por motivos decorativos.
+
+## Motion, medios y rendimiento
+Transiciones de 160–200 ms en hover/foco. Sin animaciones de entrada que retrasen los controles. Bajo `prefers-reduced-motion`, quitar animaciones, transiciones y scroll suave. Mantener foco y contraste, sin depender de hover en Android.
+
+Hero existente WebP de ~144 KB. La banda de mantenimiento usa `mecanico-moto.webp` (~132 KB), coherente con el oficio; sustituye la imagen de pista de ~516 KB. Medios secundarios con dimensiones y lazy loading. Los recursos actuales son generados e ilustrativos, identificados como tales en la página; deben sustituirse por fotos reales autorizadas cuando existan. No representar imágenes generadas como testimonios del taller.
+
+Fuentes locales; pdfmake se solicita al generar una nota. No incorporar dependencias nuevas en runtime sin necesidad, tamaño y licencia revisados.
+
+## Documentos
+Comanda térmica de **76 mm**, monocroma, monoespaciada, sin precios ni encabezados del navegador añadidos por CSS. Identificación de moto, folio y trabajo; no comprobante de cobro.
+
+Nota A4: marca, folio, cliente/moto, tabla de conceptos, cantidad, precio unitario, subtotal y total MXN. Sumar por concepto redondeado a centavos. Excluir notas internas. Pie explícito: documento de servicio, no factura fiscal. Compartir mediante menú del teléfono cuando exista soporte; descargar como alternativa.
+
+## Aceptación
+Comparar antes/después en 390 y 1440 px e inspeccionar los siete anchos. Probar teclado, foco, diálogos, filtros, formularios, tutorial, errores y documentos. Capturas no sustituyen interacción. Resultados y límites en `docs/qa/REPORT.md`.
