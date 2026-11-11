@@ -186,7 +186,7 @@
             <button class="primary" type="submit">Entrar al portal</button>
           </form>
           <p class="footnote" id="loginMessage" role="status"></p>
-          <aside class="android-install" id="androidInstall" aria-label="Instalar Torre Fuerte en Android" hidden>
+          <aside class="android-install" id="androidInstall" aria-label="Instalar Torre Fuerte en Android">
             <img
               class="android-install-illustration"
               src="./images/torre-fuerte-android-install.webp"
@@ -202,11 +202,10 @@
               class="android-install-button"
               id="installAndroidButton"
               type="button"
-              aria-controls="androidInstallSteps"
-              aria-expanded="false"
+              aria-describedby="androidInstallSteps"
             >Instala la app en tu Android</button>
-            <div class="android-install-steps" id="androidInstallSteps" hidden>
-              <p>Si Chrome no muestra una ventana de instalación:</p>
+            <div class="android-install-steps" id="androidInstallSteps">
+              <p>Para instalarla en tu teléfono Android:</p>
               <ol>
                 <li>Abre esta página en <strong>Chrome</strong>.</li>
                 <li>Presiona los <strong>tres puntos ⋮</strong> del navegador.</li>
@@ -214,6 +213,7 @@
               </ol>
               <p>Después abre el ícono de Torre Fuerte e inicia sesión como siempre. Necesitas conexión a internet.</p>
             </div>
+            <p class="android-install-status" id="androidInstallStatus" role="status" aria-live="polite" hidden></p>
           </aside>
         </div>
       </section>
