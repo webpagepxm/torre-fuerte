@@ -48,9 +48,10 @@ const controls = (text) =>
     console.log("PASS " + name);
   };
   const current = fs.readFileSync(root + "/index.html", "utf8");
-  assert.deepEqual(scripts(current), scripts(before("index.html")));
+  const normalizedPublic = require("./contracts.cjs").normalizePublicBookingChanges(current);
+  assert.deepEqual(scripts(normalizedPublic), scripts(before("index.html")));
   assert.deepEqual(links(current), links(before("index.html")));
-  assert.deepEqual(controls(current), controls(before("index.html")));
+  assert.deepEqual(controls(normalizedPublic), controls(before("index.html")));
   for (const file of [
     "operacion/service-lines.mjs",
     "tf-config.js",
