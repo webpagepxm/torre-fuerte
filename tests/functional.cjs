@@ -226,6 +226,7 @@ const { execFileSync } = require("node:child_process");
   check("Conflicto con otra sesión detectado antes de escribir");
   page.once("dialog", (d) => d.accept());
   await close();
+  await page.locator("#toggleFilters").click();
   await page.locator(".metric--ready").click();
   assert.equal(await page.locator(".order-card").count(), 1);
   await page.locator("#resetFilters").click();

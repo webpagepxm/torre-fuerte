@@ -21,12 +21,12 @@
 <header class="topbar">
   <div class="brand"><img src="../assets/emblema-mono.png" alt="" width="44" height="44"><div><strong>TORRE <span>FUERTE</span></strong><small>PORTAL DE OPERACIÓN</small></div></div>
   <div class="toplinks"><a href="../">Sitio público</a><button type="button" id="restartTour" class="help-link" hidden>Ayuda</button><details id="accountMenu" class="account-menu" hidden><summary>Tu cuenta</summary><div><button type="button" id="changePass" class="linkbtn" hidden>Cambiar clave</button><button id="signout" class="linkbtn" hidden>Cerrar sesión</button></div></details></div>
-</header>
+<div class="rail-location">Puerto Escondido, Oaxaca<br><span>Taller de motocicletas</span></div></header>
 <main class="shell" id="portalMain" tabindex="-1">
   <section id="gate" class="gate">
     <div class="gatecopy">
       <p class="eyebrow">ACCESO EXCLUSIVO DEL TALLER</p>
-      <h1>Cada moto.<br>Cada detalle.<br><em>Bajo control.</em></h1>
+      <h1>El taller.<br><em>En orden.</em></h1>
       <p>Un solo lugar para revisar citas, imprimir comandas y generar notas de servicio. Pensado para usarse desde el celular.</p>
       <div class="features"><div><span>01</span><strong>Citas organizadas</strong></div><div><span>02</span><strong>Comanda para la moto</strong></div><div><span>03</span><strong>Nota para el cliente</strong></div></div>
     </div>
@@ -43,27 +43,30 @@
   </section>
   <section id="workspace" hidden>
     <div class="workspacehead">
-      <div><p class="eyebrow" id="workspaceDate">OPERACIÓN DIARIA</p><h1>Tu taller, en marcha.</h1><p class="hint">De la primera revisión a la última entrega.</p></div>
-      <div class="headbuttons"><button id="refresh">Actualizar</button><button id="newOrder" class="primary">+ Nueva orden</button></div>
+      <div><p class="eyebrow" id="workspaceDate">OPERACIÓN DIARIA</p><h1>Órdenes del taller<span class="title-stop">.</span></h1><p class="hint">Recepción, reparación y entrega.</p></div>
+      <div class="headbuttons"><button id="refresh">Actualizar</button><button id="newOrder" class="primary">+ Recibir moto</button></div>
     </div>
     <div id="statusMessage" role="status"></div>
-    <section class="activity-summary" aria-label="Órdenes activas por estado">
-      <button class="metric metric--pending" data-state="pendiente"><span class="metric-label"><i></i>Por confirmar</span><strong id="kpiPending">—</strong><span>Solicitudes pendientes <b aria-hidden="true">→</b></span></button>
-      <button class="metric metric--confirmed" data-state="confirmada"><span class="metric-label"><i></i>Confirmadas</span><strong id="kpiConfirmed">—</strong><span>Por recibir en el taller <b aria-hidden="true">→</b></span></button>
-      <button class="metric metric--working" data-state="en_reparacion"><span class="metric-label"><i></i>En reparación</span><strong id="kpiWorking">—</strong><span>Trabajo en curso <b aria-hidden="true">→</b></span></button>
-      <button class="metric metric--ready" data-state="lista"><span class="metric-label"><i></i>Listas para entregar</span><strong id="kpiReady">—</strong><span>Próxima parada: la calle <b aria-hidden="true">→</b></span></button>
+    <section class="activity-summary" aria-label="Filtrar órdenes por estado">
+      <button class="state-filter is-current" data-state="" aria-pressed="true"><span>Todas</span><strong id="kpiAll">—</strong></button>
+      <button class="state-filter metric--working" data-state="en_reparacion" aria-pressed="false"><span>En reparación</span><strong id="kpiWorking">—</strong></button>
+      <button class="state-filter metric--pending" data-state="pendiente" aria-pressed="false"><span>Por confirmar</span><strong id="kpiPending">—</strong></button>
+      <button class="state-filter metric--confirmed" data-state="confirmada" aria-pressed="false"><span>Confirmadas</span><strong id="kpiConfirmed">—</strong></button>
+      <button class="state-filter metric--ready" data-state="lista" aria-pressed="false"><span>Para entregar</span><strong id="kpiReady">—</strong></button>
     </section>
-    <section class="day-agenda" aria-labelledby="dayTitle"><div class="day-heading"><span class="eyebrow">EN LA AGENDA</span><h2 id="dayTitle">Solicitudes para hoy</h2><p id="todayCount">Sin información todavía</p></div><div id="todayOrders" class="day-orders"></div></section>
     <div class="tabs" role="tablist" aria-label="Secciones del portal">
-      <button class="active" data-tab="orders" id="ordersTab" aria-controls="ordersSection" role="tab" aria-selected="true">Órdenes de trabajo</button>
-      <button data-tab="calendar" id="calendarTab" aria-controls="calendarSection" role="tab" tabindex="-1" aria-selected="false">Calendario</button>
+      <button class="active" data-tab="orders" id="ordersTab" aria-controls="ordersSection" role="tab" aria-selected="true"><span aria-hidden="true">01</span> Órdenes</button>
+      <button data-tab="calendar" id="calendarTab" aria-controls="calendarSection" role="tab" tabindex="-1" aria-selected="false"><span aria-hidden="true">02</span> Calendario</button>
     </div>
+    <div class="workbench">
     <section id="ordersSection" class="panel" role="tabpanel" aria-labelledby="ordersTab">
-      <div class="panelheading"><div><p class="eyebrow">EL TRABAJO, EN ORDEN</p><h2>Órdenes y solicitudes</h2><p>Las nuevas solicitudes del sitio llegan como pendientes de confirmar.</p></div><button id="exportCsv">Descargar CSV</button></div>
-      <div class="filters"><label>Buscar<input id="search" type="search" placeholder="Folio, nombre, teléfono o moto"></label><label>Estado<select id="filterStatus"><option value="">Todos</option><option value="pendiente">Pendiente</option><option value="confirmada">Confirmada</option><option value="en_reparacion">En reparación</option><option value="lista">Lista</option><option value="entregada">Entregada</option><option value="cancelada">Cancelada</option></select></label><label>Fecha<input id="filterDate" type="date"></label><button id="resetFilters">Limpiar</button></div>
-      <div id="ordersTable"></div><nav id="ordersPagination" class="orders-pagination" aria-label="Páginas de órdenes"></nav><div id="mobileOrders" class="mobile-orders" aria-label="Órdenes de trabajo"></div><button type="button" id="moreOrders" class="more-orders" hidden>Ver más órdenes</button><p class="footnote">Selecciona «Abrir» para cambiar el estado, imprimir la comanda o elaborar una nota de servicio.</p>
+      <div class="panelheading"><div><h2>Registro de órdenes</h2><p id="listCount">Cargando registros…</p></div><button id="exportCsv">Exportar CSV ↓</button></div>
+      <div class="filters"><label>Buscar<input id="search" type="search" placeholder="Buscar moto, cliente o folio…"></label><button type="button" id="toggleFilters" aria-expanded="false" aria-controls="filterStatus filterDate resetFilters">Filtros</button><label>Estado<select id="filterStatus"><option value="">Todos los estados</option><option value="pendiente">Pendiente</option><option value="confirmada">Confirmada</option><option value="en_reparacion">En reparación</option><option value="lista">Lista</option><option value="entregada">Entregada</option><option value="cancelada">Cancelada</option></select></label><label>Fecha<input id="filterDate" type="date"></label><button id="resetFilters">Limpiar</button></div>
+      <div id="ordersTable"></div><nav id="ordersPagination" class="orders-pagination" aria-label="Páginas de órdenes"></nav><div id="mobileOrders" class="mobile-orders" aria-label="Órdenes de trabajo"></div><button type="button" id="moreOrders" class="more-orders" hidden>Ver más órdenes</button><p class="footnote">Las solicitudes pendientes requieren confirmación del taller.</p>
     </section>
     <section id="calendarSection" class="panel" role="tabpanel" aria-labelledby="calendarTab" hidden><div class="panelheading"><div><h2>Calendario de citas</h2><p>Los bloques son fechas y franjas solicitadas, no horas exactas confirmadas.</p></div></div><div id="calendar"></div></section>
+    <section class="day-agenda" aria-labelledby="dayTitle"><div class="day-heading"><span class="agenda-index" aria-hidden="true">HOY</span><h2 id="dayTitle">Agenda del día</h2><p id="todayCount">Sin información todavía</p></div><div id="todayOrders" class="day-orders"></div></section>
+    </div>
   </section>
 </main>
 

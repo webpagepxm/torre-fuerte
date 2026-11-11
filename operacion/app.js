@@ -362,6 +362,7 @@ $("changePasswordForm").addEventListener("submit", async (event) => {
 });
 
 function renderActivity() {
+  $("kpiAll").textContent = String(records.length);
   for (const [id, state] of [
     ["kpiPending", "pendiente"],
     ["kpiConfirmed", "confirmada"],
@@ -378,15 +379,14 @@ function renderActivity() {
       !["cancelada", "entregada"].includes(r.status),
   );
   $("todayCount").textContent = today.length
-    ? today.length + " por revisar · confirma fecha y horario"
-    : "Hoy, sin solicitudes por revisar";
+    ? today.length + (today.length === 1 ? " solicitud" : " solicitudes")
+    : "Sin solicitudes";
   const holder = $("todayOrders");
   holder.replaceChildren();
   if (!today.length) {
     const p = document.createElement("p");
     p.className = "empty-state";
-    p.textContent =
-      "Todo al día. Las solicitudes con fecha de hoy aparecerán aquí.";
+    p.textContent = "No hay citas solicitadas para hoy.";
     holder.append(p);
   }
   today.slice(0, 3).forEach((record) => {
@@ -509,14 +509,14 @@ function renderGrid() {
           formatter: "plaintext",
         },
         {
-          title: "Cliente",
-          field: "client_name",
+          title: "Motocicleta",
+          field: "motorcycle",
           minWidth: 155,
           formatter: "plaintext",
         },
         {
-          title: "Motocicleta",
-          field: "motorcycle",
+          title: "Cliente",
+          field: "client_name",
           minWidth: 130,
           formatter: "plaintext",
         },
@@ -593,6 +593,17 @@ function renderMobileOrders() {
   const holder = $("mobileOrders");
   holder.replaceChildren();
   const rows = records.filter(filterRow);
+  $("listCount").textContent = rows.length
+    ? rows.length +
+      (rows.length === 1 ? " orden en el registro" : " órdenes en el registro")
+    : records.length
+      ? "Sin coincidencias"
+      : "Aún no hay órdenes";
+  document.querySelectorAll("[data-state]").forEach((button) => {
+    const current = button.dataset.state === $("filterStatus").value;
+    button.classList.toggle("is-current", current);
+    button.setAttribute("aria-pressed", String(current));
+  });
   if (!rows.length) {
     const p = document.createElement("p");
     p.className = "empty-state";
@@ -616,7 +627,7 @@ function renderMobileOrders() {
     const service = document.createElement("p");
     service.textContent = record.service;
     const open = document.createElement("button");
-    open.textContent = "Abrir orden →";
+    open.textContent = "Abrir →";
     open.setAttribute("aria-label", "Abrir orden " + record.folio);
     open.addEventListener("click", () => openOrder(record.id));
     article.append(header, title, client, service, open);
@@ -710,6 +721,13 @@ document.querySelectorAll('[role="tab"]').forEach((tab) =>
     renderMobileOrders();
   }),
 );
+$("toggleFilters").addEventListener("click", () => {
+  const expanded = $("toggleFilters").getAttribute("aria-expanded") !== "true";
+  $("toggleFilters").setAttribute("aria-expanded", String(expanded));
+  $("toggleFilters")
+    .closest(".filters")
+    .classList.toggle("is-expanded", expanded);
+});
 $("resetFilters").addEventListener("click", () => {
   ["search", "filterStatus", "filterDate"].forEach((id) => ($(id).value = ""));
   grid?.setFilter(filterRow);
