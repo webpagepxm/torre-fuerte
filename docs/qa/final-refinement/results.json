@@ -1,0 +1,127 @@
+{
+  "base": "93e992d9423e3204573ead457391fba78f418797",
+  "branch": "refine/final-ux-audit",
+  "deployed": false,
+  "realSupabaseWrites": false,
+  "passed": 84,
+  "suites": [
+    {
+      "name": "Conceptos",
+      "passed": 6,
+      "log": "✔ importes en centavos y entradas inválidas (7.920264ms)\n✔ crear, actualizar y eliminar con lectura verificada (39.603174ms)\n✔ inserción fallida no elimina los conceptos previos (4.366673ms)\n✔ RLS que no devuelve filas no se considera éxito de eliminación (2.085846ms)\n✔ conflicto entre sesiones rechaza sobrescritura (0.670247ms)\n✔ respuesta parcial bloquea éxito y conserva id de inserción confirmado (0.978751ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 326.298101\n"
+    },
+    {
+      "name": "Funcional",
+      "passed": 24,
+      "log": "PASS Usuario sin correo, validación de acceso, limpieza de clave y cierre de sesión\nPASS Acceso con rol y apertura de orden desde móvil\nPASS Validación rechaza conceptos incompletos\nPASS Guardar, calcular y verificar lectura posterior; evita doble guardado\nPASS Desglose recuperado al reabrir\nPASS Cambio de estado persistido y contadores actualizados\nPASS Tutorial de orden: avance, retroceso, salida y conservación de datos\nPASS PDF real con precios, total y sin notas internas; no reescribe datos sin cambios\nPASS Compartir: descarga alternativa en navegador sin Web Share\nPASS Comanda de 76 mm sin precios y separada de la nota\nPASS Detalle de orden sin desbordamiento en siete anchos\nPASS Error RLS visible; no falso éxito ni PDF tras fallo\nPASS Fallo de carga no reutiliza el desglose de otra moto\nPASS Conflicto con otra sesión detectado antes de escribir\nPASS Filtros por estado, búsqueda y estado vacío\nPASS Exportación CSV con datos de prueba\nPASS Calendario y pestañas con teclado\nPASS Guía inicial reiniciable y salida con Escape\nPASS Orden manual con cliente, moto y folio devuelto por servidor\nPASS Solicitud pendiente + WhatsApp + clave idempotente; caché sin datos personales\nPASS Fallo de registro público conserva ruta WhatsApp y muestra resultado real\nPASS Formularios públicos, menú móvil y navegación con teclado\nPASS Sin errores JavaScript en las interacciones probadas\nPASS SDK Supabase real carga desde jsDelivr y acceso sin sesión disponible\nAXE [{\"surface\":\"Página pública móvil\",\"violations\":[]},{\"surface\":\"Portal móvil\",\"violations\":[]},{\"surface\":\"Detalle de orden\",\"violations\":[]},{\"surface\":\"Tabla escritorio\",\"violations\":[]},{\"surface\":\"Calendario\",\"violations\":[]},{\"surface\":\"Acceso sin sesión y SDK real\",\"violations\":[]}]\n24 comprobaciones funcionales completadas; backend aislado mediante fixture.\n"
+    },
+    {
+      "name": "UX",
+      "passed": 10,
+      "log": "PASS Formulario de acceso completo en la primera pantalla de un móvil pequeño\nPASS Abrir orden disponible y funcional en tablet y escritorio\nPASS Filtros activos visibles y recuperables aun con panel cerrado\nPASS Navegación actualiza título y muestra filtros del contexto correcto\nPASS Notas y estado sin guardar protegidos al cerrar o pulsar Escape\nPASS Validación enfoca el campo incompleto y distingue precio vacío de cero explícito\nPASS Orden nueva con datos no se descarta accidentalmente\nPASS Cuenta se cierra por teclado sin perder foco\nPASS Acciones principales y filtros conservan objetivos táctiles de al menos 44 px a 320 px\nPASS Nueve pasos del tutorial caben a 320 px y no alteran datos\n10 comprobaciones adicionales de auditoría UX aprobadas.\n"
+    },
+    {
+      "name": "Auditoría anterior",
+      "passed": 11,
+      "log": "PASS Primera moto y comanda accesibles en móvil; salto a nota conserva foco visible\nPASS Calendario diferido: semana legible con moto y estado en móvil, mes en escritorio\nPASS Estado de guardado distingue borrador, respuesta confirmada y nueva edición\nPASS Alta rechaza espacios/teléfono inválido, enfoca error y bloquea envíos simultáneos\nPASS Formulario usable con viewport reducido a 500 px; campos enfocados fuera de cabecera y acciones\nPASS Error inicial de consulta no se presenta como lista vacía ni carga perpetua\nPASS Lista anterior se identifica al fallar; recuperación y desconexión tienen mensajes reales\nPASS Taller vacío explica cómo recibir la primera moto sin métricas ficticias\nPASS Fallo de descarga del calendario permite reintentar sin perder órdenes\nPASS Datos de cliente se muestran como texto; exportación neutraliza fórmulas CSV\nPASS Sin errores JavaScript en los escenarios adicionales\n{\"passed\":11,\"geometry\":[{\"width\":320,\"firstOrderBefore\":623,\"firstOrderAfter\":473,\"printBefore\":1098,\"printAfter\":462},{\"width\":375,\"firstOrderBefore\":610,\"firstOrderAfter\":479,\"printBefore\":1035,\"printAfter\":440},{\"width\":390,\"firstOrderBefore\":610,\"firstOrderAfter\":468,\"printBefore\":1035,\"printAfter\":440},{\"width\":430,\"firstOrderBefore\":610,\"firstOrderAfter\":458,\"printBefore\":1015,\"printAfter\":440}]}\n"
+    },
+    {
+      "name": "Refinamiento anterior",
+      "passed": 7,
+      "log": "PASS WhatsApp, enlaces, validaciones, consultas y documentos preservados\nPASS CTA responde al pulsar y navega de inmediato al formulario existente\nPASS Transición transitions.dev aplicada; movimiento reducido elimina desplazamientos animados\nPASS Objetivos táctiles, menú con Escape y foco de formulario conservados en móvil\nPASS Cuenta se abre desde el origen correcto y mantiene cierre por teclado en móvil/escritorio\nPASS Carga tiene feedback solo mientras ocurre; diálogo abre y cierra sin esperas ni escrituras decorativas\nPASS Acciones siguen disponibles con movimiento reducido y sin errores JavaScript\n7 comprobaciones de refinamiento aprobadas\n"
+    },
+    {
+      "name": "Shader finito",
+      "passed": 12,
+      "log": "PASS Contratos de datos, WhatsApp y documentos preservados\nPASS Reposo inicial sin GPU ni animación decorativa automática\nPASS WebGL compila, cambia píxeles, no reporta errores y respeta raster/FPS acotados\nPASS Familias y tamaños de letra aprobados conservados\nPASS El halo se detiene tras 1.6 s; no hay bucle en reposo\nPASS Pausa accesible, persistente y reactivación sin cambiar datos\nPASS Política de documento oculto: evento de visibilidad simulado pausa y reanuda\nPASS El shader se detiene al trabajar en un diálogo y vuelve al cerrarlo\nPASS Movimiento reducido pausa el dibujo y mantiene los controles del taller\nPASS Fuera de pantalla se detiene y vuelve a dibujar al regresar\nPASS Pérdida de contexto gráfico conserva fallback y búsqueda utilizable\nPASS Sin WebGL: acceso móvil completo, halo estático y sin desbordamiento\n12 comprobaciones SaaS correctas\n"
+    },
+    {
+      "name": "Cierres finales",
+      "passed": 14,
+      "log": "PASS Consultas, validaciones, autenticación, WhatsApp y documentos preservados\nPASS Primera visita y primera orden funcionales, sin guías automáticas\nPASS Finalización aparece solo después de respuesta persistida, con folio, moto y servicio\nPASS Acción de cierre lleva al documento existente y conserva foco, sin escribir datos\nPASS Editar retira la confirmación anterior; notas sin cambio de estado no repiten el cierre especial\nPASS Fallo al guardar conserva estado y notas sin mostrar cierre confirmado\nPASS Respuesta sin registro no confirma; reintento válido confirma la entrega real\nPASS Cancelar el menú de compartir termina la preparación y ofrece descarga\nPASS Web Share resuelto no se presenta como mensaje enviado al cliente\nPASS Impresión distingue comanda preparada de impresión física confirmada\nPASS Reabrir una orden no conserva confirmaciones de la operación anterior\nPASS Calendario toma los mismos tokens de estado de la lista\nPASS Salida pública explica envío manual en WhatsApp y verificación, sin prometer cuentas ni historial conectado\nPASS Taps sintetizados en Chromium abren/cierra orden y despliegan filtros\n14 comprobaciones finales aprobadas\n"
+    }
+  ],
+  "pdfRegression": "PASS recuperación del mensaje PDF y descarga sin repetir UPDATE de un desglose sin cambios\n",
+  "viewportChecks": "public 320 OK\npublic 375 OK\npublic 390 OK\npublic 430 OK\npublic 768 OK\npublic 1280 OK\npublic 1440 OK\nportal 320 OK\nportal 375 OK\nportal 390 OK\nportal 430 OK\nportal 768 OK\nportal 1280 OK\nportal 1440 OK\nJS errors []\n",
+  "widths": [
+    320,
+    375,
+    390,
+    430,
+    768,
+    1280,
+    1440
+  ],
+  "unchangedFilesSha256": {
+    "operacion/service-lines.mjs": "6033af810f96f8b812ccbb3ea4b993c57c56bb25c8d180de3b042d2cc92478ad",
+    "tf-config.js": "efcf7b5db36437bab2d21c421ab303d1ab0093d74f6721fea601f16ce62be40d",
+    "assets/ui-interactions.css": "1177a75d52413de570774fe14716247c049d85bc57b9e31c20832fb750e23272",
+    "seguimiento/index.html": "e9e18a12cc3c1ae2fcc71f678f8cf9983a8b507eeb12f02bb0e2d78b2448768e",
+    "aviso-privacidad.html": "5e399b17cff12b50118a3856fb9d06fdd36b18959faebac98741026f34d3336d",
+    "sliderbros-studio/index.html": "028b7981b8b3344b7438a77e786cb51b13514f005ce311370d9c85c4a77a93f8",
+    "torre-fuerte.vcf": "04b8524c6854c30b0b0170cf9b121151e511776326b582b22deed46ef1a49ab4"
+  },
+  "heuristicScores": [
+    {
+      "dimension": "Claridad",
+      "before": 4,
+      "after": 4.5
+    },
+    {
+      "dimension": "Anticipación",
+      "before": 3.5,
+      "after": 4
+    },
+    {
+      "dimension": "Consistencia",
+      "before": 3.5,
+      "after": 4.5
+    },
+    {
+      "dimension": "Acabado visual",
+      "before": 4,
+      "after": 4.5
+    },
+    {
+      "dimension": "Motion",
+      "before": 3,
+      "after": 4.5
+    },
+    {
+      "dimension": "Onboarding",
+      "before": 2.5,
+      "after": 4.5
+    },
+    {
+      "dimension": "Estados vacíos",
+      "before": 4,
+      "after": 4
+    },
+    {
+      "dimension": "Errores",
+      "before": 3.5,
+      "after": 4
+    },
+    {
+      "dimension": "Cierre de flujos",
+      "before": 3,
+      "after": 4.5
+    },
+    {
+      "dimension": "Accesibilidad",
+      "before": 4,
+      "after": 4
+    },
+    {
+      "dimension": "Responsive",
+      "before": 4.5,
+      "after": 4.5
+    },
+    {
+      "dimension": "Rendimiento",
+      "before": 4,
+      "after": 4.5
+    }
+  ],
+  "scoreLimits": "Juicio heurístico con evidencia de código y Chromium. No es investigación con usuarios, Android físico o certificación WCAG. Backend aislado."
+}

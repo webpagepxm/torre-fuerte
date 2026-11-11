@@ -72,7 +72,9 @@ const { setup, base } = require("./browser.cjs");
     const file = await download;
     assert.match(file.suggestedFilename(), /nota-servicio\.pdf$/);
     await page.waitForFunction(() =>
-      document.querySelector("#pdfMessage").textContent.includes("descargada"),
+      document
+        .querySelector("#pdfMessage")
+        .textContent.includes("Se inició la descarga"),
     );
     console.log(
       "PASS recuperación del mensaje PDF y descarga sin repetir UPDATE de un desglose sin cambios",

@@ -1,0 +1,39 @@
+{
+  "passed": 12,
+  "shader": {
+    "draws": 4,
+    "checksums": [
+      2293142,
+      2294500,
+      2295041,
+      2295352
+    ],
+    "canvas": [
+      [
+        640,
+        83,
+        0
+      ]
+    ]
+  },
+  "type": {
+    "title": {
+      "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Arial, sans-serif",
+      "size": "32px"
+    },
+    "body": {
+      "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Arial, sans-serif",
+      "size": "15px"
+    },
+    "field": {
+      "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Arial, sans-serif",
+      "size": "14px"
+    },
+    "brand": {
+      "family": "\"Barlow Condensed\", Impact, sans-serif",
+      "size": "24px"
+    }
+  },
+  "errors": [],
+  "conditions": "Chromium con ANGLE/SwiftShader; backend ficticio aislado. No Android físico ni Supabase real."
+}

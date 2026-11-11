@@ -1,0 +1,6 @@
+{
+  "automaticWelcome": true,
+  "automaticOrderGuide": true,
+  "finishedFeedback": "Estado y notas guardados",
+  "cancelledShareFeedback": "Preparando la nota…"
+}

@@ -1,6 +1,7 @@
 const { chromium } = require("playwright");
 const fs = require("node:fs");
-const { setup, base, root } = require("./browser.cjs");
+const assert = require("node:assert/strict");
+const { setup, base, output } = require("./browser.cjs");
 (async () => {
   const browser = await chromium.launch({
     executablePath: "/usr/bin/chromium",
@@ -38,6 +39,11 @@ const { setup, base, root } = require("./browser.cjs");
       uploadThroughput: 93750,
     });
     await page.goto(base + "/operacion/");
+    await page.locator(".order-card button").first().waitFor();
+    await page.waitForTimeout(800);
+    const idleDraws = await page.evaluate(() => window.__activeQA.draws);
+    assert.equal(idleDraws, 0, "Sin dibujos en reposo");
+    await page.locator("#search").focus();
     await page.waitForSelector('.filters [data-renderer="webgl"]');
     await page.waitForTimeout(500);
     await page.evaluate(() => {
@@ -70,6 +76,8 @@ const { setup, base, root } = require("./browser.cjs");
       conditions:
         "Chromium 390×844, CPU 4×, 200000 B/s, latencia 150 ms, WebGL ANGLE/SwiftShader. Backend/CDN aislados; no Android físico. Muestra de 2 segundos tras carga.",
       ...effect,
+      idleDraws,
+      burstLimitMs: 1600,
       inputToNextFrameMs: await page.evaluate(
         () => window.__activeQA.inputToFrame,
       ),
@@ -77,7 +85,7 @@ const { setup, base, root } = require("./browser.cjs");
       pdfLoaded: await page.evaluate(() => !!window.pdfMake),
     };
     fs.writeFileSync(
-      root + "/docs/qa/saas/performance-active.json",
+      output + "/saas-performance-active.json",
       JSON.stringify(result, null, 2) + "\n",
     );
     console.log(JSON.stringify(result));

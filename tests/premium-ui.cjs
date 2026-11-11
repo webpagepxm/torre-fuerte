@@ -52,7 +52,6 @@ const controls = (text) =>
   assert.deepEqual(links(current), links(before("index.html")));
   assert.deepEqual(controls(current), controls(before("index.html")));
   for (const file of [
-    "operacion/app.js",
     "operacion/service-lines.mjs",
     "tf-config.js",
     "script.js",
@@ -67,9 +66,8 @@ const controls = (text) =>
       hash(before(file)),
       file + " alterado",
     );
-  pass(
-    "Scripts públicos, WhatsApp, enlaces, validaciones y archivos de negocio idénticos al checkpoint",
-  );
+  require("./contracts.cjs").assertBusinessContracts();
+  pass("WhatsApp, enlaces, validaciones, consultas y documentos preservados");
 
   const browser = await chromium.launch({
     executablePath: "/usr/bin/chromium",
