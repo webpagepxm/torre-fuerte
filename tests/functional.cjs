@@ -155,7 +155,7 @@ const { execFileSync } = require("node:child_process");
   await page.waitForFunction(() =>
     document
       .querySelector("#pdfMessage")
-      .textContent.includes("Nota descargada"),
+      .textContent.includes("Se inició la descarga"),
   );
   check("Compartir: descarga alternativa en navegador sin Web Share");
   await page.evaluate(() => (window.print = () => (window.__printed = true)));

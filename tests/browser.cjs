@@ -15,10 +15,15 @@ const output = process.env.TF_QA_OUTPUT || "/tmp/torre-fuerte-qa";
 mkdirSync(output, { recursive: true });
 const cache = "/tmp/tf-verified-assets";
 mkdirSync(cache, { recursive: true });
-async function setup(browser, authorized = true, { mockDatabase = true } = {}) {
+async function setup(
+  browser,
+  authorized = true,
+  { mockDatabase = true, contextOptions = {} } = {},
+) {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
     reducedMotion: "reduce",
+    ...contextOptions,
   });
   await context.addInitScript(
     ({ authorized }) => {

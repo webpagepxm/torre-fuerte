@@ -1,0 +1,49 @@
+{
+  "passed": 14,
+  "checks": [
+    "Consultas, validaciones, autenticación, WhatsApp y documentos preservados",
+    "Primera visita y primera orden funcionales, sin guías automáticas",
+    "Finalización aparece solo después de respuesta persistida, con folio, moto y servicio",
+    "Acción de cierre lleva al documento existente y conserva foco, sin escribir datos",
+    "Editar retira la confirmación anterior; notas sin cambio de estado no repiten el cierre especial",
+    "Fallo al guardar conserva estado y notas sin mostrar cierre confirmado",
+    "Respuesta sin registro no confirma; reintento válido confirma la entrega real",
+    "Cancelar el menú de compartir termina la preparación y ofrece descarga",
+    "Web Share resuelto no se presenta como mensaje enviado al cliente",
+    "Impresión distingue comanda preparada de impresión física confirmada",
+    "Reabrir una orden no conserva confirmaciones de la operación anterior",
+    "Calendario toma los mismos tokens de estado de la lista",
+    "Salida pública explica envío manual en WhatsApp y verificación, sin prometer cuentas ni historial conectado",
+    "Taps sintetizados en Chromium abren/cierra orden y despliegan filtros"
+  ],
+  "contracts": {
+    "baseline": "93e992d9423e3204573ead457391fba78f418797",
+    "protectedFunctions": 16,
+    "queries": 4
+  },
+  "completionAccessibility": [],
+  "agendaGeometry": [
+    {
+      "width": 1440,
+      "borderLeft": "1px",
+      "borderTop": "0px",
+      "paddingLeft": "24px",
+      "paddingTop": "0px"
+    },
+    {
+      "width": 390,
+      "borderLeft": "0px",
+      "borderTop": "1px",
+      "paddingLeft": "0px",
+      "paddingTop": "24px"
+    }
+  ],
+  "calendarColors": [
+    "rgb(17, 107, 93)",
+    "rgb(35, 74, 184)",
+    "rgb(128, 82, 16)",
+    "rgb(110, 59, 182)"
+  ],
+  "errors": [],
+  "conditions": "Fixtures aislados; emulación y taps sintetizados Chromium, no Android físico ni Supabase real."
+}

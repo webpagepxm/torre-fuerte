@@ -47,7 +47,7 @@ La referencia define materiales y composición, no módulos: las únicas vistas 
 
 Tesis: **luz cian/violeta en el punto de búsqueda** como gesto visual principal; continuidad breve entre Órdenes/Calendario; apertura de diálogos, menú y feedback de acciones existentes. Los controles están disponibles desde el primer render, sin coreografía de carga.
 
-`operacion/atmosphere.js` dibuja un shader WebGL de borde redondeado, sin dependencias, red ni datos de negocio. Máximo 640×220 píxeles sin multiplicar por DPR, 18 FPS escritorio y 12 móvil. Solo dibuja el halo visible; pausa fuera de pantalla, documento oculto y diálogo abierto. Botón Efectos permite pausar y reactivar; persiste únicamente esa preferencia visual. `prefers-reduced-motion` prevalece. Sin WebGL o tras perder contexto, queda un halo CSS estático y todos los controles siguen utilizables.
+`operacion/atmosphere.js` dibuja un shader WebGL de borde redondeado, sin dependencias, red ni datos de negocio. Máximo 640×220 píxeles sin multiplicar por DPR, 18 FPS escritorio y 12 móvil. El halo estático es el estado inicial. El shader solo se activa al enfocar búsqueda/acceso o reactivar Efectos, durante un máximo de 1600 ms por gesto; no hay bucle decorativo en reposo. Pausa fuera de pantalla, documento oculto y diálogo abierto. Botón Efectos permite pausar y reactivar; persiste únicamente esa preferencia visual. `prefers-reduced-motion` prevalece. Sin WebGL o tras perder contexto, queda un halo CSS estático y todos los controles siguen utilizables.
 
 Interacciones compartidas en `assets/ui-interactions.css`: presión 120 ms, feedback 160 ms, apertura 220 ms, reflejo 280 ms, curva `cubic-bezier(0.22,1,0.36,1)`. El indicador de Actualizar solo gira durante la consulta. Movimiento reducido elimina giros, desplazamientos y shader; conserva mensajes y estados escritos. La landing no incorpora shader y mantiene su reflejo localizado con hover.
 
@@ -59,4 +59,10 @@ Comanda interna térmica de **76 mm**, monocroma, sin precios; identifica moto, 
 
 ## Verificación
 
-Revisar 320, 375, 390, 430, 768, 1280 y 1440 px; teclado, foco, filtros, tutorial, vacío/error y documentos. Comparar capturas con la base `e9578bc`. Datos ficticios solo en pruebas, nunca en producción. Medir rendimiento indicando condiciones; Chromium emulado no es Android físico. `tests/saas-ui.cjs` comprueba dibujo real, pausa, fallback y tipografía. Evidencia vigente: `docs/ops-saas-platform.md`; auditorías previas en `docs/torre-fuerte-ops-audit.md` y `docs/premium-ui-refinement.md`.
+Revisar 320, 375, 390, 430, 768, 1280 y 1440 px; teclado, foco, filtros, tutorial, vacío/error y documentos. Comparar esta pasada con la base `93e992d`. Datos ficticios solo en pruebas, nunca en producción. Medir rendimiento indicando condiciones; Chromium emulado no es Android físico. `tests/saas-ui.cjs` comprueba dibujo real, pausa, fallback y tipografía. Evidencia vigente: `docs/ops-saas-platform.md`; auditorías previas en `docs/torre-fuerte-ops-audit.md` y `docs/premium-ui-refinement.md`.
+
+## Cierre y ayuda contextual
+
+Las guías de bienvenida y orden se abren únicamente desde Ayuda o Guía de esta orden; no interrumpen la primera visita. No añadir introducciones antes del primer trabajo. Un cambio confirmado a Lista o Entregada ofrece un check estático, resumen de folio/moto/servicio y acceso a la nota existente. No repetir el bloque al guardar solo notas ni conservarlo al editar/reabrir otra orden. La confirmación depende de la respuesta del guardado existente.
+
+La comanda se describe como preparada; la web no puede verificar papel impreso. Una descarga iniciada no acredita que el archivo se haya guardado, y un Web Share resuelto no confirma entrega al cliente. Cancelar compartir debe retirar Preparando y dejar una alternativa escrita. Calendario y lista utilizan los mismos tokens semánticos. Evidencia de esta pasada: `docs/final-ux-audit.md`.

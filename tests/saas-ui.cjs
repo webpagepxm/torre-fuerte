@@ -3,7 +3,7 @@ const { chromium } = require("playwright");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const { execFileSync } = require("node:child_process");
-const { setup, base, root } = require("./browser.cjs");
+const { setup, base, root, output } = require("./browser.cjs");
 const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
 (async () => {
   const browser = await chromium.launch({
@@ -20,14 +20,12 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
     passed++;
     console.log("PASS " + label);
   };
-  const dir = root + "/docs/qa/saas";
+  const dir = output + "/saas";
   fs.mkdirSync(dir, { recursive: true });
   const errors = [];
   try {
     for (const file of [
-      "index.html",
       "assets/ui-interactions.css",
-      "operacion/app.js",
       "operacion/service-lines.mjs",
       "tf-config.js",
     ]) {
@@ -39,7 +37,8 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
         }),
       );
     }
-    pass("Landing, autenticación, datos, documentos y eventos sin cambios");
+    require("./contracts.cjs").assertBusinessContracts();
+    pass("Contratos de datos, WhatsApp y documentos preservados");
     const context = await setup(browser);
     await context.addInitScript(() => {
       window.__shaderQA = { draws: 0, checksums: [] };
@@ -71,10 +70,18 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto(base + "/operacion/");
     await page.locator("#workspace").waitFor({ state: "visible" });
+    await page.waitForTimeout(200);
+    assert.equal(await page.evaluate(() => window.__shaderQA.draws), 0);
+    pass("Reposo inicial sin GPU ni animación decorativa automática");
+    const trigger = async () => {
+      await page.locator("#search").blur();
+      await page.locator("#search").focus();
+    };
+    await trigger();
     await page.waitForFunction(() =>
       document.querySelector('.filters [data-renderer="webgl"]'),
     );
-    await page.waitForTimeout(1100);
+    await page.waitForFunction(() => window.__shaderQA.draws >= 4);
     const shader = await page.evaluate(() => ({
       ...window.__shaderQA,
       canvas: [...document.querySelectorAll(".filters canvas")].map((c) => [
@@ -83,7 +90,7 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
         c.getContext("webgl").getError(),
       ]),
     }));
-    assert(shader.draws >= 5 && shader.draws < 26, JSON.stringify(shader));
+    assert(shader.draws >= 4 && shader.draws <= 32, JSON.stringify(shader));
     assert(
       new Set(shader.checksums).size > 2,
       "Los píxeles del shader deben cambiar",
@@ -94,7 +101,7 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
       ),
     );
     pass(
-      "WebGL compila, cambia píxeles, no reporta errores y respeta raster/FPS acotados",
+      "WebGL compila, cambia píxeles, no reporta errores y mantiene raster acotado",
     );
     await page.screenshot({ path: dir + "/shader-1440.png" });
     const type = await page.evaluate(() =>
@@ -115,6 +122,12 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
     assert.equal(type.field.size, "14px");
     assert(type.brand.family.includes("Barlow Condensed"));
     pass("Familias y tamaños de letra aprobados conservados");
+    await page.waitForTimeout(1800);
+    const settled = await page.evaluate(() => window.__shaderQA.draws);
+    await page.waitForTimeout(350);
+    assert.equal(await page.evaluate(() => window.__shaderQA.draws), settled);
+    pass("El halo se detiene tras 1.6 s; no hay bucle en reposo");
+    await trigger();
     await page.locator("#motionToggle").click();
     const paused = await page.evaluate(() => window.__shaderQA.draws);
     await page.waitForTimeout(500);
@@ -138,6 +151,7 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
     await page.locator("#motionToggle").click();
     await page.waitForFunction(() => window.__shaderQA.draws > 1);
     pass("Pausa accesible, persistente y reactivación sin cambiar datos");
+    await trigger();
     await page.evaluate(() => {
       const native = Object.getOwnPropertyDescriptor(
         Document.prototype,
@@ -164,6 +178,7 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
     pass(
       "Política de documento oculto: evento de visibilidad simulado pausa y reanuda",
     );
+    await trigger();
     await page.locator(".tabulator-row button").first().click();
     await page.locator("#orderDialog").waitFor({ state: "visible" });
     const held = await page.evaluate(() => window.__shaderQA.draws);
@@ -182,7 +197,8 @@ const checkpoint = "e9578bc13ffcedd3e1670178d3d5f7a361583ef0";
     );
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.waitForTimeout(300);
+    await trigger();
+    await page.waitForTimeout(100);
     await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(200);
     const offscreen = await page.evaluate(() => window.__shaderQA.draws);

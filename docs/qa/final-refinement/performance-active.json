@@ -1,0 +1,15 @@
+{
+  "conditions": "Chromium 390×844, CPU 4×, 200000 B/s, latencia 150 ms, WebGL ANGLE/SwiftShader. Backend/CDN aislados; no Android físico. Muestra de 2 segundos tras carga.",
+  "draws": 12,
+  "longTasks": [],
+  "inputToFrame": 0,
+  "canvas": [
+    372,
+    124
+  ],
+  "idleDraws": 0,
+  "burstLimitMs": 1600,
+  "inputToNextFrameMs": 9.700000002980232,
+  "calendarLoaded": false,
+  "pdfLoaded": false
+}

@@ -184,10 +184,6 @@ async function enter() {
     month: "long",
   }).format(new Date());
   await loadRecords();
-  if (!localStorage.getItem(TOUR_SEEN_KEY)) {
-    // Dar tiempo a la tabla para que complete el primer render.
-    setTimeout(() => startWelcomeTour(true), 650);
-  }
   return true;
 }
 function leave() {
@@ -775,6 +771,15 @@ async function renderCalendar() {
   $("calendarSection").setAttribute("aria-busy", "false");
   $("calendarState").hidden = true;
   if (!currentUser) return;
+  const theme = getComputedStyle(document.documentElement);
+  const calendarColors = Object.fromEntries(
+    [
+      ["pendiente", "--pending"],
+      ["confirmada", "--confirmed"],
+      ["en_reparacion", "--working"],
+      ["lista", "--ready"],
+    ].map(([state, token]) => [state, theme.getPropertyValue(token).trim()]),
+  );
   const events = records
     .filter((r) => r.status !== "cancelada")
     .map((r) => ({
@@ -792,12 +797,7 @@ async function renderCalendar() {
       start: r.requested_date,
       allDay: true,
       backgroundColor:
-        {
-          pendiente: "#9e272e",
-          confirmada: "#35567d",
-          en_reparacion: "#815114",
-          lista: "#1c6349",
-        }[r.status] || "#4e5962",
+        calendarColors[r.status] || theme.getPropertyValue("--muted").trim(),
       textColor: "#ffffff",
       borderColor: "transparent",
     }));
@@ -1233,6 +1233,8 @@ async function openOrder(id) {
   showOrderFeedback("itemsMessage", "");
   showOrderFeedback("orderMessage", "");
   showOrderFeedback("pdfMessage", "");
+  showOrderFeedback("printMessage", "");
+  $("orderCompletion").hidden = true;
   linesLoaded = false;
   linesDirty = false;
   savedLines = [];
@@ -1251,8 +1253,6 @@ async function openOrder(id) {
     linesLoaded = true;
     renderLines();
     setLineControls(false);
-    if (!localStorage.getItem(ORDER_TOUR_SEEN_KEY))
-      setTimeout(() => startOrderGuide(true), 350);
   } catch (error) {
     if (version !== orderLoadVersion) return;
     $("linesState").textContent =
@@ -1274,6 +1274,7 @@ function updateOrderSaveState() {
 for (const id of ["orderStatus", "internalNotes"]) {
   $(id).addEventListener("input", () => {
     showOrderFeedback("orderMessage", "");
+    $("orderCompletion").hidden = true;
     updateOrderSaveState();
   });
 }
@@ -1282,9 +1283,12 @@ $("jumpToNote").addEventListener("click", (event) => {
   $("docClientHeading").focus({ preventScroll: true });
   $("docClientHeading").scrollIntoView({ block: "start", behavior: "instant" });
 });
+$("completionNote").addEventListener("click", () => $("jumpToNote").click());
 $("saveOrder").addEventListener("click", async () => {
   if (!selected || savingOrder) return;
   savingOrder = true;
+  const previousStatus = selected.status;
+  $("orderCompletion").hidden = true;
   updateOrderSaveState();
   $("orderEditing").setAttribute("aria-busy", "true");
   showOrderFeedback("orderMessage", "");
@@ -1312,6 +1316,28 @@ $("saveOrder").addEventListener("click", async () => {
     selected = data;
     await loadRecords();
     showOrderFeedback("orderMessage", "Estado y notas guardados");
+    if (
+      selected.status !== previousStatus &&
+      ["lista", "entregada"].includes(selected.status)
+    ) {
+      const ready = selected.status === "lista";
+      $("completionTitle").textContent = ready
+        ? "Lista para entregar"
+        : "Entrega registrada";
+      $("completionSummary").textContent =
+        selected.folio + " · " + selected.motorcycle + " · " + selected.service;
+      $("orderCompletion").hidden = false;
+      showOrderFeedback(
+        "orderMessage",
+        ready
+          ? "Estado y notas guardados. La orden está lista para entregar."
+          : "Estado y notas guardados. La entrega quedó registrada.",
+      );
+      $("orderCompletion").scrollIntoView({
+        block: "nearest",
+        behavior: "instant",
+      });
+    }
     message("Cambios guardados en " + selected.folio + ".");
   } catch {
     showOrderFeedback(
@@ -1578,6 +1604,10 @@ function generateTicket() {
 $("printOrder").addEventListener("click", () => {
   if (!selected) return;
   generateTicket();
+  showOrderFeedback(
+    "printMessage",
+    "Comanda preparada. Elige tu impresora en el diálogo del navegador; comprueba la impresión en la impresora.",
+  );
   window.print();
 });
 let pdfLibrary;
@@ -1739,7 +1769,7 @@ $("pdfDownload").addEventListener("click", async () => {
     setTimeout(() => URL.revokeObjectURL(url), 3000);
     showOrderFeedback(
       "pdfMessage",
-      "✓ Nota para el cliente descargada con precios y total.",
+      "Nota PDF preparada con precios y total. Se inició la descarga; revisa Descargas en tu navegador.",
     );
     message("Nota PDF generada.");
   } catch (err) {
@@ -1771,7 +1801,7 @@ $("pdfShare").addEventListener("click", async () => {
       });
       showOrderFeedback(
         "pdfMessage",
-        "✓ Nota compartida mediante el menú del teléfono.",
+        "El menú del teléfono recibió la nota. Confirma el envío en la app que elegiste.",
       );
     } else {
       const url = URL.createObjectURL(blob);
@@ -1782,12 +1812,19 @@ $("pdfShare").addEventListener("click", async () => {
       setTimeout(() => URL.revokeObjectURL(url), 3000);
       showOrderFeedback(
         "pdfMessage",
-        "Nota descargada. Adjúntala al chat del cliente en WhatsApp.",
+        "Se inició la descarga de la nota. Adjúntala al chat del cliente en WhatsApp.",
       );
-      message("PDF descargado. Ahora adjúntalo manualmente en WhatsApp.");
+      message(
+        "Descarga de PDF iniciada. Adjúntalo en WhatsApp cuando esté disponible.",
+      );
     }
   } catch (err) {
-    if (err?.name !== "AbortError") {
+    if (err?.name === "AbortError") {
+      showOrderFeedback(
+        "pdfMessage",
+        "Se canceló compartir. La nota sigue disponible para descargar.",
+      );
+    } else {
       showOrderFeedback(
         "pdfMessage",
         "No fue posible compartir la nota. Prueba «Descargar nota PDF para el cliente».",

@@ -65,3 +65,11 @@ Consulta `docs/torre-fuerte-ops-audit.md` para la auditoría actual con Unslop. 
 ## Identidad SaaS de OPS · petición del usuario
 
 La dirección nueva de `DESIGN.md` prevalece sobre las restricciones históricas de carbón/rojo, ausencia de shaders o identidad compartida. Conservar familias y tamaños de letra aprobados. Efecto focal: halo animado de búsqueda/acceso; navegación y diálogos mantienen respuesta corta y cierre inmediato. WebGL sin biblioteca, raster máximo 640×220, 18 FPS escritorio / 12 móvil; pausa en segundo plano, fuera de pantalla, al abrir diálogos, por preferencia persistente y movimiento reducido. Fallback CSS obligatorio. No extender esta paleta o efectos al sitio público. Evidencia en `docs/ops-saas-platform.md`.
+
+## Auditoría final y cierre de flujos
+
+La pasada `refine/final-ux-audit` se entrega sin despliegue por instrucción expresa del usuario. No publicar esta rama sin una orden posterior. Mantener la paleta y tipografía actuales. No abrir tours automáticamente. Halo estático en reposo; animación solo al enfocar, máximo 1600 ms por gesto. No reiniciarlo por cada tecla.
+
+Una orden Lista/Entregada confirmada por el guardado existente ofrece resumen y acceso directo a nota, sin nuevas escrituras ni celebración repetida. Comanda preparada no equivale a impresión física, descarga iniciada no equivale a archivo guardado, Web Share resuelto no equivale a mensaje entregado. Conservar feedback prescriptivo al cancelar compartir.
+
+`node tests/final-refinement.cjs` comprueba estos cierres, ayuda manual y taps sintetizados. `tests/contracts.cjs` protege las 16 funciones operativas, cuatro consultas directas y scripts/controles/enlaces públicos contra `93e992d`; permite los cambios explícitos de feedback y presentación. Los archivos de persistencia, configuración y superficies independientes se conservan según esa comprobación. Ver `docs/final-ux-audit.md`.

@@ -29,7 +29,7 @@ Una comanda interna de 76 mm identifica la moto y el trabajo, sin precios. La no
 
 - Formulario de cita: consentimiento, validación, apertura de WhatsApp y registro paralelo mediante `tf-create-request`; digest y clave idempotente en sesión.
 - Alta de cliente y consulta de historial/beneficios: preparan mensajes de WhatsApp; no crean cuentas ni muestran expedientes en público.
-- OPS: autenticación por usuario/contraseña mediante `tf-staff-login`, sesión y comprobación de rol `tf_staff`; listado/búsqueda/filtros, recepción manual, estados/notas, calendario, CSV, conceptos y notas PDF, impresión y tutorial.
+- OPS: autenticación por usuario/contraseña mediante `tf-staff-login`, sesión y comprobación de rol `tf_staff`; listado/búsqueda/filtros, recepción manual, estados/notas, calendario, CSV, conceptos y notas PDF, impresión y guías manuales contextuales.
 - Supabase remoto: `tf_requests`, `tf_staff`, `tf_service_lines`. Configuración pública en `tf-config.js`. No hay fuentes de Edge Functions ni políticas RLS en este repositorio.
 - La lista consulta hasta 1000 órdenes. Clientes y motos se capturan por orden; no hay catálogos ni historial unificado por vehículo.
 - El guardado REST de conceptos no es una transacción; mantener validación, verificación y protección ante respuestas inciertas.
@@ -48,7 +48,7 @@ Una comanda interna de 76 mm identifica la moto y el trabajo, sin precios. La no
 
 ## Brand Commitments
 
-Nombre, emblema, identidad de taller de motocicletas, carbón y rojo existentes. Refinamiento visual sobre el producto actual, no reconstrucción ni sustitución de funcionalidades por maquetas. La portada admite mayor expresión; la operación prioriza legibilidad y rapidez.
+Nombre, emblema y tipografías aprobados. Landing con carbón/rojo; OPS conserva su identidad propia lavanda, azul y violeta, aprobada en la iteración anterior. Refinamiento visual sobre el producto actual, no reconstrucción ni sustitución de funcionalidades por maquetas. La portada admite mayor expresión; la operación prioriza legibilidad y rapidez.
 
 ## Evidence on Hand
 

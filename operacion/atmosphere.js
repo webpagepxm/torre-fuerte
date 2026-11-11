@@ -12,7 +12,8 @@ try {
 let timer = 0;
 let raf = 0;
 let disposed = false;
-const start = performance.now();
+const burstDuration = 1600;
+let burstUntil = 0;
 const frames = [...document.querySelectorAll("[data-aurora]")].map(
   (element) => ({
     element,
@@ -52,14 +53,20 @@ void main() {
 
 function initialize(frame) {
   if (frame.failed || frame.gl) return;
-  const gl = frame.canvas.getContext("webgl", {
-    alpha: true,
-    antialias: false,
-    depth: false,
-    stencil: false,
-    premultipliedAlpha: false,
-    powerPreference: "low-power",
-  });
+  let gl;
+  try {
+    gl = frame.canvas.getContext("webgl", {
+      alpha: true,
+      antialias: false,
+      depth: false,
+      stencil: false,
+      premultipliedAlpha: false,
+      powerPreference: "low-power",
+    });
+  } catch {
+    frame.failed = true;
+    return;
+  }
   if (!gl) {
     frame.failed = true;
     return;
@@ -131,6 +138,7 @@ function resize(frame) {
 function canRun() {
   return (
     !disposed &&
+    performance.now() < burstUntil &&
     !paused &&
     !reduced.matches &&
     !document.hidden &&
@@ -145,7 +153,10 @@ function stop() {
 }
 function draw(now) {
   raf = 0;
-  if (!canRun()) return;
+  if (!canRun()) {
+    sync();
+    return;
+  }
   for (const frame of frames) {
     if (
       !frame.visible ||
@@ -159,7 +170,7 @@ function draw(now) {
     gl.viewport(0, 0, frame.canvas.width, frame.canvas.height);
     gl.uniform2f(frame.resolution, frame.canvas.width, frame.canvas.height);
     gl.uniform2f(frame.size, frame.width, frame.height);
-    gl.uniform1f(frame.time, (now - start) / 1000);
+    gl.uniform1f(frame.time, (now - (burstUntil - burstDuration)) / 1000);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
   if (
@@ -180,16 +191,30 @@ function sync() {
   stop();
   const inactive = paused || reduced.matches;
   document.documentElement.classList.toggle("effects-paused", inactive);
+  document.documentElement.classList.toggle(
+    "effects-idle",
+    performance.now() >= burstUntil,
+  );
   toggle.setAttribute("aria-pressed", String(inactive));
   const label = reduced.matches
     ? "Efectos pausados por movimiento reducido"
     : paused
       ? "Activar efectos visuales"
-      : "Pausar efectos visuales";
+      : "Desactivar efectos visuales al enfocar";
   toggle.setAttribute("aria-label", label);
   toggle.title = label;
   toggle.disabled = reduced.matches;
   if (canRun()) raf = requestAnimationFrame(draw);
+}
+function play() {
+  if (paused || reduced.matches || document.hidden) return;
+  burstUntil = performance.now() + burstDuration;
+  sync();
+}
+for (const frame of frames) {
+  frame.element.parentElement.addEventListener("focusin", (event) => {
+    if (event.target.matches("#search, #username, #password")) play();
+  });
 }
 const visibility = new IntersectionObserver((entries) => {
   for (const entry of entries) {
@@ -234,7 +259,8 @@ toggle.addEventListener("click", () => {
   } catch {
     /* Storage opcional. */
   }
-  sync();
+  if (!paused) play();
+  else sync();
 });
 reduced.addEventListener("change", sync);
 document.addEventListener("visibilitychange", sync);
