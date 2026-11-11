@@ -1,0 +1,37 @@
+[
+  {
+    "skill": "impeccable",
+    "source": "https://github.com/pbakaus/impeccable.git",
+    "commit": "c1e0e5492fbb524f5df84d635ecfae7dc438ec45",
+    "path": ".agents/skills/impeccable",
+    "method": "Copia oficial completa para Codex; lectura directa de SKILL.md"
+  },
+  {
+    "skill": "redesign-existing-projects",
+    "source": "https://github.com/tasteskill/tasteskill.git",
+    "commit": "37c8c376b92ebc02456f7c70776b514fddda88e1",
+    "path": "skills/redesign-skill",
+    "method": "Copia oficial completa para Codex; lectura directa de SKILL.md"
+  },
+  {
+    "skill": "pick-ui-library",
+    "source": "https://github.com/emilkowalski/skills.git",
+    "commit": "715c1807e08c497cfd1dc4feb450a2a3300ef2a9",
+    "path": "skills/pick-ui-library",
+    "method": "Copia oficial completa para Codex; lectura directa de SKILL.md"
+  },
+  {
+    "skill": "transitions-dev",
+    "source": "https://github.com/Jakubantalik/transitions.dev.git",
+    "commit": "20d70c1262bf721c0300c2946cbe1fc7605a555c",
+    "path": "skills/transitions-dev",
+    "method": "Copia oficial completa para Codex; lectura directa de SKILL.md"
+  },
+  {
+    "skill": "web-design-guidelines",
+    "source": "https://github.com/vercel-labs/agent-skills.git",
+    "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+    "path": "skills/web-design-guidelines",
+    "method": "Copia oficial completa para Codex; lectura directa de SKILL.md"
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "checkpoint": "090dd00c99364a4e010a1c7f97409b0875849b12",
+  "passed": 7,
+  "errors": [],
+  "protectedScripts": [
+    "f964e13c2d442de7c2154626e9f275381ca4326b498652187c8c42959937ed93",
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "c9eed9f4d6507796d6263d8efb610e0632595a9deb5ff5ccea360ec215bf1cb4"
+  ]
+}

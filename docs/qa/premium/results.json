@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-11",
+  "checkpoint": "090dd00c99364a4e010a1c7f97409b0875849b12",
+  "checks": {
+    "unit": 6,
+    "functional": 24,
+    "ux": 10,
+    "ops": 11,
+    "premium": 7,
+    "pdf-regression": "PASS",
+    "browser": "14 combinaciones: sin overflow ni errores JS",
+    "axe": "6 superficies; 0 infracciones detectadas"
+  },
+  "data": "Fixtures aislados. Sin escrituras de producción ni envíos reales de WhatsApp.",
+  "sha256": {
+    "index.html": "34f743863d239c2197238b0eb3ad1b3484892e67e49efc130cbfce3c9ad39a76",
+    "operacion/index.html": "dc03513179fed297f624c834caaf716b6efa9aa5623ccad262c78e66fcfc850e",
+    "operacion/style.css": "94dd134fc902e3f23db504754885430d0b861dcda8922b3a836c072dad8f792f",
+    "assets/ui-interactions.css": "1177a75d52413de570774fe14716247c049d85bc57b9e31c20832fb750e23272",
+    "operacion/app.js": "80779ba2dde4ad41d004a978b8b07bb46f875aa39fcefd46019458576086fc71",
+    "operacion/service-lines.mjs": "6033af810f96f8b812ccbb3ea4b993c57c56bb25c8d180de3b042d2cc92478ad",
+    "tf-config.js": "efcf7b5db36437bab2d21c421ab303d1ab0093d74f6721fea601f16ce62be40d"
+  }
+}

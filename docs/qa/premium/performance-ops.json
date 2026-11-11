@@ -1,0 +1,62 @@
+{
+  "conditions": "Chromium local 390×844, CPU 4×, 200000 B/s, latencia 150 ms; Supabase aislado y CDN transportado por fixture. Una muestra, no medición de Android físico ni del servidor real.",
+  "lcp": 860,
+  "cls": 0.030457314169372102,
+  "domContentLoaded": 1249.5,
+  "resources": [
+    {
+      "name": "https://cdn.jsdelivr.net/npm/tabulator-tables@6.3.1/dist/css/tabulator.min.css",
+      "bytes": 0
+    },
+    {
+      "name": "/assets/ui-interactions.css?v=premium-20261111-1",
+      "bytes": 4979
+    },
+    {
+      "name": "/operacion/style.css?v=premium-20261111-1",
+      "bytes": 32119
+    },
+    {
+      "name": "https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.css",
+      "bytes": 0
+    },
+    {
+      "name": "/tf-config.js",
+      "bytes": 600
+    },
+    {
+      "name": "https://cdn.jsdelivr.net/npm/tabulator-tables@6.3.1/dist/js/tabulator.min.js",
+      "bytes": 0
+    },
+    {
+      "name": "https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.js.iife.js",
+      "bytes": 0
+    },
+    {
+      "name": "/operacion/app.js?v=unslop-20261111-1",
+      "bytes": 58043
+    },
+    {
+      "name": "/assets/emblema-mono.png",
+      "bytes": 48478
+    },
+    {
+      "name": "/assets/fonts/barlow-condensed-latin-800.woff2",
+      "bytes": 22764
+    },
+    {
+      "name": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.95.0/+esm",
+      "bytes": 0
+    },
+    {
+      "name": "/operacion/service-lines.mjs?v=unslop-20261111-1",
+      "bytes": 4904
+    },
+    {
+      "name": "/assets/emblema-mono.png",
+      "bytes": 48478
+    }
+  ],
+  "calendarLoaded": false,
+  "pdfLoaded": false
+}

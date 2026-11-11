@@ -1,86 +1,1393 @@
 <!doctype html>
-<html lang="es-MX"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fff"><meta name="description" content="Torre Fuerte, taller de mantenimiento y reparación de motocicletas en Puerto Escondido. Solicita atención y cotizaciones por WhatsApp."><meta property="og:type" content="website"><meta property="og:title" content="Torre Fuerte | Taller de motos en Puerto Escondido"><meta property="og:description" content="Revisiones, mantenimiento y reparaciones. Solicita tu visita desde la página."><meta property="og:image" content="https://webpagepxm.github.io/torre-fuerte/assets/moto-deportiva-taller.webp"><meta property="og:url" content="https://webpagepxm.github.io/torre-fuerte/"><link rel="icon" type="image/png" href="assets/emblema-mono.png"><link rel="preload" href="assets/fonts/barlow-condensed-latin-800.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="assets/moto-deportiva-taller.webp" as="image"><title>Torre Fuerte — Taller de motos en Puerto Escondido</title><style>@font-face{font-family:'Barlow Condensed';src:url('assets/fonts/barlow-condensed-latin-800.woff2') format('woff2');font-weight:800;font-display:swap}
-:root{--red:#c5272e;--red-dark:#b52329;--black:#171a1f;--ink:#242a30;--slate:#5d6570;--line:#e3e6e9;--pale:#f5f6f7;--white:#fff;--max:1200px}
-*,*:before,*:after{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;color:var(--ink);background:#fff;font:15px/1.65 Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}img{max-width:100%;display:block}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}button{cursor:pointer}a,button{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ff9d9a;outline-offset:3px}[hidden]{display:none!important}
-.container{max-width:var(--max);padding:0 30px;margin:0 auto}.eyebrow,.section-kicker{font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}h1,h2,h3,p{margin-top:0}h1,h2,h3{color:#15181c}h1,h2,.impact-title{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;text-transform:uppercase;font-weight:800;line-height:.98;letter-spacing:.002em}h1{font-size:clamp(58px,6.3vw,100px);margin:18px 0 24px;max-width:680px}h2{font-size:clamp(44px,5vw,69px);margin:10px 0 19px}h3{font-size:22px;line-height:1.25}.muted{color:var(--slate)}.section-head{margin-bottom:37px}.section-head p{max-width:660px;color:#5f6770;font-size:16px;line-height:1.85}.section{padding:100px 0}.fineprint{font-size:12px;color:#59646e;line-height:1.7}
+<html lang="es-MX"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fff"><meta name="description" content="Torre Fuerte, taller de mantenimiento y reparación de motocicletas en Puerto Escondido. Solicita atención y cotizaciones por WhatsApp."><meta property="og:type" content="website"><meta property="og:title" content="Torre Fuerte | Taller de motos en Puerto Escondido"><meta property="og:description" content="Revisiones, mantenimiento y reparaciones. Solicita tu visita desde la página."><meta property="og:image" content="https://webpagepxm.github.io/torre-fuerte/assets/moto-deportiva-taller.webp"><meta property="og:url" content="https://webpagepxm.github.io/torre-fuerte/"><link rel="icon" type="image/png" href="assets/emblema-mono.png"><link rel="preload" href="assets/fonts/barlow-condensed-latin-800.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="assets/moto-deportiva-taller.webp" as="image"><title>Torre Fuerte — Taller de motos en Puerto Escondido</title><link rel="stylesheet" href="assets/ui-interactions.css?v=premium-20261111-1"><style>
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("assets/fonts/barlow-condensed-latin-800.woff2") format("woff2");
+  font-weight: 800;
+  font-display: swap;
+}
+:root {
+  --red: #c5272e;
+  --red-dark: #a91f27;
+  --black: #191c21;
+  --ink: #24282d;
+  --slate: #596168;
+  --line: #dedfdf;
+  --field-line: #89949b;
+  --pale: #f5f5f3;
+  --white: #fff;
+  --max: 1200px;
+  --radius: 8px;
+  --radius-panel: 12px;
+  --layer-shadow: 0 12px 32px #191c211a;
+}
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
+}
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--white);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+[hidden] {
+  display: none !important;
+}
+.container {
+  max-width: var(--max);
+  padding: 0 30px;
+  margin: 0 auto;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1,
+h2,
+h3 {
+  color: #15181c;
+}
+h1,
+h2,
+.impact-title {
+  font-family: "Barlow Condensed", Impact, "Arial Narrow", sans-serif;
+  text-transform: uppercase;
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: 0.002em;
+}
+h1 {
+  font-size: clamp(58px, 6.3vw, 100px);
+  margin: 18px 0 24px;
+  max-width: 680px;
+}
+h2 {
+  font-size: clamp(44px, 5vw, 69px);
+  margin: 10px 0 19px;
+}
+h3 {
+  font-size: 22px;
+  line-height: 1.25;
+}
+.muted {
+  color: var(--slate);
+}
+.section-head {
+  margin-bottom: 37px;
+}
+.section-head p {
+  max-width: 660px;
+  color: #5f6770;
+  font-size: 16px;
+  line-height: 1.85;
+}
+.section {
+  padding: 100px 0;
+}
+.fineprint {
+  font-size: 12px;
+  color: #59646e;
+  line-height: 1.7;
+}
 /* Utility navigation: inspired by editorial motorcycle service brands, not copied assets */
-.info-bar{background:#171b20;color:#d7dce1}.info-bar-inner{max-width:var(--max);padding:8px 30px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:11px;font-weight:600;letter-spacing:.02em}.info-bar b{font-weight:700;color:#fff}.info-bar a:hover{color:white}
-.site-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e8eaed}.nav-wrap{height:81px;display:flex;align-items:center;gap:24px}.brand{display:flex;align-items:center;gap:12px;min-width:0;margin-right:auto}.brand-mark{width:49px;height:49px;object-fit:contain}.brand-word{display:flex;flex-direction:column;line-height:1.04;white-space:nowrap}.brand-word strong{font:800 24px 'Barlow Condensed',Arial,sans-serif;letter-spacing:.055em;color:#181c21}.brand-word small{font:700 9px Inter,sans-serif;letter-spacing:.19em;color:var(--red);margin-top:5px}.nav-links{display:flex;align-items:center;gap:29px;font-weight:700;font-size:12px}.nav-links a{white-space:nowrap}.nav-links a:hover{color:var(--red)}.nav-btn{background:var(--red);color:#fff;padding:15px 19px;font-size:12px;font-weight:800;letter-spacing:.02em;transition:background .2s}.nav-btn:hover,.btn-red:hover{background:var(--red-dark)}.menu-toggle,.mobile-menu{display:none}.skip-link{position:absolute;top:-80px;left:12px;background:white;color:black;padding:12px;z-index:200}.skip-link:focus{top:12px}
+.info-bar {
+  background: #171b20;
+  color: #d7dce1;
+}
+.info-bar-inner {
+  max-width: var(--max);
+  padding: 8px 30px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.info-bar b {
+  font-weight: 700;
+  color: #fff;
+}
+.info-bar a:hover {
+  color: white;
+}
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+.nav-wrap {
+  height: 81px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  margin-right: auto;
+}
+.brand-mark {
+  width: 49px;
+  height: 49px;
+  object-fit: contain;
+}
+.brand-word {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.04;
+  white-space: nowrap;
+}
+.brand-word strong {
+  font:
+    800 24px "Barlow Condensed",
+    Arial,
+    sans-serif;
+  letter-spacing: 0.055em;
+  color: #181c21;
+}
+.brand-word small {
+  font:
+    700 9px Inter,
+    sans-serif;
+  letter-spacing: 0.19em;
+  color: var(--red);
+  margin-top: 5px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-weight: 500;
+  font-size: 14px;
+}
+.nav-links a {
+  white-space: nowrap;
+}
+.nav-links a:hover {
+  color: var(--red);
+}
+.nav-btn {
+  background: var(--red);
+  color: white;
+  padding: 12px 20px;
+  min-height: 48px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 #ffffff26;
+}
+.nav-btn:hover,
+.btn-red:hover {
+  background: var(--red-dark);
+}
+.menu-toggle,
+.mobile-menu {
+  display: none;
+}
+.skip-link {
+  position: absolute;
+  top: -80px;
+  left: 12px;
+  background: white;
+  color: black;
+  padding: 12px;
+  z-index: 200;
+}
+.skip-link:focus {
+  top: 12px;
+}
 /* hero: bright commercial rider photo, warm-free */
-.hero{position:relative;min-height:680px;display:flex;align-items:center;background:var(--black);overflow:hidden;isolation:isolate}.hero-image{position:absolute;inset:0 0 0 36%;background:url('assets/moto-deportiva-taller.webp') 64% center / cover no-repeat;z-index:-2}.hero-image:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#171a1f 0%,#171a1f30 50%,#171a1f00 100%)}.hero-body{width:100%;padding-top:68px;padding-bottom:64px}.hero-body .eyebrow{border-left:3px solid var(--red);color:#f2c6c7;display:inline-block;padding:3px 0 3px 12px;font-size:10px;letter-spacing:.12em;max-width:310px}.hero p.intro{font-size:15px;max-width:360px;color:#c2c7cd;line-height:1.8;margin-bottom:28px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}.btn{min-height:49px;display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:13px 24px;font-size:12px;letter-spacing:.025em;font-weight:800;border:1px solid transparent;transition:background .2s,color .2s,transform .2s;border-radius:2px}.btn:hover{transform:translateY(-1px)}.btn-red{background:var(--red);color:white}.btn-white{background:#fff;color:#171b20;border-color:#bbc1c7}.btn-white:hover{background:#f2f3f4}.btn-dark{background:var(--black);color:white}.btn-dark:hover{background:#333940}.hero-trust{display:flex;gap:20px;margin-top:32px;color:#d1d5d9;font-weight:500;font-size:11px;align-items:center}.hero-trust span+span{border-left:1px solid #586069;padding-left:20px}.hero-trust strong{color:#ff7f83}
+.hero {
+  position: relative;
+  min-height: 640px;
+  display: flex;
+  align-items: center;
+  background: var(--black);
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero-image {
+  position: absolute;
+  inset: 0 0 0 36%;
+  background: var(--black);
+  overflow: hidden;
+  z-index: -2;
+}
+
+/* El recorte deja fuera el texto que ya venía incrustado en la ilustración. */
+.hero-photo {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 125%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+}
+.hero-image:after {
+  z-index: 2;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #171a1f 0%, #171a1f30 50%, #171a1f00 100%);
+}
+.hero-body {
+  width: 100%;
+  padding-top: 68px;
+  padding-bottom: 64px;
+}
+.hero p.intro {
+  font-size: 16px;
+  max-width: 400px;
+  color: #c8cdd2;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+}
+.btn-red {
+  background: var(--red);
+  color: white;
+}
+.btn-white {
+  background: #fff;
+  color: #171b20;
+  border-color: #bbc1c7;
+}
+.btn-white:hover {
+  background: #f2f3f4;
+}
+.btn-dark {
+  background: var(--black);
+  color: white;
+}
+.btn-dark:hover {
+  background: #333940;
+}
+.hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 28px;
+  color: #c8cdd2;
+  font-size: 13px;
+  align-items: center;
+}
+.hero-trust span + span {
+  border-left: 1px solid #586069;
+  padding-left: 20px;
+}
 /* Titular y fotografía forman una sola composición, sin capas flotantes. */
-.hero h1{font-size:clamp(68px,6.5vw,94px);max-width:680px;color:white;letter-spacing:-.012em;line-height:.9}.hero .btn-white{background:transparent;color:white;border-color:#879098}.hero .btn-white:hover{background:#ffffff15}
+.hero h1 {
+  font-size: clamp(68px, 6.5vw, 94px);
+  max-width: 680px;
+  color: white;
+  letter-spacing: -.012em;
+  line-height: .94;
+}
+.hero .btn-white {
+  background: transparent;
+  color: white;
+  border-color: #879098;
+}
+.hero .btn-white:hover {
+  background: #ffffff15;
+}
 /* brands strip */
-.brand-strip{background:#eef0ed;padding:32px 0 25px;border-bottom:1px solid var(--line)}.brand-strip h2{font-family:Inter,sans-serif;font-size:12px;font-weight:800;letter-spacing:.13em;color:#4f5862;line-height:1.6;text-transform:uppercase;margin:0 0 20px;text-align:center}.brands-list{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 36px}.maker{font:800 clamp(19px,2.1vw,28px)/1 'Barlow Condensed',sans-serif;letter-spacing:.025em;color:#606872;text-transform:uppercase;opacity:.9}.maker:nth-child(2){font-style:italic}.maker:nth-child(3){letter-spacing:.13em}.maker:nth-child(4){font-style:italic}.maker:nth-child(5){letter-spacing:-.035em}.maker:nth-child(6){letter-spacing:.1em}.brand-strip .fineprint{text-align:center;margin:17px 0 0}
+.brand-strip {
+  background: var(--pale);
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+}
+.brand-strip h2 {
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--slate);
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: 0;
+  margin: 0 0 20px;
+  text-align: start;
+}
+.brands-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 36px;
+}
+.maker {
+  font:
+    800 clamp(19px, 2.1vw, 28px) / 1 "Barlow Condensed",
+    sans-serif;
+  letter-spacing: 0.025em;
+  color: #606872;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+.maker:nth-child(2) {
+  font-style: italic;
+}
+.maker:nth-child(3) {
+  letter-spacing: 0.13em;
+}
+.maker:nth-child(4) {
+  font-style: italic;
+}
+.maker:nth-child(5) {
+  letter-spacing: -0.035em;
+}
+.maker:nth-child(6) {
+  letter-spacing: 0.1em;
+}
+.brand-strip .fineprint {
+  text-align: start;
+  margin: 20px 0 0;
+  max-width: 75ch;
+}
 /* service grid */
-.services{background:#fff}.service-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:60px}.service-card{border:0;border-top:1px solid #c7ced1;background:transparent;padding:28px 0;display:grid;grid-template-columns:54px minmax(0,1fr);gap:0 16px;align-content:start;transition:border-color .2s}.service-card:hover{border-color:var(--red)}.service-card .service-index{font:800 38px/1 'Barlow Condensed',sans-serif;color:var(--red);grid-row:1/4}.service-card h3{margin:0 0 10px;font:800 27px 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.01em}.service-card p{font-size:14px;color:#59636d;line-height:1.8;margin:0 0 14px}.service-card a{color:var(--red);text-transform:uppercase;letter-spacing:.05em;font-weight:800;font-size:11px;min-height:44px;display:inline-flex;align-items:center;justify-self:start}.service-note{margin-top:22px;color:#59646e;font-size:11px}
+.services {
+  background: #fff;
+}
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 60px;
+}
+.service-card {
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  padding: 28px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  transition: border-color var(--motion-feedback) var(--motion-ease);
+}
+.service-card:hover {
+  border-color: var(--red);
+}
+.service-card h3 {
+  margin: 0 0 12px;
+  font: 600 22px/1.3 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.service-card p {
+  font-size: 15px;
+  color: var(--slate);
+  line-height: 1.7;
+  margin: 0 0 12px;
+  max-width: 60ch;
+}
+.service-card a {
+  color: var(--red);
+  font-weight: 500;
+  font-size: 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+}
+.service-note {
+  margin-top: 24px;
+  color: var(--slate);
+  font-size: 13px;
+}
 /* editorial workshop feature */
-.feature-band{background:#242a2e;padding:88px 0}.feature-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.feature-image{aspect-ratio:1.28/1;overflow:hidden;background:#ddd}.feature-image img{height:100%;width:100%;object-fit:cover}.feature-copy .section-kicker{color:#ff979a}.feature-copy h2{font-size:clamp(44px,4.9vw,70px);color:white}.feature-copy p{font-size:15px;color:#c2c9ce;line-height:1.85;max-width:490px}.bullet-points{display:grid;gap:15px;padding:0;margin:26px 0 30px;list-style:none;color:#e2e6e9}.bullet-points li{display:flex;align-items:start;gap:12px;font-weight:700;font-size:13px}.bullet-points li:before{content:'';flex:none;width:8px;height:8px;background:var(--red);margin-top:7px}
+.feature-band {
+  background: var(--black);
+  padding: 88px 0;
+}
+.feature-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.feature-image {
+  aspect-ratio: 1.28/1;
+  overflow: hidden;
+  background: #ddd;
+}
+.feature-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.feature-copy h2 {
+  font-size: clamp(44px, 4.9vw, 70px);
+  color: white;
+}
+.feature-copy p {
+  font-size: 15px;
+  color: #c2c9ce;
+  line-height: 1.85;
+  max-width: 490px;
+}
+.bullet-points {
+  display: grid;
+  gap: 15px;
+  padding: 0;
+  margin: 26px 0 30px;
+  list-style: none;
+  color: #e2e6e9;
+}
+.bullet-points li {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.bullet-points li:before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  margin-top: 7px;
+}
 /* booking + tabs, consistent with original JS */
-.booking-section{padding:100px 0;background:#fff}.booking-heading{display:flex;align-items:end;justify-content:space-between;gap:40px;margin-bottom:28px}.booking-heading h2{font-size:clamp(43px,5vw,67px);margin:8px 0 0}.booking-heading .intro-copy{max-width:350px;color:#59646e;font-size:15px;line-height:1.8;margin:0}.booking-shell{border:1px solid #dfe3e6;border-top:3px solid var(--red);background:#fff}.booking-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line);background:#f6f7f8}.booking-tab{min-height:75px;padding:18px 12px;display:flex;align-items:center;justify-content:center;gap:11px;border:0;border-right:1px solid var(--line);border-bottom:3px solid transparent;background:transparent;color:#59616b;font-weight:800;font-size:13px}.booking-tab:last-child{border-right:0}.booking-tab:hover{background:#ecedef}.booking-tab.is-selected{background:#fff;color:#121519;border-bottom-color:var(--red)}.tab-num{font:800 13px 'Barlow Condensed',sans-serif;color:var(--red)}.booking-panel{padding:40px clamp(20px,4vw,48px) 44px;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);gap:44px}.booking-panel[hidden]{display:none}.panel-intro{margin:0 0 30px;max-width:320px}.panel-intro .eyebrow{display:block}.panel-intro h3{font:800 clamp(34px,3.5vw,48px) 'Barlow Condensed',sans-serif;text-transform:uppercase;margin:7px 0 8px}.panel-intro>p:last-child{color:#59646e;font-size:14px;line-height:1.8;margin:0}.booking-form{max-width:940px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.field{display:flex;flex-direction:column;gap:8px;font-size:12px;font-weight:700;color:#333a42;min-width:0;position:relative}.field-full{grid-column:1/-1}.field>span:not(.optional){color:var(--red);position:absolute;right:0;top:0}.optional{color:#64717b;font-weight:400;font-size:11px;position:absolute;right:0;top:0}.field input,.field select,.field textarea{width:100%;min-height:51px;padding:13px 15px;border:1px solid #d5dbe0;background:white;border-radius:2px;color:#232b32;outline:none;box-shadow:none;appearance:auto}.field textarea{min-height:110px;resize:vertical}.field input::placeholder,.field textarea::placeholder{color:#959ca3}.field input:focus,.field select:focus,.field textarea:focus{border-color:#cc4547;outline:2px solid #ffd1d1;outline-offset:0}.check-line{display:flex;align-items:flex-start;gap:10px;margin-top:22px;font-size:12px;color:#57616a;line-height:1.75}.check-line input{width:17px;height:17px;margin-top:2px;accent-color:var(--red);flex:none}.check-line strong{color:#20262c}.form-submit{margin-top:25px;border:0;background:var(--red);color:white;padding:16px 27px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:13px;border-radius:2px}.form-submit:hover{background:var(--red-dark)}.form-note{font-size:12px;color:#59646e;max-width:650px;margin:13px 0 0}.booking-bottom{padding:17px 0;display:flex;justify-content:space-between;gap:15px;color:#56656e;font-size:10px;letter-spacing:.09em;font-weight:700;text-transform:uppercase}.loyalty-teaser{margin:25px 0 0;padding:20px 24px;border-left:3px solid var(--red);background:#f5f6f7;display:flex;gap:16px;align-items:flex-start}.loyalty-mark{color:var(--red);font-size:30px}.loyalty-teaser strong{font-size:12px}.loyalty-teaser p{font-size:12px;color:#616a74;line-height:1.8;margin:4px 0 0}
+.booking-section {
+  padding: 100px 0;
+  background: #fff;
+}
+.booking-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 28px;
+}
+.booking-heading h2 {
+  font-size: clamp(43px, 5vw, 67px);
+  margin: 8px 0 0;
+}
+.booking-heading .intro-copy {
+  max-width: 350px;
+  color: #59646e;
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0;
+}
+.booking-shell {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--white);
+}
+.booking-tabs {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+  background: var(--pale);
+}
+.booking-tab {
+  min-height: 64px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--slate);
+  font-weight: 500;
+  font-size: 15px;
+  transition: color var(--motion-feedback) var(--motion-ease), background-color var(--motion-feedback) var(--motion-ease), border-color var(--motion-feedback) var(--motion-ease);
+}
+.booking-tab:last-child {
+  border-right: 0;
+}
+.booking-tab:hover {
+  background: #ecedef;
+}
+.booking-tab.is-selected {
+  background: transparent;
+  color: var(--ink);
+  border-bottom-color: var(--red);
+}
+.booking-panel {
+  padding: 40px clamp(20px, 4vw, 48px) 44px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
+  gap: 44px;
+}
+.booking-panel[hidden] {
+  display: none;
+}
+.panel-intro {
+  margin: 0 0 30px;
+  max-width: 320px;
+}
+.panel-intro h3 {
+  font: 500 28px/1.2 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  text-transform: none;
+  margin: 0 0 16px;
+}
+.panel-intro > p:last-child {
+  color: #59646e;
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0;
+}
+.booking-form {
+  max-width: 940px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  min-width: 0;
+  position: relative;
+}
+.field-full {
+  grid-column: 1/-1;
+}
+.field > span:not(.optional) {
+  color: var(--red);
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.optional {
+  color: var(--slate);
+  font-weight: 400;
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid var(--field-line);
+  background: var(--white);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 400;
+  appearance: auto;
+  transition: border-color var(--motion-feedback) var(--motion-ease);
+}
+.field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #676d72;
+  font-weight: 400;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--red);
+}
+.check-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 44px;
+  padding: 8px 0;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--slate);
+  line-height: 1.6;
+}
+.check-line input {
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--red);
+  flex: none;
+}
+.check-line strong {
+  color: #20262c;
+}
+.form-submit {
+  min-height: 48px;
+  margin-top: 20px;
+  border: 1px solid var(--red);
+  background: var(--red);
+  color: white;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: var(--radius);
+}
+.form-submit:hover {
+  background: var(--red-dark);
+}
+.form-note {
+  font-size: 13px;
+  color: var(--slate);
+  max-width: 75ch;
+  margin: 16px 0 0;
+}
+.booking-bottom {
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--slate);
+  font-size: 12px;
+  font-weight: 400;
+}
+.loyalty-teaser {
+  margin-top: 24px;
+  padding: 20px;
+  background: var(--pale);
+  border-radius: var(--radius);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.loyalty-teaser strong {
+  font-size: 12px;
+}
+.loyalty-teaser p {
+  font-size: 12px;
+  color: #616a74;
+  line-height: 1.8;
+  margin: 4px 0 0;
+}
 /* locations/contact/reviews */
-.location{background:#f5f6f7;padding:100px 0}.location-layout{display:grid;grid-template-columns:1fr 1fr;gap:75px;align-items:center}.location h2{font-size:clamp(46px,5vw,69px)}.contact-facts{margin:30px 0;display:grid;gap:17px}.contact-facts dt{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#59646e}.contact-facts dd{margin:3px 0 0;font-size:14px;font-weight:650}.contact-facts a:hover{color:var(--red)}.location-art{position:relative;background:#dce0e3;min-height:450px;overflow:hidden}.location-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:66% center}.location-card{position:absolute;left:24px;right:24px;bottom:22px;padding:23px;background:#fff;box-shadow:0 10px 35px #0002;display:flex;align-items:center;justify-content:space-between;gap:18px}.location-card strong{font:800 21px 'Barlow Condensed',sans-serif;text-transform:uppercase}.location-card small{display:block;color:#59646e;font-size:11px;line-height:1.6}.location-card a{white-space:nowrap;color:var(--red);font-size:12px;font-weight:800}.contacts-buttons{display:flex;flex-wrap:wrap;gap:10px}
-.reviews{background:#f0f2ef;padding:76px 0}.reviews-top{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:60px}.reviews-top p{max-width:580px;color:#59646e}.review-button{margin-top:22px;white-space:normal;text-align:center}.editor-note{font-size:10px;color:#59646e;text-align:center;padding:9px 30px 21px;line-height:1.6}
-.footer{background:#171a1f;color:#d2d6da;padding:47px 0 25px}.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:50px;padding-bottom:39px}.footer h3{color:white;font:800 24px 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.02em}.footer p,.footer a{font-size:12px;line-height:1.85;color:#afb6bd}.footer a:hover{color:#fff}.footer-links{display:grid;gap:7px}.footer-bottom{display:flex;justify-content:space-between;gap:20px;border-top:1px solid #373d43;padding-top:22px;color:#98a0a7;font-size:10px}.footer-brand{font:800 33px 'Barlow Condensed',sans-serif;color:#fff}.footer-brand span{color:var(--red)}.footer-note{margin-top:10px}
-.floating-wa{position:fixed;right:22px;bottom:20px;z-index:45;background:#1ca767;color:white;width:50px;height:50px;display:grid;place-items:center;border-radius:50%;box-shadow:0 5px 20px #0003}.floating-wa svg{width:25px;height:25px}
-@media(max-width:1020px){ .nav-links{gap:14px}.feature-layout,.location-layout{gap:33px}.container{padding:0 25px}}
-@media(max-width:760px){.container{padding:0 20px}.info-bar-inner{padding:8px 20px}.info-bar-inner span:last-child{display:none}.site-header .nav-wrap{height:70px}.brand-mark{width:43px;height:43px}.brand-word strong{font-size:22px}.nav-links{display:none}.nav-btn{margin-left:auto;font-size:10px;padding:12px 13px}.menu-toggle{display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:#20262c;width:38px;height:42px;padding:0}.menu-toggle span{font-size:24px;line-height:1}.mobile-menu:not([hidden]){display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:white;box-shadow:0 15px 26px #0002;padding:10px 20px 20px;gap:0}.mobile-menu a{padding:12px 0;border-bottom:1px solid var(--line);font-weight:700;font-size:13px}.hero{min-height:0;align-items:end}.hero-image{inset:0 0 auto;height:330px;background-position:66% center;background-size:cover}.hero-image:after{background:linear-gradient(0deg,#171a1f 0%,#171a1f00 70%)}.hero-body{padding-top:270px;padding-bottom:36px}.hero h1{font-size:clamp(54px,12vw,80px);margin:13px 0 20px}.hero p.intro{font-size:14px;max-width:450px;margin:0 0 22px}.hero-trust{font-size:10px;flex-wrap:wrap;gap:12px;margin-top:19px}.hero-trust span+span{padding-left:12px}.section{padding:70px 0}h2{font-size:clamp(43px,11vw,59px)}.brands-list{justify-content:center;gap:15px 25px}.maker{font-size:24px}.service-grid{grid-template-columns:1fr;gap:0}.service-card{padding:24px 0}.feature-band{padding:62px 0}.feature-layout,.location-layout{grid-template-columns:1fr;gap:34px}.feature-image{aspect-ratio:1.35}.booking-section{padding:70px 0}.booking-heading{display:block}.booking-heading .intro-copy{margin:15px 0 0}.booking-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}.booking-tab{flex-direction:column;gap:3px;font-size:10px;padding:12px 5px;min-height:67px;line-height:1.2;text-align:center}.booking-panel{padding:27px 18px 33px;display:block}.form-grid{grid-template-columns:1fr;gap:17px}.field-full{grid-column:auto}.field input,.field select,.field textarea{font-size:16px}.form-submit{width:100%;justify-content:center}.location{padding:65px 0}.location-art{min-height:330px}.reviews{padding:68px 0}.reviews-top{display:block}.review-card{grid-template-columns:1fr;padding:24px;gap:10px}.review-mark{font-size:38px}.footer-grid{grid-template-columns:1fr 1fr;gap:25px}.footer-grid>div:first-child{grid-column:1/-1}.footer-bottom{flex-direction:column;gap:5px}.floating-wa{right:12px;bottom:13px;width:45px;height:45px}}
-@media(max-width:460px){.info-bar-inner{font-size:10px}.brand-word strong{font-size:19px}.brand-word small{font-size:8px}.brand-mark{width:40px;height:40px}.nav-btn{padding:10px 9px;font-size:9px}.hero{min-height:0}.hero-image{background-position:65% center}.hero-body{padding-top:260px}.hero h1{font-size:clamp(54px,15vw,68px)}.hero .btn{width:100%;font-size:11px}.hero-actions{gap:9px}.service-grid{grid-template-columns:1fr}.service-card{padding:24px 0;grid-template-columns:40px minmax(0,1fr);column-gap:12px}.service-card .service-index{font-size:32px}.booking-heading h2{font-size:48px}.location-card{left:14px;right:14px;bottom:13px;padding:16px}.location-card strong{font-size:18px}.footer-grid{grid-template-columns:1fr;gap:19px}.footer-grid>div:first-child{grid-column:auto}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:after,*:before{transition:none!important;animation:none!important}}
+.location {
+  background: var(--pale);
+  padding: 100px 0;
+}
+.location-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 75px;
+  align-items: center;
+}
+.location h2 {
+  font-size: clamp(46px, 5vw, 69px);
+}
+.contact-facts {
+  margin: 30px 0;
+  display: grid;
+  gap: 17px;
+}
+.contact-facts dt {
+  font-size: 13px;
+  color: var(--slate);
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.contact-facts dd {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 500;
+  line-height: 1.65;
+}
+.contact-facts a:hover {
+  color: var(--red);
+}
+.location-art {
+  position: relative;
+  background: #dce0e3;
+  min-height: 450px;
+  overflow: hidden;
+}
+.location-art img {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 125%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.location-card {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  background: var(--white);
+  padding: 20px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--layer-shadow);
+}
+.location-card strong {
+  font:
+    800 21px "Barlow Condensed",
+    sans-serif;
+  text-transform: uppercase;
+}
+.location-card small {
+  display: block;
+  color: #59646e;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.location-card a {
+  white-space: nowrap;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 800;
+}
+.contacts-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.reviews {
+  background: var(--pale);
+  padding: 76px 0;
+}
+.reviews-top {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  align-items: center;
+  gap: 60px;
+}
+.reviews-top p {
+  max-width: 580px;
+  color: #59646e;
+}
+.review-button {
+  margin-top: 22px;
+  white-space: normal;
+  text-align: center;
+}
+.editor-note {
+  font-size: 12px;
+  color: var(--slate);
+  text-align: center;
+  padding: 16px 24px 24px;
+  line-height: 1.6;
+}
+.footer {
+  background: #171a1f;
+  color: #d2d6da;
+  padding: 47px 0 25px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 50px;
+  padding-bottom: 39px;
+}
+.footer h3 {
+  color: white;
+  font:
+    800 24px "Barlow Condensed",
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.footer p,
+.footer a {
+  font-size: 12px;
+  line-height: 1.85;
+  color: #afb6bd;
+}
+.footer a:hover {
+  color: #fff;
+}
+.footer-links {
+  display: grid;
+  gap: 7px;
+}
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid #373d43;
+  padding-top: 22px;
+  color: #98a0a7;
+  font-size: 12px;
+}
+.footer-brand {
+  font:
+    800 33px "Barlow Condensed",
+    sans-serif;
+  color: #fff;
+}
+.footer-brand span {
+  color: var(--red);
+}
+.footer-note {
+  margin-top: 10px;
+}
+.floating-wa {
+  position: fixed;
+  right: 20px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 45;
+  background: #16764f;
+  color: white;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px #191c2129;
+  transition: background-color var(--motion-feedback) var(--motion-ease), transform var(--motion-press) var(--motion-ease);
+}
+.floating-wa svg {
+  width: 25px;
+  height: 25px;
+}
+
+/* Acciones de contacto y navegación: alcance táctil, sin cambiar destinos. */
+.contact-facts a, .location-card a, .location .fineprint a { display: inline-flex; align-items: center; min-height: 44px; }
+.footer-links a { display: flex; align-items: center; min-height: 44px; }
+.floating-wa:hover { background: #125d3e; }
+/* Reflejo de luz sobre la foto: movimiento acotado, disparado por interacción. */
+.hero-image::before {
+  z-index: 1;
+  content: "";
+  position: absolute;
+  inset: 0 0 0 35%;
+  pointer-events: none;
+  background: linear-gradient(112deg, transparent 15%, #ffffff1c 48%, transparent 72%);
+  opacity: .35;
+  transform: translateX(-24px);
+}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .hero-image::before { transition: transform 280ms var(--motion-ease), opacity 280ms var(--motion-ease); }
+  .hero:hover .hero-image::before { transform: translateX(24px); opacity: .8; }
+}
+.hero h1 { margin-top: 0; }
+#booking-feedback:not(:empty) { padding: 16px; border-radius: var(--radius); background: var(--pale); border: 1px solid var(--line); }
+.form-submit:disabled { opacity: .65; cursor: progress; }
+.nav-links a { min-height: 44px; display: inline-flex; align-items: center; }
+.nav-links a:focus-visible { border-radius: 4px; }
+.footer a { text-underline-offset: 4px; }
+@media (max-width:760px) {
+  .mobile-menu:not([hidden]) { top: 100%; border-top: 1px solid var(--line); box-shadow: var(--layer-shadow); border-radius: 0 0 var(--radius-panel) var(--radius-panel); }
+  .service-card { padding: 24px 0; }
+  .service-card h3 { font-size: 20px; }
+  .booking-tab { min-height: 64px; font-size: 12px; }
+  .booking-panel { padding: 24px 16px 28px; }
+  .panel-intro { margin-bottom: 24px; }
+  .panel-intro h3 { font-size: 26px; }
+  .hero h1 { line-height: .98; }
+  .floating-wa { width: 48px; height: 48px; bottom: max(16px, env(safe-area-inset-bottom)); }
+}
+@media (max-width: 1020px) {
+  .nav-links { display: none; }
+  .menu-toggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--ink); }
+  .mobile-menu:not([hidden]) { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; padding: 12px 24px 20px; gap: 0; background: var(--white); box-shadow: var(--layer-shadow); border-radius: 0 0 var(--radius-panel) var(--radius-panel); }
+  .mobile-menu a { display: flex; align-items: center; min-height: 44px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 500; }
+
+  .feature-layout,
+  .location-layout {
+    gap: 33px;
+  }
+  .container {
+    padding: 0 25px;
+  }
+}
+@media (max-width: 760px) {
+  .container {
+    padding: 0 20px;
+  }
+  .info-bar-inner {
+    padding: 8px 20px;
+  }
+  .info-bar-inner span:last-child {
+    display: none;
+  }
+  .site-header .nav-wrap {
+    height: 70px;
+  }
+  .brand-mark {
+    width: 43px;
+    height: 43px;
+  }
+  .brand-word strong {
+    font-size: 22px;
+  }
+  .nav-links {
+    display: none;
+  }
+  .nav-btn {
+    margin-left: auto;
+    font-size: 12px;
+    padding: 12px 13px;
+  }
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: #20262c;
+    width: 38px;
+    height: 42px;
+    padding: 0;
+  }
+  .menu-toggle span {
+    font-size: 24px;
+    line-height: 1;
+  }
+  .mobile-menu:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 15px 26px #0002;
+    padding: 10px 20px 20px;
+    gap: 0;
+  }
+  .mobile-menu a {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .hero {
+    min-height: 0;
+    align-items: end;
+  }
+  .hero-image {
+    inset: 0 0 auto;
+    height: 276px;
+  }
+  .hero-image:after {
+    background: linear-gradient(0deg, #171a1f 0%, #171a1f00 70%);
+  }
+  .hero-body {
+    padding-top: 224px;
+    padding-bottom: 36px;
+  }
+  .hero h1 {
+    font-size: clamp(54px, 12vw, 80px);
+    margin: 13px 0 20px;
+  }
+  .hero p.intro {
+    font-size: 14px;
+    max-width: 450px;
+    margin: 0 0 22px;
+  }
+  .hero-trust {
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 19px;
+  }
+  .hero-trust span + span {
+    padding-left: 12px;
+  }
+  .section {
+    padding: 70px 0;
+  }
+  h2 {
+    font-size: clamp(43px, 11vw, 59px);
+  }
+  .brands-list {
+    justify-content: center;
+    gap: 15px 25px;
+  }
+  .maker {
+    font-size: 24px;
+  }
+  .service-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .service-card {
+    padding: 24px 0;
+  }
+  .feature-band {
+    padding: 62px 0;
+  }
+  .feature-layout,
+  .location-layout {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .feature-image {
+    aspect-ratio: 1.35;
+  }
+  .booking-section {
+    padding: 70px 0;
+  }
+  .booking-heading {
+    display: block;
+  }
+  .booking-heading .intro-copy {
+    margin: 15px 0 0;
+  }
+  .booking-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .booking-tab {
+    flex-direction: column;
+    gap: 3px;
+    font-size: 12px;
+    padding: 12px 8px;
+    min-height: 67px;
+    line-height: 1.2;
+    text-align: center;
+  }
+  .booking-panel {
+    padding: 24px 16px 28px;
+    display: block;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+  .field-full {
+    grid-column: auto;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 16px;
+  }
+  .form-submit {
+    width: 100%;
+    justify-content: center;
+  }
+  .location {
+    padding: 65px 0;
+  }
+  .location-art {
+    min-height: 276px;
+  }
+  .reviews {
+    padding: 68px 0;
+  }
+  .reviews-top {
+    display: block;
+  }
+  .review-card {
+    grid-template-columns: 1fr;
+    padding: 24px;
+    gap: 10px;
+  }
+  .review-mark {
+    font-size: 38px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+  }
+  .footer-grid > div:first-child {
+    grid-column: 1/-1;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .floating-wa {
+    right: 12px;
+    bottom: 13px;
+    width: 45px;
+    height: 45px;
+  }
+}
+@media (max-width: 460px) {
+  .info-bar-inner {
+    font-size: 12px;
+  }
+  .brand-word strong {
+    font-size: 19px;
+  }
+  .brand-word small {
+    font-size: 12px;
+  }
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+  }
+  .nav-btn {
+    padding: 10px 9px;
+    font-size: 12px;
+  }
+  .hero {
+    min-height: 0;
+  }
+  .hero-image {
+  }
+  .hero-body {
+    padding-top: 216px;
+  }
+  .hero h1 {
+    font-size: clamp(54px, 15vw, 68px);
+  }
+  .hero .btn {
+    width: 100%;
+    font-size: 12px;
+  }
+  .hero-actions {
+    gap: 9px;
+  }
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+  .service-card {
+    padding: 24px 0;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 12px;
+  }
+  .service-card .service-index {
+    font-size: 32px;
+  }
+  .booking-heading h2 {
+    font-size: 48px;
+  }
+  .location-card {
+    left: 14px;
+    right: 14px;
+    bottom: 13px;
+    padding: 16px;
+  }
+  .location-card strong {
+    font-size: 18px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 19px;
+  }
+  .footer-grid > div:first-child {
+    grid-column: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *:after,
+  *:before {
+    transition: none !important;
+    animation: none !important;
+  }
+}
 
 /* Ajuste fino de navegación móvil: sin superposición ni saltos de línea */
-.nav-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:nowrap;flex-shrink:0}
-.nav-label-mobile{display:none}
-.nav-cta-arrow{width:14px;height:14px;flex:none}
-@media (max-width:760px){
-  .site-header .nav-wrap{gap:9px;height:70px}
-  .nav-wrap .brand{min-width:0;flex:1 1 auto;gap:8px;overflow:hidden;margin-right:0}
-  .nav-wrap .brand-mark{width:37px;height:37px;flex:0 0 37px}
-  .nav-wrap .brand-word{min-width:0;overflow:hidden}
-  .nav-wrap .brand-word strong{font-size:clamp(16px,4.5vw,20px);letter-spacing:.015em;overflow:hidden;text-overflow:ellipsis}
-  .nav-wrap .brand-word small{font-size:7px;letter-spacing:.075em;overflow:hidden;text-overflow:ellipsis}
-  .nav-wrap .nav-btn{flex:0 0 auto;min-width:78px;height:44px;padding:0 12px;font-size:11px;line-height:1;font-weight:800;margin-left:0;white-space:nowrap}
-  .nav-btn .nav-label-desktop,.nav-btn .nav-cta-arrow{display:none}
-  .nav-btn .nav-label-mobile{display:inline}
-  .nav-wrap .menu-toggle{flex:0 0 44px;width:44px;height:44px}
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
-@media (max-width:365px){
-  .site-header .nav-wrap{gap:7px}
-  .nav-wrap .brand-mark{width:32px;height:32px;flex-basis:32px}
-  .nav-wrap .brand-word strong{font-size:16px}
-  .nav-wrap .brand-word small{font-size:6px;letter-spacing:.035em}
-  .nav-wrap .nav-btn{min-width:65px;height:44px;padding:0 8px;font-size:10px}
-  .nav-wrap .menu-toggle{flex-basis:44px;width:44px}
+.nav-label-mobile {
+  display: none;
 }
-.tf-hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important;pointer-events:none!important}
+.nav-cta-arrow {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+@media (max-width: 760px) {
+  .site-header .nav-wrap {
+    gap: 9px;
+    height: 70px;
+  }
+  .nav-wrap .brand {
+    min-width: 0;
+    flex: 1 1 auto;
+    gap: 8px;
+    overflow: hidden;
+    margin-right: 0;
+  }
+  .nav-wrap .brand-mark {
+    width: 37px;
+    height: 37px;
+    flex: 0 0 37px;
+  }
+  .nav-wrap .brand-word {
+    min-width: 0;
+    overflow: hidden;
+  }
+  .nav-wrap .brand-word strong {
+    font-size: clamp(16px, 4.5vw, 20px);
+    letter-spacing: 0.015em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-wrap .brand-word small {
+    display: none;
+    font-size: 12px;
+    letter-spacing: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-wrap .nav-btn {
+    flex: 0 0 auto;
+    min-width: 78px;
+    height: 44px;
+    padding: 0 12px;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 800;
+    margin-left: 0;
+    white-space: nowrap;
+  }
+  .nav-btn .nav-label-desktop,
+  .nav-btn .nav-cta-arrow {
+    display: none;
+  }
+  .nav-btn .nav-label-mobile {
+    display: inline;
+  }
+  .nav-wrap .menu-toggle {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+  }
+}
+@media (max-width: 365px) {
+  .site-header .nav-wrap {
+    gap: 7px;
+  }
+  .nav-wrap .brand-mark {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+  .nav-wrap .brand-word strong {
+    font-size: 16px;
+  }
+  .nav-wrap .brand-word small {
+    display: none;
+  }
+  .nav-wrap .nav-btn {
+    min-width: 65px;
+    height: 44px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+  .nav-wrap .menu-toggle {
+    flex-basis: 44px;
+    width: 44px;
+  }
+}
+.tf-hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
 </style><script type="application/ld+json">{"@context": "https://schema.org", "@type": "MotorcycleRepair", "name": "Torre Fuerte", "telephone": "+52 954 544 5822", "description": "Taller de motocicletas en Puerto Escondido, Oaxaca.", "url": "https://webpagepxm.github.io/torre-fuerte/", "address": {"@type": "PostalAddress", "addressLocality": "Puerto Escondido", "addressRegion": "Oaxaca", "addressCountry": "MX"}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "09:00", "closes": "18:00"}]}</script></head>
 <body><a class="skip-link" href="#principal">Saltar al contenido</a>
 <div class="info-bar"><div class="info-bar-inner"><span>Puerto Escondido, Oaxaca <b>·</b> Lunes a sábado, 9:00 a 18:00</span><span>Atención directa: <a href="tel:+529545445822">954 544 5822</a></span></div></div>
-<header class="site-header"><div class="container nav-wrap"><a href="#inicio" class="brand" aria-label="Torre Fuerte, inicio"><img src="assets/emblema-mono.png" class="brand-mark" alt="Emblema de Torre Fuerte"><span class="brand-word"><strong>TORRE FUERTE</strong><small>TALLER DE MOTOCICLETAS</small></span></a><nav class="nav-links" aria-label="Navegación"><a href="#inicio">Inicio</a><a href="#servicios">Servicios</a><a href="#agenda">Agenda</a><a href="#contacto">Contacto</a><a href="#opiniones">Opiniones</a></nav><a class="nav-btn" href="#agenda" data-book="cita" aria-label="Agendar visita"><span class="nav-label-desktop">AGENDA TU VISITA</span><span class="nav-label-mobile">AGENDAR</span><svg class="nav-cta-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" type="button"><span>☰</span></button></div><nav id="mobile-menu" class="mobile-menu" aria-label="Menú móvil" hidden><a href="#inicio">Inicio</a><a href="#servicios">Servicios</a><a href="#agenda">Agendar servicio</a><a href="#contacto">Contacto</a><a href="#opiniones">Opiniones de Google</a></nav></header>
+<header class="site-header"><div class="container nav-wrap"><a href="#inicio" class="brand" aria-label="Torre Fuerte, inicio"><img src="assets/emblema-mono.png" class="brand-mark" width="49" height="49" alt="Emblema de Torre Fuerte"><span class="brand-word"><strong>TORRE FUERTE</strong><small>TALLER DE MOTOCICLETAS</small></span></a><nav class="nav-links" aria-label="Navegación"><a href="#inicio">Inicio</a><a href="#servicios">Servicios</a><a href="#agenda">Agenda</a><a href="#contacto">Contacto</a><a href="#opiniones">Opiniones</a></nav><a class="nav-btn" href="#agenda" data-book="cita" aria-label="Agendar visita"><span class="nav-label-desktop">AGENDA TU VISITA</span><span class="nav-label-mobile">AGENDAR</span><svg class="nav-cta-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" type="button"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button></div><nav id="mobile-menu" class="mobile-menu" aria-label="Menú móvil" hidden><a href="#inicio">Inicio</a><a href="#servicios">Servicios</a><a href="#agenda">Agendar servicio</a><a href="#contacto">Contacto</a><a href="#opiniones">Opiniones de Google</a></nav></header>
 <main id="principal">
-<section class="hero" id="inicio" aria-labelledby="hero-title"><div class="hero-image" role="img" aria-label="Imagen ilustrativa de un motociclista frente a un taller"></div><div class="container hero-body"><span class="eyebrow">TU TALLER DE MOTOS EN PUERTO ESCONDIDO</span><h1 id="hero-title">TU MOTO.<br>BUENAS MANOS.<br><span style="color:#ff7378">BUEN CAMINO.</span></h1><p class="intro">Mantenimiento, revisiones y reparación de motocicletas. Cuéntanos qué necesita tu moto y recibe atención directa del taller.</p><div class="hero-actions"><a class="btn btn-red" href="#agenda" data-book="cita">AGENDA TU SERVICIO </a><a class="btn btn-white" href="https://wa.me/529545445822?text=Hola%2C%20tengo%20una%20duda%20sobre%20mi%20moto." target="_blank" rel="noopener">PREGUNTA POR WHATSAPP</a></div><div class="hero-trust"><span><strong>01.</strong> Atención directa</span><span><strong>02.</strong> Solicita cita en línea</span></div></div></section>
-<section class="brand-strip" aria-label="Marcas de motocicletas"><div class="container"><h2>¿QUÉ MARCA DE MOTO CONDUCES?</h2><div class="brands-list"><span class="maker">HONDA</span><span class="maker">YAMAHA</span><span class="maker">ITALIKA</span><span class="maker">SUZUKI</span><span class="maker">BAJAJ</span><span class="maker">VENTO</span></div><p class="fineprint">Referencias de marcas, sin relación comercial ni afiliación. Consulta compatibilidad y disponibilidad de servicio para tu modelo.</p></div></section>
-<section id="servicios" class="services section"><div class="container"><div class="section-head"><span class="section-kicker">SERVICIOS DE TALLER</span><h2>TODO PARA QUE TU MOTO<br>SIGA RODANDO.</h2><p>Desde mantenimiento preventivo hasta la revisión de fallas mecánicas. Escríbenos para confirmar el servicio que necesita tu moto.</p></div><div class="service-grid"><article class="service-card"><span class="service-index">01</span><h3>Mantenimiento preventivo</h3><p>Revisiones y ajustes para mantener tu moto en condiciones de uso.</p><a href="#agenda" data-book="cita">Solicitar revisión →</a></article>
-<article class="service-card"><span class="service-index">02</span><h3>Cambio de aceite</h3><p>Consulta opciones de cambio de aceite y filtros según tu modelo.</p><a href="#agenda" data-book="cita">Solicitar revisión →</a></article>
-<article class="service-card"><span class="service-index">03</span><h3>Sistema de frenos</h3><p>Revisión de frenos, balatas y componentes relacionados.</p><a href="#agenda" data-book="cita">Solicitar revisión →</a></article>
-<article class="service-card"><span class="service-index">04</span><h3>Diagnóstico de fallas</h3><p>Cuéntanos qué ocurre y revisamos la disponibilidad para evaluar tu moto.</p><a href="#agenda" data-book="cita">Solicitar revisión →</a></article>
-<article class="service-card"><span class="service-index">05</span><h3>Suspensión</h3><p>Consulta por revisión de horquillas, amortiguadores y ajustes.</p><a href="#agenda" data-book="cita">Solicitar revisión →</a></article>
-<article class="service-card"><span class="service-index">06</span><h3>Sistema eléctrico</h3><p>Atención a fallas de encendido, iluminación y sistema eléctrico.</p><a href="#agenda" data-book="cita">Solicitar revisión →</a></article></div><p class="service-note">* Servicios orientativos; confirma disponibilidad, alcance y cotización con el taller antes de acudir.</p></div></section>
-<section class="feature-band"><div class="container feature-layout"><div class="feature-image"><img src="assets/mecanico-moto.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Imagen ilustrativa de una revisión mecánica de motocicleta"></div><div class="feature-copy"><span class="section-kicker">REVISIÓN Y MANTENIMIENTO</span><h2>EL CUIDADO DE TU MOTO EMPIEZA CON UNA BUENA REVISIÓN.</h2><p>Una falla pequeña puede convertirse en un problema grande. Cuéntanos qué sucede, el modelo que conduces y cuándo puedes llevarla para revisar opciones de atención.</p><ul class="bullet-points"><li>Mantenimiento preventivo y correctivo, sujeto a evaluación.</li><li>Atención personalizada para cada solicitud.</li><li>Cotización y horario confirmados por el taller.</li></ul><a href="#agenda" class="btn btn-red" data-book="cita">SOLICITAR REVISIÓN</a></div></div></section>
+<section class="hero" id="inicio" aria-labelledby="hero-title"><div class="hero-image" role="img" aria-label="Imagen ilustrativa de un motociclista frente a un taller"><img class="hero-photo" src="assets/moto-deportiva-taller.webp" alt="" width="1800" height="1050" fetchpriority="high" decoding="async"></div><div class="container hero-body"><h1 id="hero-title">TU MOTO.<br>BUENAS MANOS.<br><span style="color:#ff7378">BUEN CAMINO.</span></h1><p class="intro">Mantenimiento, revisiones y reparación de motocicletas. Cuéntanos qué necesita tu moto y recibe atención directa del taller.</p><div class="hero-actions"><a class="btn btn-red" href="#agenda" data-book="cita">Agenda tu servicio</a><a class="btn btn-white" href="https://wa.me/529545445822?text=Hola%2C%20tengo%20una%20duda%20sobre%20mi%20moto." target="_blank" rel="noopener">Pregunta por WhatsApp</a></div><div class="hero-trust"><span>Atención directa</span><span>Solicita cita en línea</span></div></div></section>
+<section class="brand-strip" aria-label="Marcas de motocicletas"><div class="container"><h2>¿Qué marca de moto conduces?</h2><div class="brands-list"><span class="maker">HONDA</span><span class="maker">YAMAHA</span><span class="maker">ITALIKA</span><span class="maker">SUZUKI</span><span class="maker">BAJAJ</span><span class="maker">VENTO</span></div><p class="fineprint">Referencias de marcas, sin relación comercial ni afiliación. Consulta compatibilidad y disponibilidad de servicio para tu modelo.</p></div></section>
+<section id="servicios" class="services section"><div class="container"><div class="section-head"><h2>TODO PARA QUE TU MOTO<br>SIGA RODANDO.</h2><p>Desde mantenimiento preventivo hasta la revisión de fallas mecánicas. Escríbenos para confirmar el servicio que necesita tu moto.</p></div><div class="service-grid"><article class="service-card"><h3>Mantenimiento preventivo</h3><p>Revisiones y ajustes para mantener tu moto en condiciones de uso.</p><a class="t-learn" href="#agenda" data-book="cita">Solicitar revisión <span class="t-learn-chevron" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12"/></svg></span></a></article>
+<article class="service-card"><h3>Cambio de aceite</h3><p>Consulta opciones de cambio de aceite y filtros según tu modelo.</p><a class="t-learn" href="#agenda" data-book="cita">Solicitar revisión <span class="t-learn-chevron" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12"/></svg></span></a></article>
+<article class="service-card"><h3>Sistema de frenos</h3><p>Revisión de frenos, balatas y componentes relacionados.</p><a class="t-learn" href="#agenda" data-book="cita">Solicitar revisión <span class="t-learn-chevron" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12"/></svg></span></a></article>
+<article class="service-card"><h3>Diagnóstico de fallas</h3><p>Cuéntanos qué ocurre y revisamos la disponibilidad para evaluar tu moto.</p><a class="t-learn" href="#agenda" data-book="cita">Solicitar revisión <span class="t-learn-chevron" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12"/></svg></span></a></article>
+<article class="service-card"><h3>Suspensión</h3><p>Consulta por revisión de horquillas, amortiguadores y ajustes.</p><a class="t-learn" href="#agenda" data-book="cita">Solicitar revisión <span class="t-learn-chevron" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12"/></svg></span></a></article>
+<article class="service-card"><h3>Sistema eléctrico</h3><p>Atención a fallas de encendido, iluminación y sistema eléctrico.</p><a class="t-learn" href="#agenda" data-book="cita">Solicitar revisión <span class="t-learn-chevron" aria-hidden="true"><svg viewBox="0 0 16 16"><path class="t-learn-arm t-learn-arm-top" d="M6 4L10 8"/><path class="t-learn-arm t-learn-arm-bot" d="M10 8L6 12"/></svg></span></a></article></div><p class="service-note">* Servicios orientativos; confirma disponibilidad, alcance y cotización con el taller antes de acudir.</p></div></section>
+<section class="feature-band"><div class="container feature-layout"><div class="feature-image"><img src="assets/mecanico-moto.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Imagen ilustrativa de una revisión mecánica de motocicleta"></div><div class="feature-copy"><h2>EL CUIDADO DE TU MOTO EMPIEZA CON UNA BUENA REVISIÓN.</h2><p>Una falla pequeña puede convertirse en un problema grande. Cuéntanos qué sucede, el modelo que conduces y cuándo puedes llevarla para revisar opciones de atención.</p><ul class="bullet-points"><li>Mantenimiento preventivo y correctivo, sujeto a evaluación.</li><li>Atención personalizada para cada solicitud.</li><li>Cotización y horario confirmados por el taller.</li></ul><a href="#agenda" class="btn btn-red" data-book="cita">Solicitar revisión</a></div></div></section>
 <section aria-labelledby="booking-title" class="booking-section" id="agenda">
 <div class="container"><div class="booking-heading"><div>
-<p class="eyebrow">AGENDA TU SERVICIO</p>
+
 <h2 id="booking-title">LA PRÓXIMA PARADA.<br>TU TALLER.</h2>
 <div class="accent-line"></div>
 </div><p class="intro-copy">Cuéntanos qué necesita tu moto. Preparamos tu solicitud para enviarla al taller por WhatsApp, sin llamadas ni vueltas.</p></div>
 <div class="booking-shell">
 <div aria-label="Elige un trámite" class="booking-tabs" role="tablist">
-<button aria-controls="panel-cita" aria-selected="true" class="booking-tab is-selected" data-tab="cita" id="tab-cita" role="tab" type="button"><span class="tab-num">01</span><span>Agendar visita</span></button>
-<button aria-controls="panel-alta" aria-selected="false" class="booking-tab" data-tab="alta" id="tab-alta" role="tab" tabindex="-1" type="button"><span class="tab-num">02</span><span>Ser cliente</span></button>
-<button aria-controls="panel-mi-moto" aria-selected="false" class="booking-tab" data-tab="mi-moto" id="tab-mi-moto" role="tab" tabindex="-1" type="button"><span class="tab-num">03</span><span>Mi moto / beneficios</span></button>
+<button aria-controls="panel-cita" aria-selected="true" class="booking-tab is-selected" data-tab="cita" id="tab-cita" role="tab" type="button"><span>Agendar visita</span></button>
+<button aria-controls="panel-alta" aria-selected="false" class="booking-tab" data-tab="alta" id="tab-alta" role="tab" tabindex="-1" type="button"><span>Ser cliente</span></button>
+<button aria-controls="panel-mi-moto" aria-selected="false" class="booking-tab" data-tab="mi-moto" id="tab-mi-moto" role="tab" tabindex="-1" type="button"><span>Mi moto / beneficios</span></button>
 </div>
 <div aria-labelledby="tab-cita" class="booking-panel" data-panel="cita" id="panel-cita" role="tabpanel">
-<div class="panel-intro"><p class="eyebrow">AGENDA TU VISITA</p><h3>Cuéntanos de tu moto.</h3><p>Selecciona una fecha de preferencia. El taller confirmará la disponibilidad por WhatsApp.</p></div>
+<div class="panel-intro"><h3>Cuéntanos de tu moto.</h3><p>Selecciona una fecha de preferencia. El taller confirmará la disponibilidad por WhatsApp.</p></div>
 <form class="booking-form" id="form-cita">
 <div class="tf-hp" aria-hidden="true"><label>Sitio web<input type="text" name="website" tabindex="-1" autocomplete="off"/></label></div>
 <div class="form-grid">
@@ -100,7 +1407,7 @@
 </form>
 </div>
 <div aria-labelledby="tab-alta" class="booking-panel" data-panel="alta" hidden="" id="panel-alta" role="tabpanel">
-<div class="panel-intro"><p class="eyebrow">CLIENTES TORRE FUERTE</p><h3>Registra tu moto.</h3><p>Envía una solicitud al taller para que pueda reconocer tu moto en futuras visitas y organizar sus servicios.</p></div>
+<div class="panel-intro"><h3>Registra tu moto.</h3><p>Envía una solicitud al taller para que pueda reconocer tu moto en futuras visitas y organizar sus servicios.</p></div>
 <form class="booking-form" id="form-alta">
 <div class="form-grid">
 <label class="field">Nombre del titular <span>*</span><input autocomplete="name" maxlength="65" name="nombre" placeholder="Nombre y apellido" required=""/></label>
@@ -115,7 +1422,7 @@
 </form>
 </div>
 <div aria-labelledby="tab-mi-moto" class="booking-panel" data-panel="mi-moto" hidden="" id="panel-mi-moto" role="tabpanel">
-<div class="panel-intro"><p class="eyebrow">SEGUIMIENTO Y BENEFICIOS</p><h3>Que tu moto siga rodando.</h3><p>Consulta con el taller tus reparaciones anteriores, próximos seguimientos o beneficios disponibles.</p></div>
+<div class="panel-intro"><h3>Que tu moto siga rodando.</h3><p>Consulta con el taller tus reparaciones anteriores, próximos seguimientos o beneficios disponibles.</p></div>
 <form class="booking-form" id="form-mi-moto">
 <div class="form-grid">
 <label class="field">Tu nombre <span>*</span><input autocomplete="name" maxlength="65" name="nombre" placeholder="¿Cómo te llamas?" required=""/></label>
@@ -123,7 +1430,7 @@
 <label class="field field-full">¿Qué quieres consultar? <span>*</span>
 <select name="consulta" required=""><option disabled="" selected="" value="">Selecciona una consulta</option><option>Consultar mi historial de reparaciones</option><option>Consultar próximos mantenimientos</option><option>Preguntar por beneficios disponibles</option><option>Dar seguimiento a una cotización</option></select></label>
 </div>
-<div class="loyalty-teaser"><div aria-hidden="true" class="loyalty-mark">✦</div><div><strong>TORRE FUERTE · CLIENTES FRECUENTES</strong><p>Pregunta por los beneficios vigentes. Los descuentos o recompensas se aplican únicamente cuando el taller los autoriza; no hay puntos ni descuentos automáticos.</p></div></div>
+<div class="loyalty-teaser"><div><strong>TORRE FUERTE · CLIENTES FRECUENTES</strong><p>Pregunta por los beneficios vigentes. Los descuentos o recompensas se aplican únicamente cuando el taller los autoriza; no hay puntos ni descuentos automáticos.</p></div></div>
 <label class="check-line"><input name="confirmacion" required="" type="checkbox"/><span>Entiendo que el taller verificará mi identidad antes de compartir cualquier historial y que la respuesta llegará por WhatsApp.</span></label>
 <button class="button button-gold form-submit" type="submit"><span>Consultar por WhatsApp</span></button>
 <p class="form-note">Por tu privacidad, no mostramos historiales personales en una página pública.</p>
@@ -132,9 +1439,9 @@
 </div>
 <div class="booking-bottom"><span>UN MENSAJE DIRECTO, SIN INTERMEDIARIOS.</span><span>Lun – Sáb · 9:00 a 18:00</span></div>
 </div></section>
-<section id="contacto" class="location" aria-labelledby="contact-title"><div class="container location-layout"><div><span class="section-kicker">VISÍTANOS</span><h2 id="contact-title">TE ESPERAMOS EN PUERTO ESCONDIDO.</h2><p class="muted">¿Quieres cotizar una reparación, resolver una duda o saber cómo llegar? Estamos a un mensaje de distancia.</p><dl class="contact-facts"><div><dt>Teléfono y WhatsApp</dt><dd><a href="tel:+529545445822">954 544 5822</a></dd></div><div><dt>Horario</dt><dd>Lunes a sábado, de 9:00 a 18:00</dd></div><div><dt>Zona</dt><dd>Puerto Escondido, Oaxaca <span class="muted">· La Guayabillera, Barra de Colotepec</span></dd></div></dl><div class="contacts-buttons"><a class="btn btn-red" href="https://wa.me/529545445822?text=Hola%2C%20tengo%20una%20consulta%20para%20el%20taller." target="_blank" rel="noopener">ESCRIBIR POR WHATSAPP</a><a class="btn btn-white" href="https://maps.app.goo.gl/jk7q4YBHturbASLq6?g_st=iwb" target="_blank" rel="noopener">CÓMO LLEGAR</a></div><p class="fineprint"><a href="torre-fuerte.vcf" download>Guardar contacto en mi celular ↓</a></p></div><div class="location-art"><img src="assets/moto-deportiva-taller.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Moto deportiva frente a un taller"><div class="location-card"><div><strong>TORRE FUERTE</strong><small>Puerto Escondido, Oaxaca</small></div><a href="https://maps.app.goo.gl/jk7q4YBHturbASLq6?g_st=iwb" target="_blank" rel="noopener">ABRIR MAPA</a></div></div></div></section>
-<section class="reviews" id="opiniones" aria-labelledby="reviews-title"><div class="container reviews-top"><div><span class="section-kicker">LA CONFIANZA SE GANA EN EL TALLER</span><h2 id="reviews-title">EL TRABAJO HABLA.<br>TÚ TAMBIÉN.</h2></div><div><p>Consulta las opiniones del perfil de Torre Fuerte en Google. Si ya nos visitaste, comparte cómo te fue: tu experiencia ayuda a otros motociclistas.</p><a class="btn btn-dark review-button" href="https://share.google/BNSdS2MYYwZAegxCZ" target="_blank" rel="noopener">VER EL PERFIL EN GOOGLE →</a></div></div></section>
-</main><footer class="footer"><div class="container"><div class="footer-grid"><div><div class="footer-brand">TORRE <span>FUERTE</span></div><p class="footer-note">Taller de mantenimiento y reparación de motocicletas en Puerto Escondido, Oaxaca.</p></div><div><h3>NAVEGACIÓN</h3><div class="footer-links"><a href="#servicios">Servicios</a><a href="#agenda">Agenda y registro</a><a href="#contacto">Ubicación y contacto</a><a href="#opiniones">Opiniones</a></div></div><div><h3>HORARIO</h3><p>Lunes a sábado<br>9:00 – 18:00<br><a href="tel:+529545445822">954 544 5822</a></p></div></div><div class="footer-bottom"><span>© <span id="year">2026</span> Torre Fuerte. Puerto Escondido, Oaxaca.</span><a href="#inicio">Volver arriba ↑</a></div></div></footer><div class="editor-note">Fotografías de ambientación generadas para este diseño; no muestran el taller real. Las marcas se incluyen solo como referencia informativa.</div>
+<section id="contacto" class="location" aria-labelledby="contact-title"><div class="container location-layout"><div><h2 id="contact-title">TE ESPERAMOS EN PUERTO ESCONDIDO.</h2><p class="muted">¿Quieres cotizar una reparación, resolver una duda o saber cómo llegar? Estamos a un mensaje de distancia.</p><dl class="contact-facts"><div><dt>Teléfono y WhatsApp</dt><dd><a href="tel:+529545445822">954 544 5822</a></dd></div><div><dt>Horario</dt><dd>Lunes a sábado, de 9:00 a 18:00</dd></div><div><dt>Zona</dt><dd>Puerto Escondido, Oaxaca <span class="muted">· La Guayabillera, Barra de Colotepec</span></dd></div></dl><div class="contacts-buttons"><a class="btn btn-red" href="https://wa.me/529545445822?text=Hola%2C%20tengo%20una%20consulta%20para%20el%20taller." target="_blank" rel="noopener">Escribir por WhatsApp</a><a class="btn btn-white" href="https://maps.app.goo.gl/jk7q4YBHturbASLq6?g_st=iwb" target="_blank" rel="noopener">Cómo llegar</a></div><p class="fineprint"><a href="torre-fuerte.vcf" download>Guardar contacto en mi celular ↓</a></p></div><div class="location-art"><img src="assets/moto-deportiva-taller.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Moto deportiva frente a un taller"><div class="location-card"><div><strong>TORRE FUERTE</strong><small>Puerto Escondido, Oaxaca</small></div><a href="https://maps.app.goo.gl/jk7q4YBHturbASLq6?g_st=iwb" target="_blank" rel="noopener">Abrir mapa</a></div></div></div></section>
+<section class="reviews" id="opiniones" aria-labelledby="reviews-title"><div class="container reviews-top"><div><h2 id="reviews-title">EL TRABAJO HABLA.<br>TÚ TAMBIÉN.</h2></div><div><p>Consulta las opiniones del perfil de Torre Fuerte en Google. Si ya nos visitaste, comparte cómo te fue: tu experiencia ayuda a otros motociclistas.</p><a class="btn btn-dark review-button" href="https://share.google/BNSdS2MYYwZAegxCZ" target="_blank" rel="noopener">Ver el perfil en Google</a></div></div></section>
+</main><footer class="footer"><div class="container"><div class="footer-grid"><div><div class="footer-brand">TORRE <span>FUERTE</span></div><p class="footer-note">Taller de mantenimiento y reparación de motocicletas en Puerto Escondido, Oaxaca.</p></div><div><h3>Navegación</h3><div class="footer-links"><a href="#servicios">Servicios</a><a href="#agenda">Agenda y registro</a><a href="#contacto">Ubicación y contacto</a><a href="#opiniones">Opiniones</a></div></div><div><h3>Horario</h3><p>Lunes a sábado<br>9:00 – 18:00<br><a href="tel:+529545445822">954 544 5822</a></p></div></div><div class="footer-bottom"><span>© <span id="year">2026</span> Torre Fuerte. Puerto Escondido, Oaxaca.</span><a href="#inicio">Volver arriba ↑</a></div></div></footer><div class="editor-note">Fotografías de ambientación generadas para este diseño; no muestran el taller real. Las marcas se incluyen solo como referencia informativa.</div>
 <a class="floating-wa" href="https://wa.me/529545445822?text=Hola%2C%20quisiera%20hacer%20una%20consulta." target="_blank" rel="noopener" aria-label="Abrir WhatsApp del taller"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.2A8.5 8.5 0 1 1 20 11.5Z"/><path d="M8.6 8.3c-.3-.6-.6-.6-.9-.6-.4 0-.8.4-.9.7-.6 1.2.8 3.5 2.9 5.1 1.8 1.5 3.4 1.9 4.5 1.7.7-0.1 1.3-0.8 1.4-1.4.1-.5-0.1-.6-.5-.8l-1.4-.7c-.3-.1-.5 0-.7.3l-.6.8c-.2.2-.4.2-.7.1-1.2-.5-2.3-1.5-3-2.5-.2-.3-.2-.5 0-.7l.5-.6c.2-.3.2-.5.1-.7Z"/></svg></a>
 <script src="tf-config.js"></script>
 <script>
