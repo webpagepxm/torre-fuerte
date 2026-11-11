@@ -1984,6 +1984,94 @@ dialog::backdrop {
 #printReceipt {
   display: none;
 }
+/* Android: ayuda de instalación visible únicamente bajo el login en móvil. */
+.android-install[hidden],
+.android-install-steps[hidden] {
+  display: none !important;
+}
+.android-install {
+  display: none;
+}
+.android-install-illustration {
+  display: block;
+  width: min(72%, 220px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  margin: 0 auto;
+  border-radius: 20px;
+}
+.android-install-heading {
+  font: 800 27px/1.02 "Barlow Condensed", Impact, sans-serif;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 2px 0 0;
+}
+.android-install-copy {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+.android-install-button {
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid var(--black);
+  border-radius: 12px;
+  color: white;
+  background: var(--black);
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.3;
+  padding: 13px 16px;
+}
+.android-install-button:hover {
+  background: #36466b;
+}
+.android-install-button:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+.android-install-steps {
+  text-align: left;
+  background: var(--paper);
+  border-radius: 12px;
+  padding: 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.android-install-steps p {
+  margin: 0 0 8px;
+}
+.android-install-steps p:last-child {
+  margin: 8px 0 0;
+}
+.android-install-steps ol {
+  margin: 0;
+  padding-left: 22px;
+}
+.android-install-steps li + li {
+  margin-top: 8px;
+}
+.android-install-steps strong {
+  color: var(--ink);
+}
+@media (max-width: 760px) {
+  .android-install:not([hidden]) {
+    display: grid;
+    gap: 12px;
+    text-align: center;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+    margin-top: 20px;
+  }
+}
+@media all and (display-mode: standalone) {
+  .android-install {
+    display: none !important;
+  }
+}
 @media (max-width: 1280px) {
   .calendar-workspace {
     grid-template-columns: minmax(0, 1fr);
