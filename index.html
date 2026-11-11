@@ -1392,6 +1392,7 @@ h3 {
 <div class="tf-hp" aria-hidden="true"><label>Sitio web<input type="text" name="website" tabindex="-1" autocomplete="off"/></label></div>
 <div class="form-grid">
 <label class="field">Tu nombre <span>*</span><input autocomplete="name" maxlength="65" name="nombre" placeholder="¿Cómo te llamas?" required=""/></label>
+<label class="field">Tu teléfono de contacto <span>*</span><input autocomplete="tel" inputmode="tel" maxlength="20" name="telefono" placeholder="Ej. 954 123 4567" required="" type="tel"/></label>
 <label class="field">Marca y modelo de tu moto <span>*</span><input maxlength="70" name="moto" placeholder="Ej. Italika FT150" required=""/></label>
 <label class="field">¿Qué servicio necesitas? <span>*</span>
 <select name="servicio" required=""><option disabled="" selected="" value="">Selecciona una opción</option><option>Revisión general</option><option>Cambio de aceite</option><option>Frenos</option><option>Suspensión</option><option>Falla eléctrica</option><option>Diagnóstico</option><option>Otro / no estoy seguro</option></select>
@@ -1524,7 +1525,9 @@ h3 {
         body:JSON.stringify({...payload,idempotency_key:lastBookingAttempt.key})
       });
       if(!response.ok)throw Error('Registro no confirmado');
-      bookingFeedback.textContent='Solicitud recibida por el taller. Aún no es una cita confirmada: envía el mensaje en WhatsApp para acordar disponibilidad.';
+      const saved=await response.json().catch(()=>null);
+      const folio=typeof saved?.folio==='string'?saved.folio:'';
+      bookingFeedback.textContent='Solicitud recibida por el taller'+(folio?' · Folio '+folio:'')+'. Aún no es una cita confirmada: envía el mensaje en WhatsApp para acordar disponibilidad.';
     }catch{
       bookingFeedback.textContent='No pudimos confirmar el registro en el portal. Envía el mensaje por WhatsApp para que el taller reciba tu solicitud.';
     }finally{clearTimeout(timeout);bookingBusy=false;submit.disabled=false;}
@@ -1533,6 +1536,13 @@ h3 {
     event.preventDefault();
     if(bookingBusy||!booking.reportValidity())return;
     if(formValue(booking,'website'))return;
+    const phoneInput=booking.elements.namedItem('telefono');
+    const phone=formValue(booking,'telefono').replace(/\D/g,'');
+    if(phone.length<10||phone.length>15){
+      phoneInput.setCustomValidity('Escribe un teléfono válido de 10 a 15 dígitos.');
+      phoneInput.reportValidity();return;
+    }
+    phoneInput.setCustomValidity('');
     const date=formValue(booking,'fecha');
     const dt=new Date(date+'T12:00:00');
     if(!Number.isFinite(dt.getTime())||dt.getDay()===0){
@@ -1548,6 +1558,7 @@ h3 {
       '¡Hola, Torre Fuerte! Quisiera solicitar una cita desde su página web.',
       '',
       'Nombre: '+formValue(booking,'nombre'),
+      'Teléfono de contacto: '+phone,
       'Mi moto: '+formValue(booking,'moto'),
       'Servicio solicitado: '+formValue(booking,'servicio'),
       'Fecha de preferencia: '+date,
@@ -1558,7 +1569,7 @@ h3 {
     lines.push('','¿Me pueden confirmar disponibilidad? Entiendo que todavía no es una cita confirmada.');
 
     const requestData={
-      nombre:formValue(booking,'nombre'),moto:formValue(booking,'moto'),
+      nombre:formValue(booking,'nombre'),telefono:phone,moto:formValue(booking,'moto'),
       anio:formValue(booking,'anio'),servicio:formValue(booking,'servicio'),fecha:date,
       horario:formValue(booking,'horario'),detalle:formValue(booking,'detalle'),consent:true
     };
@@ -1567,6 +1578,7 @@ h3 {
     send(lines.join('\n'));
   });
   dateInput?.addEventListener('input',()=>dateInput.setCustomValidity(''));
+  booking?.elements.namedItem('telefono')?.addEventListener('input',event=>event.target.setCustomValidity(''));
   document.getElementById('form-alta')?.addEventListener('submit',event=>{
     event.preventDefault();const form=event.currentTarget;
     if(!form.reportValidity())return;
