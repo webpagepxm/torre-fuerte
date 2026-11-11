@@ -444,6 +444,51 @@ button:active {
 .headbuttons .primary {
   padding-inline: 20px;
 }
+/* Acceso persistente a la guía PWA; solo se encuentra en el workspace privado. */
+.install-guide-access {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -10px 0 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.install-guide-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #cbd4ed;
+  background: #fff;
+  color: #2d3d83;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.install-guide-button svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.install-guide-button:hover {
+  background: #edf1ff;
+  border-color: #b8c5ed;
+}
+.install-guide-button:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+@media(max-width:760px) {
+  .install-guide-access {
+    justify-content: flex-start;
+    margin: -4px 0 16px;
+  }
+}
 .tabs {
   position: fixed;
   left: 16px;
