@@ -10,6 +10,40 @@ const previous = (file) =>
     encoding: "utf8",
   });
 const current = (file) => fs.readFileSync(root + "/" + file, "utf8");
+
+/* Permitir exclusivamente la captura del teléfono en el formulario público.
+   Normalizar la diferencia para seguir protegiendo el resto del contrato. */
+function normalizePublicBookingChanges(source) {
+  const edits = [
+    [
+      '<label class="field">Tu teléfono de contacto <span>*</span><input autocomplete="tel" inputmode="tel" maxlength="20" name="telefono" placeholder="Ej. 954 123 4567" required="" type="tel"/></label>\n',
+      "",
+    ],
+    [
+      "      const saved=await response.json().catch(()=>null);\n      const folio=typeof saved?.folio==='string'?saved.folio:'';\n      bookingFeedback.textContent='Solicitud recibida por el taller'+(folio?' · Folio '+folio:'')+'. Aún no es una cita confirmada: envía el mensaje en WhatsApp para acordar disponibilidad.';",
+      "      bookingFeedback.textContent='Solicitud recibida por el taller. Aún no es una cita confirmada: envía el mensaje en WhatsApp para acordar disponibilidad.';",
+    ],
+    [
+      "    const phoneInput=booking.elements.namedItem('telefono');\n    const phone=formValue(booking,'telefono').replace(/\\D/g,'');\n    if(phone.length<10||phone.length>15){\n      phoneInput.setCustomValidity('Escribe un teléfono válido de 10 a 15 dígitos.');\n      phoneInput.reportValidity();return;\n    }\n    phoneInput.setCustomValidity('');\n",
+      "",
+    ],
+    ["      'Teléfono de contacto: '+phone,\n", ""],
+    [
+      "nombre:formValue(booking,'nombre'),telefono:phone,moto:formValue(booking,'moto')",
+      "nombre:formValue(booking,'nombre'),moto:formValue(booking,'moto')",
+    ],
+    [
+      "  booking?.elements.namedItem('telefono')?.addEventListener('input',event=>event.target.setCustomValidity(''));\n",
+      "",
+    ],
+  ];
+  for (const [added, original] of edits) {
+    assert.equal(source.split(added).length - 1, 1, "Cambio de teléfono autorizado localizable una sola vez");
+    source = source.replace(added, original);
+  }
+  return source;
+}
+
 function assertBusinessContracts() {
   for (const file of [
     "operacion/service-lines.mjs",
@@ -69,7 +103,7 @@ function assertBusinessContracts() {
   const publicBefore = previous("index.html"),
     publicNow = current("index.html");
   assert.deepEqual(
-    inline(publicNow),
+    inline(normalizePublicBookingChanges(publicNow)),
     inline(publicBefore),
     "Scripts públicos/WhatsApp idénticos",
   );
@@ -79,7 +113,7 @@ function assertBusinessContracts() {
     "Enlaces públicos idénticos",
   );
   assert.deepEqual(
-    controls(publicNow),
+    controls(normalizePublicBookingChanges(publicNow)),
     controls(publicBefore),
     "Campos y validaciones públicas idénticos",
   );
@@ -90,6 +124,6 @@ function assertBusinessContracts() {
   );
   return { baseline, protectedFunctions: 16, queries: queries(now).length };
 }
-module.exports = { assertBusinessContracts, baseline };
+module.exports = { assertBusinessContracts, baseline, normalizePublicBookingChanges };
 
 if (require.main === module) console.log(assertBusinessContracts());
