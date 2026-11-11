@@ -274,11 +274,12 @@ const { execFileSync } = require("node:child_process");
     return route.fulfill({
       status: failBooking ? 503 : 200,
       contentType: "application/json",
-      body: '{"ok":true}',
+      body: '{"ok":true,"folio":"TF-000123"}',
     });
   });
   await page.goto(base + "/");
   await page.locator('#form-cita [name="nombre"]').fill("Persona Ficticia");
+  await page.locator('#form-cita [name="telefono"]').fill("9541234567");
   await page.locator('#form-cita [name="moto"]').fill("Italika prueba");
   await page
     .locator('#form-cita [name="servicio"]')
@@ -288,6 +289,10 @@ const { execFileSync } = require("node:child_process");
     .locator('#form-cita [name="horario"]')
     .selectOption("Mañana (9:00 a 12:00)");
   await page.locator('#form-cita [name="confirmacion"]').check();
+  await page.locator('#form-cita [name="telefono"]').fill("123");
+  await page.locator('#form-cita [type="submit"]').click();
+  assert.equal(requests.length, 0, "No crear órdenes con teléfonos inválidos");
+  await page.locator('#form-cita [name="telefono"]').fill("9541234567");
   await page.locator('#form-cita [type="submit"]').click();
   await page.waitForFunction(() =>
     document
@@ -296,6 +301,12 @@ const { execFileSync } = require("node:child_process");
   );
   assert.equal(requests.length, 1);
   assert.equal(requests[0].consent, true);
+  assert.equal(requests[0].telefono, "9541234567");
+  assert.match(await page.locator("#booking-feedback").textContent(), /TF-000123/);
+  assert.match(
+    await page.evaluate(() => new URL(window.__openedUrl).searchParams.get("text")),
+    /Teléfono de contacto: 9541234567/,
+  );
   assert.match(
     await page.evaluate(() => window.__openedUrl),
     /^https:\/\/wa.me\//,
