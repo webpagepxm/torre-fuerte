@@ -6,4 +6,4 @@ La landing incorpora composición editorial, fuentes locales y servicios numerad
 
 Validación: 6 pruebas unitarias, 24 comprobaciones de navegador, siete anchos en ambas superficies y cero infracciones de axe en seis estados. Evidencia y capturas en `docs/qa/REPORT.md`.
 
-Limitaciones: Supabase de producción y RLS no verificados por bloqueo de red; el guardado REST no es transaccional. Se requieren pruebas con backend de staging y Android/impresora físicos antes de dar por cerrado el incidente de producción.
+Verificación remota: conectividad Supabase y clave publicable operativas; las tres tablas privadas rechazan consultas anónimas y los endpoints responden al origen del sitio. Sigue pendiente probar el guardado con una cuenta/base de pruebas y revisar las políticas RLS completas. El guardado REST no es transaccional. No se da por cerrado el incidente de producción; Android e impresora físicos tampoco están verificados.
