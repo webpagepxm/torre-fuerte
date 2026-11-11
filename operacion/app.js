@@ -262,6 +262,23 @@ $("resetFilters").addEventListener("click",()=>{
   grid?.setFilter(filterRow);
 });
 $("refresh").addEventListener("click",loadRecords);
+// Actualizar solicitudes nuevas sin interrumpir al mecánico.
+let lastAutomaticRefresh = Date.now();
+let automaticRefreshBusy = false;
+async function checkIncomingRequests(){
+  if(automaticRefreshBusy||!currentUser||document.hidden||
+    $("orderDialog").open||$("newDialog").open||$("passwordDialog").open)return;
+  if(Date.now()-lastAutomaticRefresh<25000)return;
+  lastAutomaticRefresh=Date.now();
+  automaticRefreshBusy=true;
+  try{await loadRecords();}
+  finally{automaticRefreshBusy=false;}
+}
+window.setInterval(checkIncomingRequests,45000);
+window.addEventListener("focus",checkIncomingRequests);
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden)checkIncomingRequests();
+});
 function csvCell(input){
   const val=String(input??"");
   const neutralized=/^[\s]*[=+\-@\t\r]/.test(val)?"'"+val:val;
