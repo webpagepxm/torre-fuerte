@@ -36,16 +36,17 @@
 - **Responsable legal informado:** José Francisco Díaz Medina. El nombre comercial provisional no sustituye su identidad como responsable.
 - **Aviso:** `aviso-privacidad.html` incluye a José Francisco Díaz Medina y el domicilio proporcionado; se mantiene como borrador hasta que el responsable apruebe el contenido y confirme el canal ARCO de WhatsApp **954 544 5822**. No activar el almacenamiento desde la web sin esa aprobación.
 
-## Folio automático desde la página pública (solicitud de cita)
-- **Un solo folio:** `tf_requests.folio` lo asigna Postgres en el momento de insertar la solicitud, incluso antes de confirmar la cita.
-- **Mismo folio para tres momentos:** solicitud web, comanda para pegar en la moto y nota de servicio PDF para el cliente. **La nota no crea otro folio.**
-- La interfaz pública de la rama de desarrollo ya incluye teléfono, consentimiento de almacenamiento, campo anti-bot, validación de fecha y envío a `tf-create-request`.
-- Al recibir respuesta correcta, muestra el folio grande y propone enviarlo a WhatsApp. El usuario no necesita mandar WhatsApp para que el registro llegue a Supabase.
-- Si ocurre un error de red se puede reintentar sin duplicar la solicitud gracias a `idempotency_key`. Si cambia el formulario, genera un nuevo identificador.
-- `tf-create-request` valida y registra únicamente solicitudes. Añadimos límite por teléfono y por huella técnica de IP (hash diario, sin conservar IP legible) usando `tf_booking_allow`, con RLS y privilegios solo `service_role`.
-- **ESTADO:** solo está implementado en la rama `feature/comandas-v1-calendario-20261110`. La función desplegada tiene `verify_jwt=true`, por lo que NO se reciben aún citas públicas; la web actual `main` sigue enviando solicitudes solo por WhatsApp.
-- **Para activar:** primero sustituir el aviso de privacidad borrador por uno final aprobado por el responsable, incluyendo razón social/nombre legal, domicilio y contacto de privacidad. Después actualizar `index.html` de `main` y publicar la función con `verify_jwt=false`. Nunca exponer claves secretas; probar con información ficticia y confirmar folio + tabla Operación.
-- No publicitar una cita como confirmada hasta que el mecánico cambie su estado a `confirmada`.
+## Flujo vivo de cita web → WhatsApp + orden interna (10/11/2026)
+- **Sin cambiar la experiencia del cliente.** Conserva exactamente los campos originales del formulario y el botón «Enviar solicitud por WhatsApp». Sin pedir teléfono adicional, sin segundo botón, sin mostrar folio ni confirmación añadida.
+- Al pulsar el botón, empieza **en paralelo** una petición `fetch(...,{keepalive:true})` a `tf-create-request` y abre WhatsApp inmediatamente con el texto habitual del cliente, sin folio. **No se espera a Supabase** antes de abrir WhatsApp.
+- El backend registra una **solicitud pendiente** en `tf_requests`. Postgres asigna el folio automáticamente; en el dashboard Operación el mecánico la identifica y confirma la cita cuando recibe el mensaje real por WhatsApp.
+- El mismo folio se imprime como **comanda interna para la moto** y aparece en la **nota PDF para el cliente** cuando se cargan los precios. No existe segundo folio.
+- Como el formulario original no pide teléfono, el campo de base se deja explícitamente como «Por confirmar en WhatsApp». El mecánico lo confirma cuando tiene contacto real; nunca inventar un número.
+- Para evitar duplicados de doble clic, el sitio conserva la `idempotency_key` para el mismo formulario hasta 15 minutos.
+- El sistema no puede verificar automáticamente si la persona **envió** su mensaje dentro de WhatsApp, solo si pulsó el botón del formulario. Por eso el estado inicial es `pendiente` y el personal confirma al recibir el mensaje.
+- Protección: formulario honeypot, límite de solicitudes por hash diario de IP, RLS, validación de origen, longitud y fechas y ninguna lectura pública de clientes. Si la petición interna falla, WhatsApp continúa funcionando; no se muestra error al cliente.
+- **Privacidad:** bajo el botón se muestra enlace al aviso; no se exige checkbox adicional para estos datos no sensibles y finalidades directamente relacionadas con el servicio. El aviso identifica a José Francisco Díaz Medina, domicilio comercial y WhatsApp 954 544 5822 como contacto ARCO.
+- **ESTADO:** actualizaciones en la rama `main` publicadas a GitHub Pages: `index.html` y `aviso-privacidad.html`; función Edge `tf-create-request` v3 activa con `verify_jwt=false`. Comprobaciones estáticas pasadas; **pendiente una prueba real desde navegador y verificación de la fila recibida en Supabase**.
 
 ## Prueba de extremo a extremo
 - Enviar cita desde #form-cita → la función devuelve folio → aparece en /operacion/ tras iniciar sesión.
