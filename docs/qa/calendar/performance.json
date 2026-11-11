@@ -1,0 +1,7 @@
+{
+  "conditions": "Una muestra Chromium 390×844, CPU 4×, 200000 B/s y latencia 150 ms; backend/CDN aislados. Tiempo desde click hasta primer cuadro de Agenda; no producción ni Android físico.",
+  "calendarReadyMs": 328.3999999985099,
+  "pdfLoaded": false,
+  "horizontalOverflow": false,
+  "eventCount": 4
+}

@@ -1,0 +1,1686 @@
+{
+  "passed": 14,
+  "checks": [
+    "Solo cambia la presentación del calendario; contratos, landing, shader y documentos preservados",
+    "Carga diferida y controles propios Mes/Agenda con selección real",
+    "Día seleccionado muestra las cuatro órdenes reales del fixture, sin notas internas ni agenda duplicada",
+    "Fechas con flechas y Home, foco único y vacío específico del día",
+    "Periodo anterior/siguiente y Hoy actualizan fecha, resumen y selección",
+    "Más órdenes se abre también por teclado y conserva acceso a los registros",
+    "Eventos del mes y panel del día abren la orden existente, con teclado y clic",
+    "Agenda presenta moto, cliente, estado, servicio y franja; abre una sola vez",
+    "Mes y Agenda caben en siete anchos; controles y fechas conservan 44 px",
+    "Axe sin infracciones detectadas en las cuatro superficies nuevas",
+    "Taps sintetizados a 320 px abren Agenda, orden y selección mensual",
+    "Fallo de carga retira controles no disponibles; Actualizar recupera el calendario",
+    "Error inicial de datos no se presenta como calendario vacío y permite recuperar",
+    "Datos del cliente se presentan como texto y no ejecutan HTML"
+  ],
+  "audits": [
+    {
+      "surface": "Agenda escritorio",
+      "violations": []
+    },
+    {
+      "surface": "Mes escritorio",
+      "violations": []
+    },
+    {
+      "surface": "Agenda móvil",
+      "violations": []
+    },
+    {
+      "surface": "Mes móvil",
+      "violations": []
+    }
+  ],
+  "geometry": [
+    {
+      "mode": "Agenda",
+      "width": 320,
+      "scroll": 320,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 44.453125,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 66.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": []
+    },
+    {
+      "mode": "Month",
+      "width": 320,
+      "scroll": 320,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 44.453125,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 66.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": [
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        }
+      ]
+    },
+    {
+      "mode": "Agenda",
+      "width": 375,
+      "scroll": 375,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 44.453125,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 66.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": []
+    },
+    {
+      "mode": "Month",
+      "width": 375,
+      "scroll": 375,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 44.453125,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 66.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": [
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        }
+      ]
+    },
+    {
+      "mode": "Agenda",
+      "width": 390,
+      "scroll": 390,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 44.453125,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 66.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": []
+    },
+    {
+      "mode": "Month",
+      "width": 390,
+      "scroll": 390,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 44.453125,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 66.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": [
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        }
+      ]
+    },
+    {
+      "mode": "Agenda",
+      "width": 430,
+      "scroll": 430,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 44.453125,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 66.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": []
+    },
+    {
+      "mode": "Month",
+      "width": 430,
+      "scroll": 430,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 44.453125,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 66.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": [
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        },
+        {
+          "width": 44,
+          "height": 68
+        }
+      ]
+    },
+    {
+      "mode": "Agenda",
+      "width": 768,
+      "scroll": 768,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 52,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 56,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 74.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": []
+    },
+    {
+      "mode": "Month",
+      "width": 768,
+      "scroll": 768,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 52,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 56,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 74.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": [
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "mode": "Agenda",
+      "width": 1280,
+      "scroll": 1280,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 52,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 56,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 74.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": []
+    },
+    {
+      "mode": "Month",
+      "width": 1280,
+      "scroll": 1280,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 52,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 56,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 74.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": [
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "mode": "Agenda",
+      "width": 1440,
+      "scroll": 1440,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 52,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 56,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 74.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": []
+    },
+    {
+      "mode": "Month",
+      "width": 1440,
+      "scroll": 1440,
+      "controls": [
+        {
+          "id": "calendarPrev",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarToday",
+          "width": 52,
+          "height": 44
+        },
+        {
+          "id": "calendarNext",
+          "width": 44,
+          "height": 44
+        },
+        {
+          "id": "calendarMonth",
+          "width": 56,
+          "height": 44
+        },
+        {
+          "id": "calendarAgenda",
+          "width": 74.28125,
+          "height": 44
+        }
+      ],
+      "dateButtons": [
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        },
+        {
+          "width": 44,
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "conditions": "Chromium, fixtures aislados y taps sintetizados; no Android físico, impresora o Supabase real."
+}

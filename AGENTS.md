@@ -73,3 +73,9 @@ La pasada `refine/final-ux-audit` se entrega sin despliegue por instrucción exp
 Una orden Lista/Entregada confirmada por el guardado existente ofrece resumen y acceso directo a nota, sin nuevas escrituras ni celebración repetida. Comanda preparada no equivale a impresión física, descarga iniciada no equivale a archivo guardado, Web Share resuelto no equivale a mensaje entregado. Conservar feedback prescriptivo al cancelar compartir.
 
 `node tests/final-refinement.cjs` comprueba estos cierres, ayuda manual y taps sintetizados. `tests/contracts.cjs` protege las 16 funciones operativas, cuatro consultas directas y scripts/controles/enlaces públicos contra `93e992d`; permite los cambios explícitos de feedback y presentación. Los archivos de persistencia, configuración y superficies independientes se conservan según esa comprobación. Ver `docs/final-ux-audit.md`.
+
+## Calendario de operaciones
+
+La vista usa FullCalendar 6.1.19 como motor diferido y controles propios Mes/Agenda/periodo/Hoy. Preservar fechas/franjas, seis estados, IDs de órdenes y apertura mediante `openOrder`; no añadir edición por arrastre ni escrituras de calendario. El panel del día es presentación de las mismas órdenes; la agenda general de hoy solo se muestra en Órdenes. En móvil el mes es compacto a ancho completo con fechas de 44 px y detalle debajo; Agenda es la vista inicial.
+
+Antes de publicar cambios de esta vista: `node tests/calendar-ui.cjs`, además de las comprobaciones de contratos y documentos. No confundir fallo inicial de datos con calendario vacío. El panel Más órdenes conserva botón de cierre enfocable, retorno de foco y Escape. Capturas reproducibles con `TF_PHASE=before|after node tests/capture-calendar.cjs` (base `6b41f40`).

@@ -66,3 +66,11 @@ Revisar 320, 375, 390, 430, 768, 1280 y 1440 px; teclado, foco, filtros, tutoria
 Las guías de bienvenida y orden se abren únicamente desde Ayuda o Guía de esta orden; no interrumpen la primera visita. No añadir introducciones antes del primer trabajo. Un cambio confirmado a Lista o Entregada ofrece un check estático, resumen de folio/moto/servicio y acceso a la nota existente. No repetir el bloque al guardar solo notas ni conservarlo al editar/reabrir otra orden. La confirmación depende de la respuesta del guardado existente.
 
 La comanda se describe como preparada; la web no puede verificar papel impreso. Una descarga iniciada no acredita que el archivo se haya guardado, y un Web Share resuelto no confirma entrega al cliente. Cancelar compartir debe retirar Preparando y dejar una alternativa escrita. Calendario y lista utilizan los mismos tokens semánticos. Evidencia de esta pasada: `docs/final-ux-audit.md`.
+
+## Calendario integrado en OPS
+
+Controles propios de periodo/Hoy y selector Mes/Agenda; retirar la barra visual predeterminada de FullCalendar. Mes en escritorio, Agenda semanal inicialmente en móvil. Mes identifica moto y estado sobre fondos semánticos suaves; el día seleccionado tiene panel con folio, moto, cliente, franja y acceso a la orden real. No duplicar la agenda general de hoy en esta vista.
+
+Fechas con foco único y flechas/Home/End. A 600 px o menos el mes ocupa el ancho completo para conservar botones de fecha de 44 px; muestra cantidad por día y detalle debajo. No representar franjas solicitadas como horas reservadas. En Agenda se leen cliente/servicio y se retira el panel duplicado del día. Controles, hover/foco, más órdenes y cierre por Escape pertenecen al mismo sistema. Transición de periodo: opacidad de 180 ms, sin espera y sin movimiento bajo reduced motion.
+
+`tests/calendar-ui.cjs` comprueba selección, teclado, toques, apertura única, estados de error y siete anchos con ambas vistas. Evidencia antes/después y medición acotada en `docs/calendar-workspace.md`.

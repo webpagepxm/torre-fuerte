@@ -752,8 +752,312 @@ function ensureCalendarAssets() {
   }
   return calendarAssets;
 }
+// El calendario presenta las mismas órdenes; no crea citas ni reserva horarios.
+let calendarSelectedDay = todayLocal();
+const calendarDateKey = (date) =>
+  [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
+  ].join("-");
+function calendarDayRecords(key) {
+  return records.filter(
+    (record) => record.status !== "cancelada" && record.requested_date === key,
+  );
+}
+function renderCalendarDay() {
+  const date = new Date(calendarSelectedDay + "T12:00:00");
+  $("calendarDayTitle").textContent = new Intl.DateTimeFormat("es-MX", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(date);
+  $("calendarDayTitle").textContent =
+    $("calendarDayTitle").textContent.charAt(0).toLocaleUpperCase("es") +
+    $("calendarDayTitle").textContent.slice(1);
+  const day = calendarDayRecords(calendarSelectedDay);
+  $("calendarDayCount").textContent = recordsLoaded
+    ? day.length +
+      (day.length === 1 ? " orden" : " órdenes") +
+      (recordsFailed ? " · sin actualizar" : "")
+    : "Órdenes no disponibles";
+  const holder = $("calendarDayOrders");
+  holder.replaceChildren();
+  if (!recordsLoaded || !day.length) {
+    const empty = document.createElement("p");
+    empty.className = "calendar-day-empty";
+    empty.textContent = !recordsLoaded
+      ? "No pudimos consultar las órdenes. Pulsa Actualizar para reintentar."
+      : "No hay órdenes para este día. Elige otra fecha o usa Recibir moto para registrar una orden.";
+    holder.append(empty);
+  }
+  for (const record of day) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "calendar-day-order";
+    button.setAttribute(
+      "aria-label",
+      "Abrir orden " + record.folio + ", " + record.motorcycle,
+    );
+    const folio = document.createElement("span");
+    folio.className = "calendar-order-folio";
+    folio.textContent = record.folio;
+    const title = document.createElement("strong");
+    title.textContent = record.motorcycle;
+    const client = document.createElement("span");
+    client.textContent = record.client_name;
+    const slot = document.createElement("span");
+    slot.className = "calendar-order-slot";
+    slot.textContent = "Franja: " + (record.requested_slot || "Por acordar");
+    const action = document.createElement("span");
+    action.className = "calendar-order-open";
+    action.textContent = "Abrir orden";
+    button.append(
+      folio,
+      title,
+      client,
+      stateBadge(record.status),
+      slot,
+      action,
+    );
+    button.addEventListener("click", () => openOrder(record.id));
+    holder.append(button);
+  }
+  const counts = new Map();
+  for (const record of records)
+    if (record.status !== "cancelada")
+      counts.set(
+        record.requested_date,
+        (counts.get(record.requested_date) || 0) + 1,
+      );
+  document.querySelectorAll(".calendar-day-number").forEach((button) => {
+    const key = button.dataset.date;
+    const selected = key === calendarSelectedDay;
+    button.tabIndex = selected ? 0 : -1;
+    button.setAttribute("aria-pressed", String(selected));
+    button
+      .closest(".fc-daygrid-day")
+      .classList.toggle("calendar-day-selected", selected);
+    const count = counts.get(key) || 0;
+    button.querySelector(".calendar-day-count").textContent = count
+      ? String(count)
+      : "";
+    button.setAttribute(
+      "aria-label",
+      new Intl.DateTimeFormat("es-MX", { dateStyle: "full" }).format(
+        new Date(key + "T12:00:00"),
+      ) +
+        ", " +
+        count +
+        (count === 1 ? " orden" : " órdenes"),
+    );
+  });
+}
+function selectCalendarDay(key, focus = false) {
+  calendarSelectedDay = key;
+  if (
+    calendar &&
+    (key < calendarDateKey(calendar.view.currentStart) ||
+      key >= calendarDateKey(calendar.view.currentEnd))
+  )
+    calendar.gotoDate(key);
+  renderCalendarDay();
+  if (focus)
+    requestAnimationFrame(() =>
+      document
+        .querySelector('.calendar-day-number[data-date="' + key + '"]')
+        ?.focus(),
+    );
+}
+function calendarDayContent(info) {
+  const key = calendarDateKey(info.date);
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "calendar-day-number";
+  button.dataset.date = key;
+  button.tabIndex = key === calendarSelectedDay ? 0 : -1;
+  const number = document.createElement("span");
+  number.className = "calendar-date-value";
+  number.textContent = String(info.date.getDate());
+  const count = document.createElement("small");
+  count.className = "calendar-day-count";
+  count.setAttribute("aria-hidden", "true");
+  button.append(number, count);
+  button.addEventListener("click", () => selectCalendarDay(key));
+  button.addEventListener("keydown", (event) => {
+    const shifts = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+    let shift = shifts[event.key];
+    if (event.key === "Home") shift = -((info.date.getDay() + 6) % 7);
+    if (event.key === "End") shift = 6 - ((info.date.getDay() + 6) % 7);
+    if (shift === undefined) return;
+    event.preventDefault();
+    const next = new Date(
+      info.date.getFullYear(),
+      info.date.getMonth(),
+      info.date.getDate() + shift,
+      12,
+    );
+    selectCalendarDay(calendarDateKey(next), true);
+  });
+  return { domNodes: [button] };
+}
+function calendarEventContent(info) {
+  const data = info.event.extendedProps;
+  const content = document.createElement("div");
+  content.className = "calendar-event-copy";
+  const motorcycle = document.createElement("strong");
+  motorcycle.textContent = data.motorcycle;
+  const detail = document.createElement("span");
+  detail.textContent =
+    (states[data.status] || "Sin estado") +
+    (info.view.type === "listWeek" ? " · " + (data.slot || "Por acordar") : "");
+  content.append(motorcycle, detail);
+  if (info.view.type === "listWeek") {
+    const service = document.createElement("span");
+    service.className = "calendar-event-service";
+    service.textContent = data.client + " · " + data.service;
+    content.append(service);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "calendar-event-button";
+    button.append(content);
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      openOrder(info.event.id);
+    });
+    return { domNodes: [button] };
+  }
+  return { domNodes: [content] };
+}
+function syncCalendarView(info) {
+  if (
+    calendarSelectedDay < calendarDateKey(info.view.currentStart) ||
+    calendarSelectedDay >= calendarDateKey(info.view.currentEnd)
+  )
+    calendarSelectedDay = calendarDateKey(info.view.currentStart);
+  $("calendarPeriod").textContent =
+    info.view.title.charAt(0).toLocaleUpperCase("es") +
+    info.view.title.slice(1);
+  const count = records.filter(
+    (r) =>
+      r.status !== "cancelada" &&
+      r.requested_date >= calendarDateKey(info.view.currentStart) &&
+      r.requested_date < calendarDateKey(info.view.currentEnd),
+  ).length;
+  $("calendarPeriodSummary").textContent = recordsLoaded
+    ? count +
+      (count === 1 ? " orden en este periodo" : " órdenes en este periodo") +
+      (recordsFailed ? " · sin actualizar" : "")
+    : "Órdenes no disponibles";
+  $("calendarWorkspace").dataset.view = info.view.type;
+  $("calendarMonth").setAttribute(
+    "aria-pressed",
+    String(info.view.type === "dayGridMonth"),
+  );
+  $("calendarAgenda").setAttribute(
+    "aria-pressed",
+    String(info.view.type === "listWeek"),
+  );
+  for (const id of [
+    "calendarPrev",
+    "calendarToday",
+    "calendarNext",
+    "calendarMonth",
+    "calendarAgenda",
+  ])
+    $(id).disabled = false;
+  renderCalendarDay();
+}
+function wireCalendarPopover(trigger) {
+  let cleanup;
+  const attach = () => {
+    const close = $("calendar").querySelector(".fc-popover-close");
+    if (!close) return false;
+    if (!close.dataset.keyboardReady) {
+      close.dataset.keyboardReady = "true";
+      close.tabIndex = 0;
+      close.setAttribute("role", "button");
+      close.setAttribute("aria-label", "Cerrar órdenes adicionales");
+      close.addEventListener("keydown", (event) => {
+        if (!["Enter", " "].includes(event.key)) return;
+        event.preventDefault();
+        close.click();
+      });
+      close.addEventListener("click", () => trigger?.focus());
+    }
+    return true;
+  };
+  if (attach()) return;
+  // FullCalendar monta el panel después del callback, también al usar teclado.
+  const observer = new MutationObserver(() => {
+    if (attach()) {
+      observer.disconnect();
+      clearTimeout(cleanup);
+    }
+  });
+  observer.observe($("calendar"), { childList: true, subtree: true });
+  cleanup = setTimeout(() => observer.disconnect(), 2000);
+}
+$("calendar").addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || document.querySelector("dialog[open]")) return;
+  const close = $("calendar").querySelector(".fc-popover-close");
+  if (close) {
+    event.preventDefault();
+    event.stopPropagation();
+    close.click();
+  }
+});
+function calendarTransition() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  $("calendar")
+    .getAnimations()
+    .forEach((animation) => animation.cancel());
+  $("calendar").animate([{ opacity: 0.65 }, { opacity: 1 }], {
+    duration: 180,
+    easing: "cubic-bezier(.22,1,.36,1)",
+  });
+}
+$("calendarPrev").addEventListener("click", () => {
+  calendar?.prev();
+  calendarTransition();
+});
+$("calendarNext").addEventListener("click", () => {
+  calendar?.next();
+  calendarTransition();
+});
+$("calendarToday").addEventListener("click", () => {
+  calendarSelectedDay = todayLocal();
+  calendar?.today();
+  renderCalendarDay();
+  calendarTransition();
+});
+$("calendarMonth").addEventListener("click", () => {
+  calendar?.changeView("dayGridMonth", calendarSelectedDay);
+  calendarTransition();
+});
+$("calendarAgenda").addEventListener("click", () => {
+  calendar?.changeView("listWeek", calendarSelectedDay);
+  calendarTransition();
+});
+
 async function renderCalendar() {
   if (!currentUser) return;
+  if (!recordsLoaded && recordsFailed) {
+    $("calendarState").hidden = false;
+    $("calendarState").textContent =
+      "No pudimos consultar las órdenes. Pulsa Actualizar para reintentar.";
+    $("calendarPeriodSummary").textContent = "Órdenes no disponibles";
+    $("calendarWorkspace").hidden = true;
+    for (const id of [
+      "calendarPrev",
+      "calendarToday",
+      "calendarNext",
+      "calendarMonth",
+      "calendarAgenda",
+    ])
+      $(id).disabled = true;
+    return;
+  }
   if (!calendar) {
     $("calendarState").hidden = false;
     $("calendarState").textContent = "Cargando calendario…";
@@ -765,12 +1069,14 @@ async function renderCalendar() {
     $("calendarState").hidden = false;
     $("calendarState").textContent =
       "No pudimos cargar el calendario. Revisa la conexión y pulsa Actualizar para reintentar.";
+    $("calendarPeriodSummary").textContent = "Calendario no disponible";
     $("calendarSection").setAttribute("aria-busy", "false");
     return;
   }
   $("calendarSection").setAttribute("aria-busy", "false");
   $("calendarState").hidden = true;
   if (!currentUser) return;
+  $("calendarWorkspace").hidden = false;
   const theme = getComputedStyle(document.documentElement);
   const calendarColors = Object.fromEntries(
     [
@@ -798,14 +1104,74 @@ async function renderCalendar() {
       allDay: true,
       backgroundColor:
         calendarColors[r.status] || theme.getPropertyValue("--muted").trim(),
-      textColor: "#ffffff",
+      textColor:
+        calendarColors[r.status] || theme.getPropertyValue("--muted").trim(),
       borderColor: "transparent",
+      extendedProps: {
+        motorcycle: r.motorcycle,
+        client: r.client_name,
+        service: r.service,
+        status: r.status,
+        slot: r.requested_slot,
+        folio: r.folio,
+      },
     }));
   if (!calendar) {
     calendar = new FullCalendar.Calendar($("calendar"), {
       initialView: mobileCalendar.matches ? "listWeek" : "dayGridMonth",
       locale: "es",
       firstDay: 1,
+      initialDate: calendarSelectedDay,
+      fixedWeekCount: false,
+      dayMaxEvents: 2,
+      moreLinkClick: (info) => {
+        wireCalendarPopover(
+          info.jsEvent.target.closest(".fc-daygrid-more-link"),
+        );
+        return "popover";
+      },
+      moreLinkDidMount: (info) => {
+        info.el.setAttribute("role", "button");
+        info.el.setAttribute(
+          "aria-label",
+          info.el.textContent + ". Ver órdenes del día.",
+        );
+        if (!info.el.getAttribute("aria-controls"))
+          info.el.removeAttribute("aria-controls");
+        info.el.addEventListener("keydown", (event) => {
+          if (!["Enter", " "].includes(event.key) || event.defaultPrevented)
+            return;
+          event.preventDefault();
+          event.stopPropagation();
+          info.el.click();
+        });
+      },
+      dayHeaderFormat: { weekday: "short" },
+      dayCellContent: calendarDayContent,
+      eventContent: calendarEventContent,
+      eventClassNames: (info) => [
+        "calendar-entry",
+        "calendar-entry--" +
+          (Object.hasOwn(states, info.event.extendedProps.status)
+            ? info.event.extendedProps.status
+            : "unknown"),
+      ],
+      eventDidMount: (info) => {
+        const target = info.el.matches("tr")
+          ? info.el.querySelector(".calendar-event-button")
+          : info.el;
+        if (!target) return;
+        target.setAttribute("role", "button");
+        target.tabIndex = 0;
+        target.setAttribute("aria-label", info.event.title + ". Abrir orden.");
+        target.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          event.stopPropagation();
+          openOrder(info.event.id);
+        });
+      },
+      datesSet: syncCalendarView,
       buttonText: { today: "Hoy", month: "Mes", list: "Semana" },
       noEventsContent: "No hay citas solicitadas para esta semana",
       allDayText: "Franja",
@@ -814,11 +1180,7 @@ async function renderCalendar() {
           .querySelectorAll(".fc-icon")
           .forEach((icon) => icon.setAttribute("aria-hidden", "true")),
       height: "auto",
-      headerToolbar: {
-        left: "prev,next today",
-        center: "title",
-        right: "dayGridMonth,listWeek",
-      },
+      headerToolbar: false,
       eventClick: (e) => openOrder(e.event.id),
       events,
     });
@@ -827,6 +1189,7 @@ async function renderCalendar() {
     calendar.removeAllEvents();
     calendar.addEventSource(events);
   }
+  syncCalendarView({ view: calendar.view });
 }
 mobileCalendar.addEventListener("change", () => {
   calendar?.changeView(mobileCalendar.matches ? "listWeek" : "dayGridMonth");

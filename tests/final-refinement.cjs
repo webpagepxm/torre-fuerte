@@ -1,14 +1,14 @@
 const { chromium } = require("playwright");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
-const { setup, base, root } = require("./browser.cjs");
+const { setup, base, root, output } = require("./browser.cjs");
 const { assertBusinessContracts } = require("./contracts.cjs");
 (async () => {
   const browser = await chromium.launch({
     executablePath: "/usr/bin/chromium",
     args: ["--no-sandbox"],
   });
-  const dir = root + "/docs/qa/final-refinement";
+  const dir = output + "/final-refinement";
   fs.mkdirSync(dir + "/after", { recursive: true });
   const results = [],
     errors = [];
@@ -229,9 +229,7 @@ const { assertBusinessContracts } = require("./contracts.cjs");
     await calendar.locator(".fc-daygrid-event").first().waitFor();
     const colors = await calendar
       .locator(".fc-daygrid-event")
-      .evaluateAll((nodes) =>
-        nodes.map((n) => getComputedStyle(n).backgroundColor),
-      );
+      .evaluateAll((nodes) => nodes.map((n) => getComputedStyle(n).color));
     const expected = await calendar.evaluate(() => {
       const span = document.createElement("span");
       span.style.color = getComputedStyle(
