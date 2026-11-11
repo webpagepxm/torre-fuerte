@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="../assets/ui-interactions.css?v=premium-20261111-1"
     />
-    <link rel="stylesheet" href="./style.css?v=final-20261111-1" />
+    <link rel="stylesheet" href="./style.css?v=calendar-20261111-1" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.css"
@@ -33,7 +33,7 @@
       src="https://cdn.jsdelivr.net/npm/driver.js@1.10.2/dist/driver.js.iife.js"
     ></script>
     <script type="module" src="./atmosphere.js?v=final-20261111-1"></script>
-    <script type="module" src="./app.js?v=final-20261111-1"></script>
+    <script type="module" src="./app.js?v=calendar-20261111-1"></script>
   </head>
   <body>
     <!-- Lucide 0.468.0, ISC: vendor/lucide-LICENSE.txt. Trazos adaptados a 18 px / 1.5. -->
@@ -58,6 +58,12 @@
         </symbol>
         <symbol id="icon-check" viewBox="0 0 24 24">
           <path d="m5 12 4 4L19 6" />
+        </symbol>
+        <symbol id="icon-chevron-left" viewBox="0 0 24 24">
+          <path d="m15 18-6-6 6-6" />
+        </symbol>
+        <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+          <path d="m9 18 6-6-6-6" />
         </symbol>
         <symbol id="icon-close" viewBox="0 0 24 24">
           <path d="m18 6-12 12M6 6l12 12" />
@@ -329,14 +335,73 @@
             aria-labelledby="calendarTab"
             hidden
           >
-            <div class="panelheading">
-              <div>
-                <h2>Calendario de citas</h2>
-                <p>
-                  Fechas y franjas solicitadas; requieren confirmación del
-                  taller
-                </p>
+            <div class="calendar-toolbar">
+              <div class="calendar-heading">
+                <h2 id="calendarPeriod" aria-live="polite">Calendario</h2>
+                <p id="calendarPeriodSummary">Cargando solicitudes…</p>
               </div>
+              <div class="calendar-controls">
+                <div
+                  class="calendar-navigation"
+                  role="group"
+                  aria-label="Cambiar periodo"
+                >
+                  <button
+                    type="button"
+                    id="calendarPrev"
+                    aria-label="Periodo anterior"
+                    title="Periodo anterior"
+                    disabled
+                  >
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#icon-chevron-left" />
+                    </svg>
+                  </button>
+                  <button type="button" id="calendarToday" disabled>Hoy</button>
+                  <button
+                    type="button"
+                    id="calendarNext"
+                    aria-label="Periodo siguiente"
+                    title="Periodo siguiente"
+                    disabled
+                  >
+                    <svg class="icon" aria-hidden="true">
+                      <use href="#icon-chevron-right" />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="calendar-modes"
+                  role="group"
+                  aria-label="Vista del calendario"
+                >
+                  <button
+                    type="button"
+                    id="calendarMonth"
+                    aria-pressed="true"
+                    disabled
+                  >
+                    Mes
+                  </button>
+                  <button
+                    type="button"
+                    id="calendarAgenda"
+                    aria-pressed="false"
+                    disabled
+                  >
+                    Agenda
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="calendar-context">
+              <div class="calendar-legend" aria-label="Estados de las órdenes">
+                <span class="calendar-legend--pending">Por confirmar</span>
+                <span class="calendar-legend--confirmed">Confirmada</span>
+                <span class="calendar-legend--working">En reparación</span>
+                <span class="calendar-legend--ready">Lista</span>
+              </div>
+              <p>Franjas solicitadas. Confirma el horario con cada cliente.</p>
             </div>
             <p
               id="calendarState"
@@ -344,7 +409,16 @@
               role="status"
               hidden
             ></p>
-            <div id="calendar"></div>
+            <div class="calendar-workspace" id="calendarWorkspace" hidden>
+              <div id="calendar"></div>
+              <aside class="calendar-detail" aria-labelledby="calendarDayTitle">
+                <div class="calendar-detail-heading">
+                  <h3 id="calendarDayTitle">Día seleccionado</h3>
+                  <p id="calendarDayCount" role="status"></p>
+                </div>
+                <div id="calendarDayOrders" class="calendar-day-orders"></div>
+              </aside>
+            </div>
           </section>
           <section class="day-agenda" aria-labelledby="dayTitle">
             <div class="day-heading">
