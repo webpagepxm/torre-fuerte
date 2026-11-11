@@ -37,6 +37,7 @@
     ></script>
     <script type="module" src="./atmosphere.js?v=final-20261111-1"></script>
     <script type="module" src="./app.js?v=rulo-20261111-1"></script>
+    <script defer src="./install-app.js?v=1"></script>
   </head>
   <body>
     <!-- Lucide 0.468.0, ISC: vendor/lucide-LICENSE.txt. Trazos adaptados a 18 px / 1.5. -->
@@ -185,6 +186,35 @@
             <button class="primary" type="submit">Entrar al portal</button>
           </form>
           <p class="footnote" id="loginMessage" role="status"></p>
+          <aside class="android-install" id="androidInstall" aria-label="Instalar Torre Fuerte en Android" hidden>
+            <img
+              class="android-install-illustration"
+              src="./images/torre-fuerte-android-install.webp"
+              alt="Mascota Android con uniforme de Torre Fuerte junto a un castillo"
+              width="320"
+              height="320"
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="android-install-heading">Tu taller, a un toque.</p>
+            <p class="android-install-copy">Pon Torre Fuerte en la pantalla de inicio de tu Android. Sin descargar nada de Play Store.</p>
+            <button
+              class="android-install-button"
+              id="installAndroidButton"
+              type="button"
+              aria-controls="androidInstallSteps"
+              aria-expanded="false"
+            >Instala la app en tu Android</button>
+            <div class="android-install-steps" id="androidInstallSteps" hidden>
+              <p>Si Chrome no muestra una ventana de instalación:</p>
+              <ol>
+                <li>Abre esta página en <strong>Chrome</strong>.</li>
+                <li>Presiona los <strong>tres puntos ⋮</strong> del navegador.</li>
+                <li>Elige <strong>Instalar app</strong> o <strong>Agregar a pantalla principal</strong> y confirma.</li>
+              </ol>
+              <p>Después abre el ícono de Torre Fuerte e inicia sesión como siempre. Necesitas conexión a internet.</p>
+            </div>
+          </aside>
         </div>
       </section>
       <section id="workspace" hidden>
